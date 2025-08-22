@@ -17,10 +17,6 @@
       error_message = "O nome do resource group deve conter apenas letras e números."
     }
   }
-  variable "resource_group_id" {
-    type        = string
-    description = "ID do resource group onde está o IP fixo"
-  }
   variable "location" {
     description = "Localização do recurso"
     type = string
@@ -48,4 +44,9 @@
   variable "kubernetes_version" {
     type    = string
     description = "Versão do Kubernetes a ser usada no AKS"
+  }
+
+  variable "aks_subnet_id" {
+    type = string
+    description = "ID da sub-rede do AKS"
   }

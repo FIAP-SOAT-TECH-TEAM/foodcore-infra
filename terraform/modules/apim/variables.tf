@@ -1,7 +1,7 @@
 # Common
   variable "dns_prefix" {
     type = string
-    description = "Prefixo DNS para o IP público. Deve ser único globalmente."
+    description = "Prefixo DNS. Deve ser único globalmente."
     
     validation {
       condition     = length(var.dns_prefix) >= 1 && length(var.dns_prefix) <= 54
@@ -22,12 +22,28 @@
     type = string
   }
 
-# Public IP
-  variable "allocation_method" {
-    description = "Método de alocação do IP público"
+# APIM
+
+  variable "apim_subnet_id" {
     type = string
+    description = "ID da sub-rede do APIM"
   }
-  variable "sku" {
-    description = "SKU do IP público"
-    type = string
+
+  variable "publisher_name" {
+    description = "Nome do publicador do API Management"
+    type        = string
+    default     = "FoodCore"
   }
+
+  variable "publisher_email" {
+    description = "Email do publicador do API Management"
+    type        = string
+    default     = "contato@foodcore.com"
+  }
+
+  variable "sku_name" {
+    description = "SKU do API Management"
+    type        = string
+    default     = "Developer_1"
+  }
+

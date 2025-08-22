@@ -4,13 +4,14 @@ module "resource_group" {
   location            = var.location
 }
 
-module "public_ip" {
-  source              = "./modules/public_ip"
+module "vnet" {
+  source              = "./modules/vnet"
   dns_prefix          = var.dns_prefix
   resource_group_name = module.resource_group.name
   location            = var.location
-  allocation_method   = var.allocation_method
-  sku                 = var.sku
+  vnet_prefix         = var.vnet_prefix
+  vnet_aks_subnet_prefix = var.vnet_aks_subnet_prefix
+  vnet_apim_subnet_prefix = var.vnet_apim_subnet_prefix
 }
 
 module "blob" {
@@ -27,10 +28,30 @@ module "aks" {
   source              = "./modules/aks"
   dns_prefix          = var.dns_prefix
   resource_group_name = module.resource_group.name
-  resource_group_id   = module.resource_group.id
   location            = var.location
+  aks_subnet_id       = module.vnet.azurerm_subnet.aks.id
   node_count          = var.node_count
   vm_size             = var.vm_size
   identity_type       = var.identity_type
   kubernetes_version  = var.kubernetes_version
+}
+
+module "acr" {
+  source              = "./modules/acr"
+  dns_prefix          = var.dns_prefix
+  resource_group_name = module.resource_group.name
+  location            = var.location
+  acr_sku             = var.acr_sku
+  acr_admin_enabled   = var.acr_admin_enabled
+}
+
+module "apim" {
+  source              = "./modules/apim"
+  dns_prefix          = var.dns_prefix
+  resource_group_name = module.resource_group.name
+  location            = var.location
+  apim_subnet_id      = module.vnet.azurerm_subnet.apim.id
+  publisher_name      = var.publisher_name
+  publisher_email     = var.publisher_email
+  sku_name            = var.sku_name
 }

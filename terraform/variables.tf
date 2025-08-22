@@ -25,16 +25,23 @@
     }
   }
 
-# Public IP
-  variable "allocation_method" {
-    type    = string
-    default = "Static"
-    description = "Método de alocação do IP público"
+# VNET
+  variable "vnet_prefix" {
+    description = "Prefixo de endereço da rede"
+    type        = list(string)
+    default     = ["10.0.0.0/16"]
   }
-  variable "sku" {
-    type    = string
-    default = "Standard"
-    description = "SKU do IP público"
+
+  variable "vnet_aks_subnet_prefix" {
+    description = "Prefixo de endereço da subrede do AKS"
+    type        = list(string)
+    default     = ["10.0.1.0/24"]
+  }
+
+  variable "vnet_apim_subnet_prefix" {
+    description = "Prefixo de endereço da subrede do APIM"
+    type        = list(string)
+    default     = ["10.0.2.0/24"]
   }
 
 # AKS
@@ -75,4 +82,36 @@
     description = "Tipo de replicação da conta de armazenamento"
     type        = string
     default     = "LRS"
+  }
+
+# ACR
+  variable "acr_sku" {
+    description = "SKU do ACR"
+    type        = string
+    default     = "Basic"
+  }
+  variable "acr_admin_enabled" {
+    description = "Habilita usuário admin"
+    type        = bool
+    default     = true
+  }
+
+# APIM
+
+  variable "publisher_name" {
+    description = "Nome do publicador do API Management"
+    type        = string
+    default     = "FoodCore"
+  }
+
+  variable "publisher_email" {
+    description = "Email do publicador do API Management"
+    type        = string
+    default     = "contato@foodcore.com"
+  }
+
+  variable "sku_name" {
+    description = "SKU do API Management"
+    type        = string
+    default     = "Developer_1"
   }
