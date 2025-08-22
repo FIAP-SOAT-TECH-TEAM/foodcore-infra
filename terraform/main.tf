@@ -29,7 +29,7 @@ module "aks" {
   dns_prefix          = var.dns_prefix
   resource_group_name = module.resource_group.name
   location            = var.location
-  aks_subnet_id       = module.vnet.azurerm_subnet.aks.id
+  aks_subnet_id       = module.vnet.aks_subnet.id
   node_count          = var.node_count
   vm_size             = var.vm_size
   identity_type       = var.identity_type
@@ -50,7 +50,7 @@ module "apim" {
   dns_prefix          = var.dns_prefix
   resource_group_name = module.resource_group.name
   location            = var.location
-  apim_subnet_id      = module.vnet.azurerm_subnet.apim.id
+  apim_subnet_id      = module.vnet.apim_subnet.id
   publisher_name      = var.publisher_name
   publisher_email     = var.publisher_email
   sku_name            = var.sku_name
