@@ -16,7 +16,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: foodcore-infra/terraform
+        working-directory: terraform
 
     steps:
       - name: Checkout repo
