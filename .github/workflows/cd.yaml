@@ -2,7 +2,7 @@ name: Terraform
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [closed]
     branches:
       - main
 
@@ -12,6 +12,7 @@ permissions:
 
 jobs:
   terraform:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     defaults:
@@ -30,10 +31,6 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
 
-      - name: Terraform Fmt
-        id: fmt
-        run: terraform fmt
-
       - name: Terraform Init
         run: |
           terraform init \
@@ -42,17 +39,13 @@ jobs:
             -backend-config="container_name=${{secrets.BACKEND_AZURE_STORAGE_ACCOUNT_CONTAINER_NAME}}" \
             -backend-config="key=${{secrets.BACKEND_AZURE_KEY}}"
 
-      - name: Terraform Validate
-        id: validate
-        run: terraform validate -no-color
-
-      - name: Terraform Plan
-        run: terraform plan
-        env:
-          TF_VAR_subscription_id: ${{secrets.AZURE_SUBSCRIPTION_ID}}
-
-      - name: Upload Terraform Plan
-        uses: actions/upload-artifact@v4
+      - name: Download Terraform Plan
+        uses: actions/download-artifact@v4
         with:
           name: tfplan
-          path: terraform/tfplan
+          path: terraform
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve tfplan
+        env:
+          TF_VAR_subscription_id: ${{secrets.AZURE_SUBSCRIPTION_ID}}
