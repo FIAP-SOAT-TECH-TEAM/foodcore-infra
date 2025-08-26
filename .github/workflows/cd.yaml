@@ -50,6 +50,7 @@ jobs:
           check_artifacts: true
           name_is_regexp: false
           if_no_artifact_found: fail
+          path: terraform
 
       - name: Terraform Apply
         run: terraform apply -auto-approve tfplan
