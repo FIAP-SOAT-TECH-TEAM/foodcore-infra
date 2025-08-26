@@ -41,11 +41,15 @@ jobs:
             -backend-config="key=${{secrets.BACKEND_AZURE_KEY}}"
 
       - name: Download artifacts
-        uses: dawidd6/action-download-artifact@v7
+        uses: dawidd6/action-download-artifact@v11
         with:
           name: tfplan
           github-token: ${{ secrets.GITHUB_TOKEN }}
           workflow: ci.yml
+          workflow_search: true
+          check_artifacts: true
+          name_is_regexp: false
+          if_no_artifact_found: fail
 
       - name: Terraform Apply
         run: terraform apply -auto-approve tfplan
