@@ -45,7 +45,7 @@ jobs:
         with:
           name: tfplan
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          workflow: ci.yml
+          workflow: ci.yaml
           workflow_search: true
           check_artifacts: true
           name_is_regexp: false
