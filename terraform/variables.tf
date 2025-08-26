@@ -6,7 +6,7 @@
   }
   variable "resource_group_name" {
     type    = string
-    default = "tc2"
+    default = "tc3"
     description = "Nome do resource group"
   }
   variable "location" {
