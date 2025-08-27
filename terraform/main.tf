@@ -45,13 +45,13 @@ module "acr" {
   acr_admin_enabled   = var.acr_admin_enabled
 }
 
-# module "apim" {
-#   source              = "./modules/apim"
-#   dns_prefix          = var.dns_prefix
-#   resource_group_name = module.resource_group.name
-#   location            = var.location
-#   apim_subnet_id      = module.vnet.apim_subnet.id
-#   publisher_name      = var.publisher_name
-#   publisher_email     = var.publisher_email
-#   sku_name            = var.sku_name
-# }
+module "apim" {
+  source              = "./modules/apim"
+  dns_prefix          = var.dns_prefix
+  resource_group_name = module.resource_group.name
+  location            = var.location
+  apim_subnet_id      = module.vnet.apim_subnet.id
+  publisher_name      = var.publisher_name
+  publisher_email     = var.publisher_email
+  sku_name            = var.sku_name
+}
