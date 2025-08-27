@@ -13,7 +13,7 @@ output "aks_name" {
 
 output "aks_resource_group" {
   description = "Resource Group onde o cluster AKS reside"
-  value       = module.aks.resource_group_name
+  value       = module.aks.aks_resource_group
 }
 
 output "storage_container_name" {
@@ -34,7 +34,7 @@ output "acr_name" {
 
 output "acr_resource_group" {
   description = "Resource Group do ACR"
-  value       = module.acr.resource_group_name
+  value       = module.acr.acr_resource_group
 }
 
 # output "apim_gateway_url" {
