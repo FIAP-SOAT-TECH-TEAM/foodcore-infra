@@ -32,18 +32,15 @@
   variable "publisher_name" {
     description = "Nome do publicador do API Management"
     type        = string
-    default     = "FoodCore"
   }
 
   variable "publisher_email" {
     description = "Email do publicador do API Management"
     type        = string
-    default     = "contato@foodcore.com"
   }
 
   variable "sku_name" {
     description = "SKU do API Management"
     type        = string
-    default     = "Developer_1"
   }
 
