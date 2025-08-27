@@ -1,9 +1,4 @@
-output "aks_subnet" {
-  description = "Subnet criada para o cluster AKS."
-  value       = azurerm_subnet.aks_subnet
-}
-
-output "apim_subnet" {
-  description = "Subnet criada para o serviço Azure API Management."
-  value       = azurerm_subnet.apim_subnet
+output "aks_subnet_last_usable_ip" {
+  description = "Último endereço IP utilizável da subnet do AKS (exclui o IP final reservado e broadcast)."
+  value       = cidrhost(azurerm_subnet.aks_subnet.address_prefixes[0], -2)
 }

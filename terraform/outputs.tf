@@ -2,40 +2,39 @@ output "resource_group_name" {
   value = module.resource_group.name
 }
 
-# output "aks_name" {
-#   value = module.aks.aks_name
-# }
-
-# output "storage_account_name" {
-#   description = "Nome da conta de armazenamento"
-#   value       = module.blob.storage_account_name
-# }
-
-# output "storage_container_name" {
-#   description = "Nome do container"
-#   value       = module.blob.storage_container_name
-# }
-
-# output "storage_account_connection_string" {
-#   description = "Connection string primária da conta de armazenamento"
-#   value       = module.blob.storage_account_connection_string
-#   sensitive   = true
-# }
-
-output "acr_login_server" {
-  description = "URL do login server do ACR"
-  value       = module.acr.acr_login_server
+output "aks_subnet_last_usable_ip" {
+  description = "Último endereço IP utilizável da subnet do AKS (exclui o IP final reservado e broadcast)."
+  value       = module.vnet.aks_subnet_last_usable_ip
 }
 
-output "acr_admin_username" {
-  description = "Usuário admin do ACR"
-  value       = module.acr.acr_admin_username
+output "aks_name" {
+  value = module.aks.aks_name
 }
 
-output "acr_admin_password" {
-  description = "Senha admin do ACR"
-  value       = module.acr.acr_admin_password
+output "aks_resource_group" {
+  description = "Resource Group onde o cluster AKS reside"
+  value       = module.aks.resource_group_name
+}
+
+output "storage_container_name" {
+  description = "Nome do container"
+  value       = module.blob.storage_container_name
+}
+
+output "storage_account_connection_string" {
+  description = "Connection string primária da conta de armazenamento"
+  value       = module.blob.storage_account_connection_string
   sensitive   = true
+}
+
+output "acr_name" {
+  description = "Nome do Azure Container Registry"
+  value       = module.acr.acr_name
+}
+
+output "acr_resource_group" {
+  description = "Resource Group do ACR"
+  value       = module.acr.resource_group_name
 }
 
 # output "apim_gateway_url" {
