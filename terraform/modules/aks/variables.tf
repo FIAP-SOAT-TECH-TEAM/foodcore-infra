@@ -49,3 +49,8 @@
     type = string
     description = "ID da sub-rede do AKS"
   }
+
+  variable "aks_service_cidr" {
+    type = string
+    description = "CIDR para o serviço AKS"
+  }
