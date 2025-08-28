@@ -125,5 +125,5 @@
   variable "sku_name" {
     description = "SKU do API Management"
     type        = string
-    default     = "Consumption"
+    default     = "Consumption_0"
   }
