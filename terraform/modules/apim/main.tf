@@ -47,5 +47,5 @@ resource "azurerm_api_management" "apim" {
     subnet_id = var.apim_subnet_id
   }
 
-  depends_on = [ apim_assoc ]
+  depends_on = [ azurerm_subnet_network_security_group_association.apim_assoc ]
 }
