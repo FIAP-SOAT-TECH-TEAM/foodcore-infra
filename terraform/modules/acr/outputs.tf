@@ -23,3 +23,8 @@ output "acr_resource_group" {
   description = "Resource Group do ACR"
   value       = azurerm_container_registry.acr.resource_group_name
 }
+
+output "acr_id" {
+  description = "ID do Azure Container Registry"
+  value       = azurerm_container_registry.acr.id
+}

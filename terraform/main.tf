@@ -24,6 +24,15 @@ module "blob" {
   account_replication_type  = var.account_replication_type
 }
 
+module "acr" {
+  source              = "./modules/acr"
+  dns_prefix          = var.dns_prefix
+  resource_group_name = module.resource_group.name
+  location            = var.location
+  acr_sku             = var.acr_sku
+  acr_admin_enabled   = var.acr_admin_enabled
+}
+
 module "aks" {
   source              = "./modules/aks"
   dns_prefix          = var.dns_prefix
@@ -36,15 +45,7 @@ module "aks" {
   kubernetes_version  = var.kubernetes_version
   aks_service_cidr    = var.vnet_aks_service_subnet_prefix
   aks_dns_service_ip  = var.vnet_aks_dns_service_ip
-}
-
-module "acr" {
-  source              = "./modules/acr"
-  dns_prefix          = var.dns_prefix
-  resource_group_name = module.resource_group.name
-  location            = var.location
-  acr_sku             = var.acr_sku
-  acr_admin_enabled   = var.acr_admin_enabled
+  acr_id              = module.acr.acr_id
 }
 
 module "apim" {
