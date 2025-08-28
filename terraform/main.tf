@@ -34,6 +34,7 @@ module "aks" {
   vm_size             = var.vm_size
   identity_type       = var.identity_type
   kubernetes_version  = var.kubernetes_version
+  aks_service_cidr    = var.vnet_aks_service_subnet_prefix
 }
 
 module "acr" {
