@@ -54,3 +54,8 @@
     type = string
     description = "CIDR para o serviço AKS"
   }
+
+  variable "aks_dns_service_ip" {
+    type = string
+    description = "IP do serviço DNS do AKS"
+  }

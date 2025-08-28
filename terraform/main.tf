@@ -35,6 +35,7 @@ module "aks" {
   identity_type       = var.identity_type
   kubernetes_version  = var.kubernetes_version
   aks_service_cidr    = var.vnet_aks_service_subnet_prefix
+  aks_dns_service_ip  = var.vnet_aks_dns_service_ip
 }
 
 module "acr" {
