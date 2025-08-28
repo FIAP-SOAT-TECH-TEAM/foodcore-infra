@@ -38,6 +38,12 @@
     default     = "10.0.0.0/24"
   }
 
+  variable "vnet_aks_dns_service_ip" {
+    description = "IP do serviço DNS do AKS"
+    type        = string
+    default     = "10.0.0.10"
+  }
+
   variable "vnet_aks_subnet_prefix" {
     description = "Prefixo de endereço da subrede do AKS"
     type        = list(string)
