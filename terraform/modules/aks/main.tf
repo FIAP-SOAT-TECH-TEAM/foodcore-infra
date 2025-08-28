@@ -21,4 +21,12 @@ resource "azurerm_kubernetes_cluster" "aks" {
     service_cidr      = var.aks_service_cidr
     dns_service_ip    = var.aks_dns_service_ip
   }
+
+  role_based_access_control_enabled = true
+}
+
+resource "azurerm_role_assignment" "aks_acr_pull" {
+  scope                = var.acr_id
+  role_definition_name = "AcrPull"
+  principal_id         = azurerm_kubernetes_cluster.aks.kubelet_identity[0].object_id
 }

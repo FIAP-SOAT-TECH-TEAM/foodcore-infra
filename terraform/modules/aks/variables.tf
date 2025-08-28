@@ -59,3 +59,8 @@
     type = string
     description = "IP do serviço DNS do AKS"
   }
+
+  variable "acr_id" {
+    type = string
+    description = "ID do Azure Container Registry"
+  }
