@@ -119,11 +119,11 @@
   variable "publisher_email" {
     description = "Email do publicador do API Management"
     type        = string
-    default     = "contato@foodcore.com"
+    default     = "RM364745@fiap.com.br"
   }
 
   variable "sku_name" {
     description = "SKU do API Management"
     type        = string
-    default     = "Consumption_0"
+    default     = "Consumption_1"
   }
