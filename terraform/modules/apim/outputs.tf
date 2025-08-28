@@ -3,12 +3,12 @@ output "apim_gateway_url" {
   value       = azurerm_api_management.apim.gateway_url
 }
 
-output "apim_management_api_url" {
-  description = "URL da API de gerenciamento do API Management"
-  value       = azurerm_api_management.apim.management_api_url
+output "apim_resource_group" {
+  description = "Resource Group do API Management"
+  value       = azurerm_api_management.apim.resource_group_name
 }
 
-output "apim_public_ip_addresses" {
-  description = "Lista de IPs públicos do API Management"
-  value       = azurerm_api_management.apim.public_ip_addresses
+output "apim_name" {
+  description = "Nome do API Management"
+  value       = azurerm_api_management.apim.name
 }

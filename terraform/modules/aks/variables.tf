@@ -25,7 +25,6 @@
 # AKS
   variable "node_count" {
     type    = number
-    default = 1
     description = "Número de nós no cluster AKS"
 
     validation {

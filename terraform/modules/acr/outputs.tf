@@ -13,3 +13,13 @@ output "acr_admin_password" {
   value       = azurerm_container_registry.acr.admin_password
   sensitive   = true
 }
+
+output "acr_name" {
+  description = "Nome do Azure Container Registry"
+  value       = azurerm_container_registry.acr.name
+}
+
+output "acr_resource_group" {
+  description = "Resource Group do ACR"
+  value       = azurerm_container_registry.acr.resource_group_name
+}
