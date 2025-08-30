@@ -11,6 +11,8 @@ permissions:
 jobs:
   terraform-destroy:
     runs-on: ubuntu-latest
+    env:
+      TF_VAR_subscription_id: ${{secrets.AZURE_SUBSCRIPTION_ID}}     
 
     defaults:
       run:
@@ -38,10 +40,6 @@ jobs:
 
       - name: Terraform Plan Destroy
         run: terraform plan -destroy -out=tfplan
-        env:
-          TF_VAR_subscription_id: ${{secrets.AZURE_SUBSCRIPTION_ID}}     
-
+      
       - name: Terraform Destroy with Plan
-        run: terraform apply -destroy -auto-approve tfplan
-        env:
-          TF_VAR_subscription_id: ${{secrets.AZURE_SUBSCRIPTION_ID}}    
+        run: terraform apply -destroy -auto-approve tfplan 
