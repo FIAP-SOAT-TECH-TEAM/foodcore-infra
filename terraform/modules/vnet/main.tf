@@ -18,3 +18,24 @@ resource "azurerm_subnet" "apim_subnet" {
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes     = var.vnet_apim_subnet_prefix
 }
+
+resource "azurerm_private_dns_zone" "private_dns" {
+  name                = "${var.dns_prefix}.local"
+  resource_group_name = var.resource_group_name
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "vnet_link" {
+  name                  = "${var.dns_prefix}-dns-link"
+  resource_group_name   = var.resource_group_name
+  private_dns_zone_name = azurerm_private_dns_zone.private_dns.name
+  virtual_network_id    = azurerm_virtual_network.vnet.id
+  registration_enabled  = true
+}
+
+resource "azurerm_private_dns_a_record" "api_dns_a" {
+  name                = "api"
+  zone_name           = azurerm_private_dns_zone.private_dns.name
+  resource_group_name = var.resource_group_name
+  ttl                 = 300
+  records             = [cidrhost(azurerm_subnet.aks_subnet.address_prefixes[0], -2)]
+}
