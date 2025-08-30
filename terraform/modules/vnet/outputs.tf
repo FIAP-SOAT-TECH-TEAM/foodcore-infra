@@ -12,3 +12,8 @@ output "apim_subnet" {
   description = "Subnet do APIM"
   value = azurerm_subnet.apim_subnet
 }
+
+output "api_private_dns_fqdn" {
+  description = "FQDN do registro A da API na zona DNS privada"
+  value       = "${azurerm_private_dns_a_record.api_dns_a.name}.${azurerm_private_dns_a_record.api_dns_a.zone_name}"
+}

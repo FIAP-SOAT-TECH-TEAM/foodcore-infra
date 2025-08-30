@@ -59,3 +59,9 @@
     description = "Nome do API Management"
     value       = module.apim.apim_name
   }
+
+# VNET
+  output "api_private_dns_fqdn" {
+    description = "FQDN do registro A da API na zona DNS privada"
+    value       = module.vnet.api_private_dns_fqdn
+  }
