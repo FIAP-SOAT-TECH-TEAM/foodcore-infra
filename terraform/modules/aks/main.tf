@@ -6,10 +6,10 @@ resource "azurerm_kubernetes_cluster" "aks" {
   kubernetes_version  = var.kubernetes_version
 
   default_node_pool {
-    name       = "default"
-    node_count = var.node_count
-    vm_size    = var.vm_size
-    vnet_subnet_id = var.aks_subnet_id
+    name            = "default"
+    node_count      = var.node_count
+    vm_size         = var.vm_size
+    vnet_subnet_id  = var.aks_subnet_id
   }
 
   identity {
@@ -28,5 +28,11 @@ resource "azurerm_kubernetes_cluster" "aks" {
 resource "azurerm_role_assignment" "aks_acr_pull" {
   scope                = var.acr_id
   role_definition_name = "AcrPull"
+  principal_id         = azurerm_kubernetes_cluster.aks.kubelet_identity[0].object_id
+}
+
+resource "azurerm_role_assignment" "aks_subnet_contributor" {
+  scope                = var.aks_subnet_id
+  role_definition_name = "Network Contributor"
   principal_id         = azurerm_kubernetes_cluster.aks.kubelet_identity[0].object_id
 }
