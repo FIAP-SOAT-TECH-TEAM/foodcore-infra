@@ -60,6 +60,11 @@
     value       = module.apim.apim_name
   }
 
+    output "apim_foodcore_start_productid" {
+    description = "ID do produto do API Management"
+    value       = azurerm_api_management_product.foodcoreapi_start_product.id
+  }
+
 # VNET
   output "api_private_dns_fqdn" {
     description = "FQDN do registro A da API na zona DNS privada"

@@ -44,3 +44,27 @@
     type        = string
   }
 
+  variable "apim_product_id" {
+    description = "ID do produto do API Management"
+    type        = string
+  }
+
+  variable "apim_product_display_name" {
+    description = "Nome exibido do produto do API Management"
+    type        = string
+  }
+
+  variable "apim_product_description" {
+    description = "Descrição do produto do API Management"
+    type        = string
+  }
+
+  variable "apim_subscription_display_name" {
+    description = "Nome exibido da assinatura do API Management"
+    type        = string
+  }
+
+  variable "apim_subscription_state" {
+    description = "Estado da assinatura do API Management"
+    type        = string
+  }
