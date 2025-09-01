@@ -60,6 +60,17 @@
     value       = module.apim.apim_name
   }
 
+  output "apim_foodcore_start_productid" {
+    description = "ID do produto do API Management"
+    value       = module.apim.apim_foodcore_start_productid
+  }
+
+  output "apim_foodcore_start_subscriptionid" {
+    description = "ID da assinatura do API Management"
+    value       = module.apim.apim_foodcore_start_subscriptionid
+    sensitive   = true
+  }
+
 # VNET
   output "api_private_dns_fqdn" {
     description = "FQDN do registro A da API na zona DNS privada"

@@ -127,3 +127,33 @@
     type        = string
     default     = "Developer_1"
   }
+
+  variable "apim_product_id" {
+    description = "ID do produto do API Management"
+    type        = string
+    default     = "foodcoreapi_start"
+  }
+
+  variable "apim_product_display_name" {
+    description = "Nome exibido do produto do API Management"
+    type        = string
+    default     = "FoodCore API Start"
+  }
+
+  variable "apim_product_description" {
+    description = "Descrição do produto do API Management"
+    type        = string
+    default     = "Produto de API para o FoodCore"
+  }
+
+  variable "apim_subscription_display_name" {
+    description = "Nome exibido da assinatura do API Management"
+    type        = string
+    default     = "FoodCore API Subscription"
+  }
+
+  variable "apim_subscription_state" {
+    description = "Estado da assinatura do API Management"
+    type        = string
+    default     = "active"
+  }
