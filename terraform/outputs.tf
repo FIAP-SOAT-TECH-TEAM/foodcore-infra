@@ -62,12 +62,12 @@
 
   output "apim_foodcore_start_productid" {
     description = "ID do produto do API Management"
-    value       = module.apim.foodcore_start_product_id
+    value       = module.apim.apim_foodcore_start_productid
   }
 
   output "apim_foodcore_start_subscriptionid" {
     description = "ID da assinatura do API Management"
-    value       = module.apim.foodcore_start_subscription_id
+    value       = module.apim.apim_foodcore_start_subscriptionid
     sensitive   = true
   }
 
