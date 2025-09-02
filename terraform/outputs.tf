@@ -84,3 +84,18 @@
     description = "FQDN do registro A da API na zona DNS privada"
     value       = module.vnet.api_private_dns_fqdn
   }
+
+  output "db_subnet_id" {
+    description = "ID da subnet do banco de dados"
+    value       = module.vnet.db_subnet_id
+  }
+
+  output "private_dns_zone_id" {
+    description = "ID da zona DNS privada"
+    value       = module.vnet.private_dns_zone_id
+  }
+
+  output "vnet_aks_subnet_prefix" {
+    description = "Prefixo de endereço da subrede do AKS"
+    value       = var.vnet_aks_subnet_prefix
+  }

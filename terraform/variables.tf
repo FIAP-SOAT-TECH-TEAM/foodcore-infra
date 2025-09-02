@@ -56,6 +56,12 @@
     default     = ["10.0.2.0/24"]
   }
 
+  variable "vnet_db_subnet_prefix" {
+    description = "Prefixo de endereço da subrede do banco de dados"
+    type        = list(string)
+    default     = ["10.0.3.0/24"]
+  }
+
 # AKS
   variable "node_count" {
     type    = number

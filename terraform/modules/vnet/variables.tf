@@ -26,17 +26,19 @@
   variable "vnet_prefix" {
     description = "Prefixo de endereço da rede"
     type        = list(string)
-    default     = ["10.0.0.0/16"]
   }
 
   variable "vnet_aks_subnet_prefix" {
     description = "Prefixo de endereço da subrede do AKS"
     type        = list(string)
-    default     = ["10.0.1.0/24"]
   }
 
   variable "vnet_apim_subnet_prefix" {
     description = "Prefixo de endereço da subrede do APIM"
     type        = list(string)
-    default     = ["10.0.2.0/24"]
+  }
+
+  variable "vnet_db_subnet_prefix" {
+    description = "Prefixo de endereço da subrede do banco de dados"
+    type        = list(string)
   }
