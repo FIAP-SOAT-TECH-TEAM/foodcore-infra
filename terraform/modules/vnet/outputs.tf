@@ -17,3 +17,13 @@ output "api_private_dns_fqdn" {
   description = "FQDN do registro A da API na zona DNS privada"
   value       = "${azurerm_private_dns_a_record.api_dns_a.name}.${azurerm_private_dns_a_record.api_dns_a.zone_name}"
 }
+
+output "db_subnet_id" {
+  description = "ID da subnet do banco de dados"
+  value       = azurerm_subnet.db_subnet.id
+}
+
+output "private_dns_zone_id" {
+  description = "ID da zona DNS privada"
+  value       = azurerm_private_dns_zone.private_dns.id
+}

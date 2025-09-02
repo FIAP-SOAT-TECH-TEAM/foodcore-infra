@@ -19,6 +19,25 @@ resource "azurerm_subnet" "apim_subnet" {
   address_prefixes     = var.vnet_apim_subnet_prefix
 }
 
+resource "azurerm_subnet" "db_subnet" {
+  name                 = "${var.dns_prefix}-db-subnet"
+  resource_group_name  = var.resource_group_name
+  virtual_network_name = azurerm_virtual_network.vnet.name
+  address_prefixes     = var.vnet_db_subnet_prefix
+
+  delegation {
+    name = "fs"
+
+    service_delegation {
+      name = "Microsoft.DBforPostgreSQL/flexibleServers"
+
+      actions = [
+        "Microsoft.Network/virtualNetworks/subnets/join/action",
+      ]
+    }
+  }
+}
+
 resource "azurerm_private_dns_zone" "private_dns" {
   name                = "${var.dns_prefix}.local"
   resource_group_name = var.resource_group_name
