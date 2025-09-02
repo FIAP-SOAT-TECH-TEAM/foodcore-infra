@@ -3,6 +3,14 @@
     value = module.resource_group.name
   }
 
+  output "location" {
+    value = var.location
+  }
+
+  output "dns_prefix" {
+    value = var.dns_prefix
+  }
+
 # AKS
   output "aks_subnet_last_usable_ip" {
     description = "Último endereço IP utilizável da subnet do AKS (exclui o IP final reservado e broadcast)."
