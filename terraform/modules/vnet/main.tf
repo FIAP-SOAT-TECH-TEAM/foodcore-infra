@@ -43,10 +43,23 @@ resource "azurerm_private_dns_zone" "private_dns" {
   resource_group_name = var.resource_group_name
 }
 
+resource "azurerm_private_dns_zone" "postgres_private_dns" {
+  name                = "${var.dns_prefix}.postgres.database.azure.com"
+  resource_group_name = var.resource_group_name
+}
+
 resource "azurerm_private_dns_zone_virtual_network_link" "vnet_link" {
   name                  = "${var.dns_prefix}-dns-link"
   resource_group_name   = var.resource_group_name
   private_dns_zone_name = azurerm_private_dns_zone.private_dns.name
+  virtual_network_id    = azurerm_virtual_network.vnet.id
+  registration_enabled  = true
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "postgres_vnet_link" {
+  name                  = "${var.dns_prefix}-postgres-dns-link"
+  resource_group_name   = var.resource_group_name
+  private_dns_zone_name = azurerm_private_dns_zone.postgres_private_dns.name
   virtual_network_id    = azurerm_virtual_network.vnet.id
   registration_enabled  = true
 }

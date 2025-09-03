@@ -23,7 +23,7 @@ output "db_subnet_id" {
   value       = azurerm_subnet.db_subnet.id
 }
 
-output "private_dns_zone_id" {
-  description = "ID da zona DNS privada"
-  value       = azurerm_private_dns_zone.private_dns.id
+output "pgsql_private_dns_zone_id" {
+  description = "ID da zona DNS privada do PostgreSQL"
+  value       = azurerm_private_dns_zone.postgres_private_dns.id
 }
