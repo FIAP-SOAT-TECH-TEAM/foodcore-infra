@@ -13,6 +13,8 @@ module "vnet" {
   vnet_aks_subnet_prefix  = var.vnet_aks_subnet_prefix
   vnet_apim_subnet_prefix = var.vnet_apim_subnet_prefix
   vnet_db_subnet_prefix   = var.vnet_db_subnet_prefix
+
+  depends_on = [ module.resource_group ]
 }
 
 module "blob" {
@@ -23,6 +25,8 @@ module "blob" {
   container_name            = var.container_name
   account_tier              = var.account_tier
   account_replication_type  = var.account_replication_type
+
+  depends_on = [ module.resource_group ]
 }
 
 module "acr" {
@@ -32,6 +36,8 @@ module "acr" {
   location            = var.location
   acr_sku             = var.acr_sku
   acr_admin_enabled   = var.acr_admin_enabled
+
+  depends_on = [ module.resource_group ]
 }
 
 module "aks" {
@@ -47,6 +53,8 @@ module "aks" {
   aks_service_cidr    = var.vnet_aks_service_subnet_prefix
   aks_dns_service_ip  = var.vnet_aks_dns_service_ip
   acr_id              = module.acr.acr_id
+
+  depends_on = [ module.resource_group, module.vnet , module.acr]
 }
 
 module "apim" {
@@ -63,4 +71,6 @@ module "apim" {
   apim_product_description        = var.apim_product_description
   apim_subscription_display_name  = var.apim_subscription_display_name
   apim_subscription_state         = var.apim_subscription_state
+
+  depends_on = [ module.resource_group, module.vnet ]
 }
