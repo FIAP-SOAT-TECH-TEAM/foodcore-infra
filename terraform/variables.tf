@@ -8,15 +8,17 @@
     default = "tc3"
     description = "Nome do resource group"
   }
+  # Assinatura Azure For Students não tem permissão para criar recursos em determinadas regiões
+  # Ex: East US (https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits)
   variable "location" {
     type    = string
-    default = "East US"
+    default = "Central US" 
     description = "Localização do recurso"
   }
   variable "dns_prefix" {
     type = string
     description = "Prefixo DNS. Deve ser único globalmente."
-    default = "foodcoreapi2"
+    default = "foodcore"
     
     validation {
       condition     = length(var.dns_prefix) >= 1 && length(var.dns_prefix) <= 54
