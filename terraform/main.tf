@@ -54,7 +54,7 @@ module "aks" {
   aks_dns_service_ip  = var.vnet_aks_dns_service_ip
   acr_id              = module.acr.acr_id
 
-  depends_on = [ module.resource_group, module.vnet , module.acr]
+  depends_on = [ module.resource_group, module.vnet, module.acr]
 }
 
 module "apim" {
