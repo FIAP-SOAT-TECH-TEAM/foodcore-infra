@@ -90,9 +90,9 @@
     value       = module.vnet.db_subnet_id
   }
 
-  output "private_dns_zone_id" {
-    description = "ID da zona DNS privada"
-    value       = module.vnet.private_dns_zone_id
+  output "pgsql_private_dns_zone_id" {
+    description = "ID da zona DNS privada do PostgreSQL"
+    value       = module.vnet.pgsql_private_dns_zone_id
   }
 
   output "vnet_aks_subnet_prefix" {
