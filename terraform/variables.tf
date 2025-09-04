@@ -12,7 +12,7 @@
   # Ex: East US (https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits)
   variable "location" {
     type    = string
-    default = "Central US" 
+    default = "Brazil South" 
     description = "Localização do recurso"
   }
   variable "dns_prefix" {
