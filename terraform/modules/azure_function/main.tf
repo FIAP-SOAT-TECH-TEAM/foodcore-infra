@@ -27,23 +27,24 @@ resource "azurerm_service_plan" "azfunc-service-plan" {
   os_type             = var.az_func_os_type
 }
 
-resource "azurerm_linux_function_app" "azfunc" {
+# https://github.com/hashicorp/terraform-provider-azurerm/pull/28199
+resource "azurerm_function_app_flex_consumption" "azfunc" {
   name                          = "${var.dns_prefix}-azfunc"
   resource_group_name           = var.resource_group_name
   location                      = var.location
   service_plan_id               = azurerm_service_plan.azfunc-service-plan.id
-  storage_account_name          = azurerm_storage_account.azfunc-sa.name
-  storage_account_access_key    = azurerm_storage_account.azfunc-sa.primary_access_key
+  storage_container_type        = "blobContainer"
+  storage_container_endpoint    = "${azurerm_storage_account.azfunc-sa.primary_blob_endpoint}${azurerm_storage_container.azfunc-sa-container.name}"
+  storage_authentication_type   = "StorageAccountConnectionString"
+  storage_access_key            = azurerm_storage_account.azfunc-sa.primary_access_key
+  runtime_name                  = "custom"
+  runtime_version               = "1"
   https_only                    = true
   
   public_network_access_enabled = true
   #virtual_network_subnet_id     = var.azfunc_subnet_id
   
   site_config {
-    application_stack {
-        use_custom_runtime      = true
-    }
-
     application_insights_connection_string  = azurerm_application_insights.azfunc-app-insights.connection_string
     application_insights_key                = azurerm_application_insights.azfunc-app-insights.instrumentation_key
   }
