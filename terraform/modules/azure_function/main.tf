@@ -36,8 +36,8 @@ resource "azurerm_linux_function_app" "azfunc" {
   storage_account_access_key    = azurerm_storage_account.azfunc-sa.primary_access_key
   https_only                    = true
   
-  public_network_access_enabled = false
-  virtual_network_subnet_id     = var.azfunc_subnet_id
+  public_network_access_enabled = true
+  #virtual_network_subnet_id     = var.azfunc_subnet_id
   
   site_config {
     application_stack {
