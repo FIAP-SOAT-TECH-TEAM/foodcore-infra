@@ -41,8 +41,8 @@ resource "azurerm_function_app_flex_consumption" "azfunc" {
   runtime_version               = "1.0"
   https_only                    = true
   
-  public_network_access_enabled = true
-  #virtual_network_subnet_id     = var.azfunc_subnet_id
+  public_network_access_enabled = false
+  virtual_network_subnet_id     = var.azfunc_subnet_id
   
   site_config {
     application_insights_connection_string  = azurerm_application_insights.azfunc-app-insights.connection_string
