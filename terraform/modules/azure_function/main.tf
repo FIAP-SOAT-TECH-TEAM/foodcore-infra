@@ -1,0 +1,51 @@
+resource "azurerm_storage_account" "azfunc-sa" {
+  name                     = "${var.dns_prefix}-azfunc-sa"
+  resource_group_name      = var.resource_group_name
+  location                 = var.location
+  account_tier             = var.sa_account_tier
+  account_replication_type = var.sa_account_replication_type
+}
+
+resource "azurerm_storage_container" "azfunc-sa-container" {
+  name                  = "${var.dns_prefix}-azfunc-sa-container"
+  storage_account_id    = azurerm_storage_account.azfunc-sa.id
+  container_access_type = "private"
+}
+
+resource "azurerm_application_insights" "azfunc-app-insights" {
+  name                = "${var.dns_prefix}-azfunc-app-insights"
+  location            = var.location
+  resource_group_name = var.resource_group_name
+  application_type    = "web"
+}
+
+resource "azurerm_service_plan" "azfunc-service-plan" {
+  name                = "${var.dns_prefix}-azfunc-service-plan"
+  resource_group_name = var.resource_group_name
+  location            = var.location
+  kind                = "FunctionApp"
+  sku_name            = var.az_func_sku_name
+  os_type             = var.az_func_os_type
+}
+
+resource "azurerm_linux_function_app" "azfunc" {
+  name                          = "${var.dns_prefix}-azfunc"
+  resource_group_name           = var.resource_group_name
+  location                      = var.location
+  service_plan_id               = azurerm_service_plan.azfunc-service-plan.id
+  storage_account_name          = azurerm_storage_account.azfunc-sa.name
+  storage_account_access_key    = azurerm_storage_account.azfunc-sa.primary_access_key
+  https_only                    = true
+  
+  public_network_access_enabled = false
+  virtual_network_subnet_id     = var.azfunc_subnet_id
+  
+  site_config {
+    application_stack {
+        use_custom_runtime      = true
+    }
+
+    application_insights_connection_string  = azurerm_application_insights.azfunc-app-insights.connection_string
+    application_insights_key                = azurerm_application_insights.azfunc-app-insights.instrumentation_key
+  }
+}

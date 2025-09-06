@@ -23,6 +23,11 @@ output "db_subnet_id" {
   value       = azurerm_subnet.db_subnet.id
 }
 
+output "azfunc_subnet_id" {
+  description = "ID da subnet do Azure Functions"
+  value       = azurerm_subnet.azfunc_subnet.id
+}
+
 output "pgsql_private_dns_zone_id" {
   description = "ID da zona DNS privada do PostgreSQL"
   value       = azurerm_private_dns_zone.postgres_private_dns.id

@@ -42,3 +42,8 @@
     description = "Prefixo de endereço da subrede do banco de dados"
     type        = list(string)
   }
+
+  variable "vnet_azfunc_subnet_prefix" {
+    description = "Prefixo de endereço da subrede do Azure Functions"
+    type        = list(string)
+  }

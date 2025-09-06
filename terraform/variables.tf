@@ -63,6 +63,12 @@
     default     = ["10.0.3.0/24"]
   }
 
+  variable "vnet_azfunc_subnet_prefix" {
+    description = "Prefixo de endereço da subrede do Azure Functions"
+    type        = list(string)
+    default     = ["10.0.4.0/24"]
+  }
+
 # AKS
   variable "node_count" {
     type    = number
@@ -163,4 +169,41 @@
     description = "Estado da assinatura do API Management"
     type        = string
     default     = "active"
+  }
+
+# Azure Function
+  variable "azfunc_sa_account_tier" {
+    description = "O nível da conta de armazenamento."
+    type        = string
+    default     = "Standard"
+  }
+
+  variable "azfunc_sa_account_replication_type" {
+    description = "O tipo de replicação da conta de armazenamento."
+    type        = string
+    default     = "LRS"
+  }
+
+  variable "az_func_sku_name" {
+    description = "O nome do SKU do plano de serviço."
+    type        = string
+    default     = "FC1"
+  }
+
+  variable "az_func_os_type" {
+    description = "O tipo de sistema operacional do plano de serviço."
+    type        = string
+    default     = "Linux"
+  }
+
+  variable "azfunc_maximum_instance_count" {
+    description = "O número máximo de instâncias para o plano de serviço."
+    type        = number
+    default     = 2
+  }
+
+  variable "azfunc_instance_memory_in_mb" {
+    description = "A quantidade de memória (em MB) alocada para cada instância."
+    type        = number
+    default     = 512
   }

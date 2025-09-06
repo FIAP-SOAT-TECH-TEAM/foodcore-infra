@@ -38,6 +38,26 @@ resource "azurerm_subnet" "db_subnet" {
   }
 }
 
+resource "azurerm_subnet" "azfunc_subnet" {
+  name                 = "${var.dns_prefix}-azfunc-subnet"
+  resource_group_name  = var.resource_group_name
+  virtual_network_name = azurerm_virtual_network.vnet.name
+  address_prefixes     = var.vnet_azfunc_subnet_prefix
+
+  delegation {
+    name = "Microsoft.Web.serverFarms"
+
+    service_delegation {
+      name = "Microsoft.Web/serverFarms"
+      actions = [
+        "Microsoft.Network/virtualNetworks/subnets/join/action",
+        "Microsoft.Network/virtualNetworks/subnets/prepareNetworkPolicies/action",
+      ]
+    }
+    
+  }
+}
+
 resource "azurerm_private_dns_zone" "private_dns" {
   name                = "${var.dns_prefix}.local"
   resource_group_name = var.resource_group_name

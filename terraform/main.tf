@@ -5,16 +5,33 @@ module "resource_group" {
 }
 
 module "vnet" {
-  source                  = "./modules/vnet"
-  dns_prefix              = var.dns_prefix
-  resource_group_name     = module.resource_group.name
-  location                = var.location
-  vnet_prefix             = var.vnet_prefix
-  vnet_aks_subnet_prefix  = var.vnet_aks_subnet_prefix
-  vnet_apim_subnet_prefix = var.vnet_apim_subnet_prefix
-  vnet_db_subnet_prefix   = var.vnet_db_subnet_prefix
+  source                    = "./modules/vnet"
+  dns_prefix                = var.dns_prefix
+  resource_group_name       = module.resource_group.name
+  location                  = var.location
+  vnet_prefix               = var.vnet_prefix
+  vnet_aks_subnet_prefix    = var.vnet_aks_subnet_prefix
+  vnet_apim_subnet_prefix   = var.vnet_apim_subnet_prefix
+  vnet_db_subnet_prefix     = var.vnet_db_subnet_prefix
+  vnet_azfunc_subnet_prefix = var.vnet_azfunc_subnet_prefix
 
   depends_on = [ module.resource_group ]
+}
+
+module "azfunc" {
+  source                      = "./modules/azure_function"
+  dns_prefix                  = var.dns_prefix
+  resource_group_name         = module.resource_group.name
+  location                    = var.location
+  azfunc_subnet_id            = module.vnet.azfunc_subnet_id
+  az_func_os_type             = var.az_func_os_type
+  az_func_sku_name            = var.az_func_sku_name
+  sa_account_replication_type = var.azfunc_sa_account_replication_type
+  sa_account_tier             = var.azfunc_sa_account_tier
+  maximum_instance_count      = var.azfunc_maximum_instance_count
+  instance_memory_in_mb       = var.azfunc_instance_memory_in_mb
+
+  depends_on = [ module.resource_group, module.vnet ]
 }
 
 module "blob" {
