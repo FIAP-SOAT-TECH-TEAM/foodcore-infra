@@ -1,5 +1,5 @@
 resource "azurerm_storage_account" "azfunc-sa" {
-  name                     = "${var.dns_prefix}-azfunc-sa"
+  name                     = "${var.dns_prefix}azfuncsa"
   resource_group_name      = var.resource_group_name
   location                 = var.location
   account_tier             = var.sa_account_tier
