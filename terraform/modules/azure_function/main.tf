@@ -23,7 +23,6 @@ resource "azurerm_service_plan" "azfunc-service-plan" {
   name                = "${var.dns_prefix}-azfunc-service-plan"
   resource_group_name = var.resource_group_name
   location            = var.location
-  kind                = "FunctionApp"
   sku_name            = var.az_func_sku_name
   os_type             = var.az_func_os_type
 }
