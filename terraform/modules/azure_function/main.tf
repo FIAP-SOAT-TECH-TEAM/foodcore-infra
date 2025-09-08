@@ -47,7 +47,7 @@ resource "azurerm_function_app_flex_consumption" "azfunc" {
   https_only                    = true
   
   public_network_access_enabled = false
-  virtual_network_subnet_id     = var.azfunc_subnet_id
+  virtual_network_subnet_id     = var.azfunc_subnet_id # Serve para fornecer outbound privado para a Function App
   
   site_config {
     application_insights_connection_string  = azurerm_application_insights.azfunc-app-insights.connection_string
@@ -55,4 +55,24 @@ resource "azurerm_function_app_flex_consumption" "azfunc" {
   }
 
   depends_on = [ azurerm_resource_provider_registration.microsoft_app ]
+}
+
+# Serve para fornecer inbound privado para a Function App
+resource "azurerm_private_endpoint" "azfunc_pe" {
+  name                = "${var.dns_prefix}-azfunc-pe"
+  location            = var.location
+  resource_group_name = var.resource_group_name
+  subnet_id           = var.pe_subnet_id
+
+  private_service_connection {
+    name                           = "azfunc-priv-connection"
+    private_connection_resource_id = azurerm_function_app_flex_consumption.azfunc.id
+    subresource_names              = ["sites"]
+    is_manual_connection           = false
+  }
+
+  private_dns_zone_group {
+    name                 = "azfunc-dns-zone-group"
+    private_dns_zone_ids = [var.azfunc_private_dns_zone_id]
+  }
 }

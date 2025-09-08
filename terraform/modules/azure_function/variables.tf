@@ -56,3 +56,13 @@ variable "azfunc_subnet_id" {
   description = "ID da subnet do Azure Functions"
   type        = string
 }
+
+variable "pe_subnet_id" {
+  description = "ID da subnet do Private Endpoint"
+  type        = string
+}
+
+variable "azfunc_private_dns_zone_id" {
+  description = "ID da Private DNS Zone para o Azure Functions"
+  type        = string
+}
