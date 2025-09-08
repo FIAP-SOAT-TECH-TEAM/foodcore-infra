@@ -72,6 +72,7 @@
   variable "vnet_pe_subnet_prefix" {
     description = "Prefixo de endereço da subrede do Private Endpoint"
     type        = list(string)
+    default     = ["10.0.5.0/24"]
   }
 
 # AKS
