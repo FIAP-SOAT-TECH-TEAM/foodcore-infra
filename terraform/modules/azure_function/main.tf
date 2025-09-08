@@ -73,7 +73,7 @@ resource "azurerm_private_endpoint" "azfunc_pe" {
 
   private_dns_zone_group {
     name                 = "azfunc-dns-zone-group"
-    private_dns_zone_ids = [var.azfunc_private_dns_zone_id, var.azfunc_private_dns_zone_id]
+    private_dns_zone_ids = [var.azfunc_private_dns_zone_id]
   }
 
   # https://github.com/hashicorp/terraform-provider-azurerm/issues/21781
