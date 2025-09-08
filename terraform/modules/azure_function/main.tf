@@ -43,7 +43,7 @@ resource "azurerm_function_app_flex_consumption" "azfunc" {
   storage_authentication_type   = "StorageAccountConnectionString"
   storage_access_key            = azurerm_storage_account.azfunc-sa.primary_access_key
   runtime_name                  = "dotnet-isolated"
-  runtime_version               = "9.0"
+  runtime_version               = "8.0"
   https_only                    = true
   
   public_network_access_enabled = false
