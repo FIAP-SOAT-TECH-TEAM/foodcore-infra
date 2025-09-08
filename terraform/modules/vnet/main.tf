@@ -108,3 +108,11 @@ resource "azurerm_private_dns_a_record" "api_dns_a" {
   ttl                 = 300
   records             = [cidrhost(azurerm_subnet.aks_subnet.address_prefixes[0], -2)]
 }
+
+resource "azurerm_private_dns_a_record" "azfunc_dns_a" {
+  name                = "auth"
+  zone_name           = azurerm_private_dns_zone.azfunc_private_dns.name
+  resource_group_name = var.resource_group_name
+  ttl                 = 300
+  records             = [cidrhost(azurerm_subnet.azfunc_subnet.address_prefixes[0], -2)]
+}
