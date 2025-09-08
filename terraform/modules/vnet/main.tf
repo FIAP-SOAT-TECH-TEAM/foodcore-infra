@@ -110,15 +110,7 @@ resource "azurerm_private_dns_a_record" "api_dns_a" {
 }
 
 resource "azurerm_private_dns_a_record" "azfunc_dns_a" {
-  name                = "${var.dns_prefix}-azfunc"
-  zone_name           = azurerm_private_dns_zone.azfunc_private_dns.name
-  resource_group_name = var.resource_group_name
-  ttl                 = 300
-  records             = [cidrhost(azurerm_subnet.pe_subnet.address_prefixes[0], -2)]
-}
-
-resource "azurerm_private_dns_a_record" "azfunc_dns_a_scm" {
-  name                = "${var.dns_prefix}-azfunc.scm"
+  name                = "@"
   zone_name           = azurerm_private_dns_zone.azfunc_private_dns.name
   resource_group_name = var.resource_group_name
   ttl                 = 300
