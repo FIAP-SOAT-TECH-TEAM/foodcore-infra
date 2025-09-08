@@ -70,14 +70,9 @@ resource "azurerm_private_endpoint" "azfunc_pe" {
     subresource_names              = ["sites"]
     is_manual_connection           = false
   }
-}
 
-resource "azurerm_private_dns_zone_group" "azfunc_dns_group" {
-  name                  = "${var.dns_prefix}-azfunc-dns-group"
-  resource_group_name   = var.resource_group_name
-  private_endpoint_name = azurerm_private_endpoint.azfunc_pe.name
-
-  private_dns_zone_ids = [
-    var.azfunc_private_dns_zone_id
-  ]
+  private_dns_zone_group {
+    name                 = "azfunc-dns-zone-group"
+    private_dns_zone_ids = [var.azfunc_private_dns_zone_id]
+  }
 }
