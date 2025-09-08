@@ -26,7 +26,7 @@ resource "azurerm_subnet" "db_subnet" {
   address_prefixes     = var.vnet_db_subnet_prefix
 
   delegation {
-    name = "fs"
+    name = "pgsqlfsdelegation"
 
     service_delegation {
       name = "Microsoft.DBforPostgreSQL/flexibleServers"
@@ -44,15 +44,14 @@ resource "azurerm_subnet" "azfunc_subnet" {
   address_prefixes     = var.vnet_azfunc_subnet_prefix
 
   delegation {
-    name = "azfuncapp"
+    name = "azfuncdelegation"
 
     service_delegation {
-      name = "Microsoft.Web/serverFarms"
+      name = "Microsoft.App/environments"
       actions = [
-        "Microsoft.Network/virtualNetworks/subnets/join/action"
+        "Microsoft.Network/virtualNetworks/subnets/join/action",
       ]
     }
-    
   }
 }
 

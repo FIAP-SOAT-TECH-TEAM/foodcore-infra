@@ -27,6 +27,11 @@ resource "azurerm_service_plan" "azfunc-service-plan" {
   os_type             = var.az_func_os_type
 }
 
+# https://github.com/hashicorp/terraform-provider-azurerm/issues/29696
+resource "azurerm_resource_provider_registration" "microsoft_app" {
+  name = "Microsoft.App"
+}
+
 # https://github.com/hashicorp/terraform-provider-azurerm/pull/28199
 resource "azurerm_function_app_flex_consumption" "azfunc" {
   name                          = "${var.dns_prefix}-azfunc"
@@ -48,4 +53,6 @@ resource "azurerm_function_app_flex_consumption" "azfunc" {
     application_insights_connection_string  = azurerm_application_insights.azfunc-app-insights.connection_string
     application_insights_key                = azurerm_application_insights.azfunc-app-insights.instrumentation_key
   }
+
+  depends_on = [ azurerm_resource_provider_registration.microsoft_app ]
 }
