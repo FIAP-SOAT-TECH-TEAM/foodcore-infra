@@ -80,7 +80,7 @@ resource "azurerm_private_endpoint" "azfunc_pe" {
   ip_configuration {
     name               = "azfunc-ip-config"
     private_ip_address = var.pe_subnet_last_usable_ip
-    subresource_name   = "default"
-    member_name        = "default"
+    subresource_name   = "sites"
+    member_name        = "sites"
   }
 }
