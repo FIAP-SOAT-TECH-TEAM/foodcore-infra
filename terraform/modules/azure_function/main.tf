@@ -75,4 +75,9 @@ resource "azurerm_private_endpoint" "azfunc_pe" {
     name                 = "azfunc-dns-zone-group"
     private_dns_zone_ids = [var.azfunc_private_dns_zone_id]
   }
+
+  ip_configuration {
+    name = "azfunc-ip-config"
+    private_ip_address = var.pe_subnet_last_usable_ip
+  }
 }
