@@ -67,7 +67,7 @@ variable "azfunc_private_dns_zone_id" {
   type        = string
 }
 
-variable "pe_subnet_last_usable_ip" {
-  description = "Último endereço IP utilizável da subnet do Private Endpoint (exclui o IP final reservado e broadcast)."
+variable "azfunc_private_ip" {
+  description = "Endereço IP privado para uso da aplicação hospedada no Azure Functions"
   type        = string
 }
