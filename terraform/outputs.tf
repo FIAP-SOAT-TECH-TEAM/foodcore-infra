@@ -12,9 +12,9 @@
   }
 
 # # AKS
-#   output "aks_subnet_last_usable_ip" {
-#     description = "Último endereço IP utilizável da subnet do AKS (exclui o IP final reservado e broadcast)."
-#     value       = module.vnet.aks_subnet_last_usable_ip
+#   output "aks_api_private_ip" {
+#     description = "Endereço IP privado para uso da aplicação hospedada no AKS"
+#     value       = module.vnet.aks_api_private_ip
 #   }
 
 #   output "aks_name" {

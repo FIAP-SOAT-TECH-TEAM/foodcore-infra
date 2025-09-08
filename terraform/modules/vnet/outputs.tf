@@ -1,11 +1,11 @@
-output "aks_subnet_last_usable_ip" {
-  description = "Último endereço IP utilizável da subnet do AKS (exclui o IP final reservado e broadcast)."
-  value       = cidrhost(azurerm_subnet.aks_subnet.address_prefixes[0], -2)
+output "aks_api_private_ip" {
+  description = "Endereço IP privado para uso da aplicação hospedada no AKS"
+  value       = local.aks_api_private_ip
 }
 
-output "pe_subnet_last_usable_ip" {
-  description = "Último endereço IP utilizável da subnet do Private Endpoint (exclui o IP final reservado e broadcast)."
-  value       = cidrhost(azurerm_subnet.pe_subnet.address_prefixes[0], -2)
+output "azfunc_private_ip" {
+  description = "Endereço IP privado para uso da aplicação hospedada no Azure Functions"
+  value       = local.azfunc_private_ip
 }
 
 output "aks_subnet" {

@@ -42,8 +42,8 @@ resource "azurerm_function_app_flex_consumption" "azfunc" {
   storage_container_endpoint    = "${azurerm_storage_account.azfunc-sa.primary_blob_endpoint}${azurerm_storage_container.azfunc-sa-container.name}"
   storage_authentication_type   = "StorageAccountConnectionString"
   storage_access_key            = azurerm_storage_account.azfunc-sa.primary_access_key
-  runtime_name                  = "custom"
-  runtime_version               = "1.0"
+  runtime_name                  = "dotnet-isolated"
+  runtime_version               = "9.0"
   https_only                    = true
   
   public_network_access_enabled = false
@@ -79,7 +79,7 @@ resource "azurerm_private_endpoint" "azfunc_pe" {
   # https://github.com/hashicorp/terraform-provider-azurerm/issues/21781
   ip_configuration {
     name               = "azfunc-ip-config"
-    private_ip_address = var.pe_subnet_last_usable_ip
+    private_ip_address = var.azfunc_private_ip
     subresource_name   = "sites"
     member_name        = "sites"
   }
