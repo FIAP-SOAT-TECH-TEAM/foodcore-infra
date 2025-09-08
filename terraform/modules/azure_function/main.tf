@@ -76,9 +76,11 @@ resource "azurerm_private_endpoint" "azfunc_pe" {
     private_dns_zone_ids = [var.azfunc_private_dns_zone_id]
   }
 
+  # https://github.com/hashicorp/terraform-provider-azurerm/issues/21781
   ip_configuration {
     name               = "azfunc-ip-config"
     private_ip_address = var.pe_subnet_last_usable_ip
-    member_name        = "default" # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint#member_name-1
+    subresource_name   = "default"
+    member_name        = "default"
   }
 }
