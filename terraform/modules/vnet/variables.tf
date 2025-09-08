@@ -47,3 +47,8 @@
     description = "Prefixo de endereço da subrede do Azure Functions"
     type        = list(string)
   }
+
+  variable "vnet_pe_subnet_prefix" {
+    description = "Prefixo de endereço da subrede do Private Endpoint"
+    type        = list(string)
+  }

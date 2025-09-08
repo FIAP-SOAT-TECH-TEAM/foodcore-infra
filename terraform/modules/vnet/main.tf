@@ -55,6 +55,13 @@ resource "azurerm_subnet" "azfunc_subnet" {
   }
 }
 
+resource "azurerm_subnet" "pe_subnet" {
+  name                 = "${var.dns_prefix}-pe-subnet"
+  resource_group_name  = var.resource_group_name
+  virtual_network_name = azurerm_virtual_network.vnet.name
+  address_prefixes     = var.vnet_pe_subnet_prefix
+}
+
 resource "azurerm_private_dns_zone" "private_dns" {
   name                = "${var.dns_prefix}.local"
   resource_group_name = var.resource_group_name
@@ -62,6 +69,11 @@ resource "azurerm_private_dns_zone" "private_dns" {
 
 resource "azurerm_private_dns_zone" "postgres_private_dns" {
   name                = "${var.dns_prefix}.postgres.database.azure.com"
+  resource_group_name = var.resource_group_name
+}
+
+resource "azurerm_private_dns_zone" "azfunc_private_dns" {
+  name                = "${var.dns_prefix}.azurewebsites.net"
   resource_group_name = var.resource_group_name
 }
 
@@ -77,6 +89,14 @@ resource "azurerm_private_dns_zone_virtual_network_link" "postgres_vnet_link" {
   name                  = "${var.dns_prefix}-postgres-dns-link"
   resource_group_name   = var.resource_group_name
   private_dns_zone_name = azurerm_private_dns_zone.postgres_private_dns.name
+  virtual_network_id    = azurerm_virtual_network.vnet.id
+  registration_enabled  = false
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "azfunc_vnet_link" {
+  name                  = "${var.dns_prefix}-azfunc-dns-link"
+  resource_group_name   = var.resource_group_name
+  private_dns_zone_name = azurerm_private_dns_zone.azfunc_private_dns.name
   virtual_network_id    = azurerm_virtual_network.vnet.id
   registration_enabled  = false
 }

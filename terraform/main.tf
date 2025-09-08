@@ -14,6 +14,7 @@ module "vnet" {
   vnet_apim_subnet_prefix   = var.vnet_apim_subnet_prefix
   vnet_db_subnet_prefix     = var.vnet_db_subnet_prefix
   vnet_azfunc_subnet_prefix = var.vnet_azfunc_subnet_prefix
+  vnet_pe_subnet_prefix     = var.vnet_pe_subnet_prefix
 
   depends_on = [ module.resource_group ]
 }
@@ -24,6 +25,8 @@ module "azfunc" {
   resource_group_name         = module.resource_group.name
   location                    = var.location
   azfunc_subnet_id            = module.vnet.azfunc_subnet_id
+  pe_subnet_id                = module.vnet.pe_subnet_id
+  azfunc_private_dns_zone_id  = module.vnet.azfunc_private_dns_zone_id
   az_func_os_type             = var.az_func_os_type
   az_func_sku_name            = var.az_func_sku_name
   sa_account_replication_type = var.azfunc_sa_account_replication_type
