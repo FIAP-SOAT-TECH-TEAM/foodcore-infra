@@ -62,6 +62,6 @@ resource "azuread_user" "admin_user" {
 
 resource "azuread_app_role_assignment" "admin_role_assignment" {
   principal_object_id = azuread_user.admin_user.object_id
-  app_role_id         = azuread_application.api_app_registration.app_role[0].id
+  app_role_id         = local.admin_role_id
   resource_object_id  = azuread_service_principal.api_sp.object_id
 }
