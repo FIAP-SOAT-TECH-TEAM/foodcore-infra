@@ -48,7 +48,7 @@ resource "azuread_service_principal" "auth_function_sp" {
 # Permite que a Function App execute operações no Microsoft Graph
 resource "azuread_service_principal_delegated_permission_grant" "auth_function_graph_permissions" {
   service_principal_object_id          = azuread_service_principal.auth_function_sp.object_id
-  resource_service_principal_object_id = data.azuread_application.graph_api_app.service_principal_object_id
+  resource_service_principal_object_id = data.azuread_service_principal.graph_api_sp.object_id
   claim_values                         = ["Directory.ReadWrite.All"]
 }
 
