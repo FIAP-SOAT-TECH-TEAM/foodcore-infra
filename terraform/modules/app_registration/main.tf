@@ -30,7 +30,7 @@ resource "azuread_application" "auth_function_app_registration" {
     resource_app_id = data.azuread_application.graph_api_app.application_id
 
     resource_access {
-      id   = "19dbc75e-c2e2-444c-a770-ec69d8559fc7"
+      id   = "19dbc75e-c2e2-444c-a770-ec69d8559fc7" # https://learn.microsoft.com/pt-br/graph/permissions-reference#directoryreadwriteall
       type = "Scope"
     }
   }
