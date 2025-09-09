@@ -1,15 +1,15 @@
 # Common
-  output "resource_group_name" {
-    value = module.resource_group.name
-  }
+#   output "resource_group_name" {
+#     value = module.resource_group.name
+#   }
 
-  output "location" {
-    value = var.location
-  }
+#   output "location" {
+#     value = var.location
+#   }
 
-  output "dns_prefix" {
-    value = var.dns_prefix
-  }
+#   output "dns_prefix" {
+#     value = var.dns_prefix
+#   }
 
 # # AKS
 #   output "aks_api_private_ip" {

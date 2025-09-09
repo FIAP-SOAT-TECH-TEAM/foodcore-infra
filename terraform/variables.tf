@@ -1,4 +1,8 @@
 # Commn
+  variable "target_tenant_id" {
+    type        = string
+    description = "ID do tenant Azure AD alvo - para criação de recursos no Entra"
+  }
   variable "subscription_id" {
     type        = string
     description = "Azure Subscription ID"
@@ -25,6 +29,31 @@
       error_message = "O 'dns_prefix' deve ter entre 1 e 54 caracteres."
     }
   }
+
+# Azure AD
+  variable "api_app_display_name" {
+    description = "Nome do App Registration da API"
+    type        = string
+    default     = "FoodCoreAPI"
+  }
+
+  variable "auth_function_app_display_name" {
+    description = "Nome do App Registration da Function App"
+    type        = string
+    default     = "FoodCoreAuthFunction"
+  }
+
+  variable "admin_default_password" {
+    description = "Senha padrão para o usuário admin criado no Azure AD"
+    type        = string
+    sensitive   = true
+    default     = "foodcore@1234"
+
+    validation {
+      condition     = length(var.admin_default_password) >= 12
+      error_message = "A senha padrão do admin deve ter pelo menos 12 caracteres."
+    }
+}
 
 # VNET
   variable "vnet_prefix" {
