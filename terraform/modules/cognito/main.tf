@@ -35,6 +35,7 @@ resource "aws_cognito_user_pool" "cognito_user_pool" {
   }
 }
 
+# Representa a “aplicação” que vai se autenticar ou usar o pool de usuários
 resource "aws_cognito_user_pool_client" "azfunc_auth_cognito_client" {
   name            = "${var.dns_prefix}_user_pool_client"
   user_pool_id    = aws_cognito_user_pool.cognito_user_pool.id
@@ -46,6 +47,6 @@ resource "aws_cognito_user_pool_client" "azfunc_auth_cognito_client" {
     "ALLOW_REFRESH_TOKEN_AUTH",
     "ALLOW_ADMIN_USER_PASSWORD_AUTH",
   ]
-
+  # Especifica quais acessos um aplicativo pode solicitar
   allowed_oauth_scopes = ["email", "openid"]
 }
