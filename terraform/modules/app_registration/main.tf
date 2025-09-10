@@ -53,7 +53,7 @@ resource "azuread_service_principal_delegated_permission_grant" "auth_function_g
 }
 
 resource "azuread_user" "admin_user" {
-  user_principal_name   = "admin_foodcore@${var.admin_default_password}.com"
+  user_principal_name   = "admin_foodcore@${var.dns_prefix}.com"
   display_name          = "FoodCore Admin User"
   mail_nickname         = "admin"
   password              = var.admin_default_password
