@@ -19,6 +19,6 @@ provider "azurerm" {
   subscription_id = var.subscription_id
 }
 
-provider "azuread" {
-  tenant_id = var.target_tenant_id
+provider "aws" {
+  region = var.aws_location
 }

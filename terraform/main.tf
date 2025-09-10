@@ -19,13 +19,8 @@
 #   depends_on = [ module.resource_group ]
 # }
 
-module "azuread" {
-  source = "./modules/app_registration"
-
-  dns_prefix                      = var.dns_prefix
-  api_app_display_name            = var.api_app_display_name
-  auth_function_app_display_name  = var.auth_function_app_display_name
-  admin_default_password          = var.admin_default_password
+module "cognito" {
+  source = "./modules/cognito"
 }
 
 

@@ -1,8 +1,4 @@
 # Commn
-  variable "target_tenant_id" {
-    type        = string
-    description = "ID do tenant Azure AD alvo - para criação de recursos no Entra"
-  }
   variable "subscription_id" {
     type        = string
     description = "Azure Subscription ID"
@@ -18,6 +14,11 @@
     type    = string
     default = "Brazil South" 
     description = "Localização do recurso"
+  }
+  variable "aws_location" {
+    type    = string
+    default = "sa-east-1" 
+    description = "AWS Region"
   }
   variable "dns_prefix" {
     type = string

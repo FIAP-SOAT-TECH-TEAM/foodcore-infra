@@ -29,6 +29,11 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+      - name: Configure AWS CLI
+        run: |
+          mkdir -p ~/.aws
+          echo "${{ secrets.AWS_CREDENTIALS }}" > ~/.aws/credentials
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
 
