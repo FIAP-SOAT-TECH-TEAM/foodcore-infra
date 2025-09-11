@@ -60,6 +60,9 @@ resource "aws_cognito_user_pool_client" "azfunc_auth_cognito_client" {
     "ALLOW_ADMIN_USER_PASSWORD_AUTH",
   ]
 
+  # URLs para onde o usuário será redirecionado após o login
+  callback_urls = var.callback_urls
+
 }
 
 resource "aws_cognito_user" "guest_customer" {
