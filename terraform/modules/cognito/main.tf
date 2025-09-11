@@ -1,11 +1,17 @@
 resource "aws_cognito_user_pool" "cognito_user_pool" {
   name = "${var.dns_prefix}_user_pool"
 
+  # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_user_pool#schema
   schema {
     name               = "cpf"
     required           = false
     mutable            = false
     attribute_data_type = "String"
+
+    string_attribute_constraints {
+      min_length = 11
+      max_length = 11
+    }
   }
 
   schema {
@@ -13,6 +19,11 @@ resource "aws_cognito_user_pool" "cognito_user_pool" {
     required           = false # https://github.com/hashicorp/terraform-provider-aws/issues/18430
     mutable            = true
     attribute_data_type = "String"
+
+    string_attribute_constraints {
+      min_length = 3
+      max_length = 20
+    }
   }
 
   password_policy {
