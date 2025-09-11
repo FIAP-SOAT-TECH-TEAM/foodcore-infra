@@ -40,7 +40,7 @@ resource "aws_cognito_user_pool" "cognito_user_pool" {
 }
 
 # Representa a “aplicação” que vai se autenticar ou usar o pool de usuários
-resource "aws_cognito_user_pool_client" "azfunc_auth_cognito_client" {
+resource "aws_cognito_user_pool_client" "foodcoreapp_cognito_client" {
   name            = "${var.dns_prefix}_user_pool_client"
   user_pool_id    = aws_cognito_user_pool.cognito_user_pool.id
   generate_secret = false
