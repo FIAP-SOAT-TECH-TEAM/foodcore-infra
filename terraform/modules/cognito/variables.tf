@@ -18,3 +18,13 @@ variable "default_customer_password" {
     error_message = "A 'default_customer_password' deve ter pelo menos 8 caracteres."
   }
 }
+
+variable "callback_urls" {
+  type        = list(string)
+  description = "Lista de URLs de callback para o cliente do User Pool."
+  
+  validation {
+    condition     = length(var.callback_urls) > 0
+    error_message = "A lista 'callback_urls' não pode estar vazia."
+  }
+}

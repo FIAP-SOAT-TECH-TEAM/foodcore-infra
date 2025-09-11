@@ -24,6 +24,7 @@ module "cognito" {
   
   dns_prefix                = var.dns_prefix
   default_customer_password = var.default_customer_password
+  callback_urls             = var.callback_urls
 }
 
 # module "azfunc" {
