@@ -20,9 +20,11 @@
 # }
 
 module "cognito" {
-  source = "./modules/cognito"
+  source                    = "./modules/cognito"
+  
+  dns_prefix                = var.dns_prefix
+  default_customer_password = var.default_customer_password
 }
-
 
 # module "azfunc" {
 #   source                      = "./modules/azure_function"

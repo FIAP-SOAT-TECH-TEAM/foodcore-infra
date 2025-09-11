@@ -1,15 +1,19 @@
-# Common
-#   output "resource_group_name" {
-#     value = module.resource_group.name
-#   }
+#Common
+  output "resource_group_name" {
+    value = module.resource_group.name
+  }
 
-#   output "location" {
-#     value = var.location
-#   }
+  output "location" {
+    value = var.location
+  }
 
-#   output "dns_prefix" {
-#     value = var.dns_prefix
-#   }
+  output "aws_location" {
+    value = var.aws_location
+  }
+
+  output "dns_prefix" {
+    value = var.dns_prefix
+  }
 
 # # AKS
 #   output "aks_api_private_ip" {
@@ -99,3 +103,16 @@
 #     description = "Prefixo de endereço da subrede do AKS"
 #     value       = var.vnet_aks_subnet_prefix
 #   }
+
+# Cognito
+
+  output "cognito_user_pool_id" {
+    description = "ID do Cognito User Pool"
+    value       = module.cognito.cognito_user_pool_id
+  }
+
+  output "default_customer_password" {
+    description = "Senha padrão do usuário cliente"
+    value       = var.default_customer_password
+    sensitive   = true
+  }

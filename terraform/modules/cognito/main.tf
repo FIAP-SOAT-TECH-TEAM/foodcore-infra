@@ -9,13 +9,6 @@ resource "aws_cognito_user_pool" "cognito_user_pool" {
   }
 
   schema {
-    name               = "guest"
-    required           = true
-    mutable            = false
-    attribute_data_type = "Boolean"
-  }
-
-  schema {
     name               = "role"
     required           = true
     mutable            = true
@@ -49,4 +42,20 @@ resource "aws_cognito_user_pool_client" "azfunc_auth_cognito_client" {
   ]
   # Especifica quais acessos um aplicativo pode solicitar
   allowed_oauth_scopes = ["email", "openid"]
+}
+
+resource "aws_cognito_user" "guest_customer" {
+  user_pool_id = aws_cognito_user_pool.cognito_user_pool.id
+  username     = "guest_customer"
+
+  attributes = {
+    email = "guest@${var.dns_prefix}.com"
+    name  = "Guest User"
+    role  = "CUSTOMER"
+  }
+
+  password = var.default_customer_password
+
+  force_alias_creation = false
+  message_action       = "SUPPRESS"
 }

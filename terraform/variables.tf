@@ -12,12 +12,10 @@
   # Ex: East US (https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits)
   variable "location" {
     type    = string
-    default = "Brazil South" 
     description = "Localização do recurso"
   }
   variable "aws_location" {
     type    = string
-    default = "sa-east-1" 
     description = "AWS Region"
   }
   variable "dns_prefix" {
@@ -242,4 +240,16 @@
     description = "A quantidade de memória (em MB) alocada para cada instância."
     type        = number
     default     = 512
+  }
+
+# Cognito
+
+  variable "default_customer_password" {
+    type        = string
+    description = "Senha padrão para o usuário cliente."
+    
+    validation {
+      condition     = length(var.default_customer_password) >= 8
+      error_message = "A 'default_customer_password' deve ter pelo menos 8 caracteres."
+    }
   }
