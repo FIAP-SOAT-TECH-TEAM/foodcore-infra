@@ -10,7 +10,7 @@ resource "aws_cognito_user_pool" "cognito_user_pool" {
 
   schema {
     name               = "role"
-    required           = true
+    required           = false # https://github.com/hashicorp/terraform-provider-aws/issues/18430
     mutable            = true
     attribute_data_type = "String"
   }
