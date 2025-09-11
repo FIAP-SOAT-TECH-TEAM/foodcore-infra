@@ -1,42 +1,49 @@
-module "resource_group" {
-  source              = "./modules/resource_group"
-  resource_group_name = var.resource_group_name
-  location            = var.location
-}
+# module "resource_group" {
+#   source              = "./modules/resource_group"
+#   resource_group_name = var.resource_group_name
+#   location            = var.location
+# }
 
-module "vnet" {
-  source                    = "./modules/vnet"
+# module "vnet" {
+#   source                    = "./modules/vnet"
+#   dns_prefix                = var.dns_prefix
+#   resource_group_name       = module.resource_group.name
+#   location                  = var.location
+#   vnet_prefix               = var.vnet_prefix
+#   vnet_aks_subnet_prefix    = var.vnet_aks_subnet_prefix
+#   vnet_apim_subnet_prefix   = var.vnet_apim_subnet_prefix
+#   vnet_db_subnet_prefix     = var.vnet_db_subnet_prefix
+#   vnet_azfunc_subnet_prefix = var.vnet_azfunc_subnet_prefix
+#   vnet_pe_subnet_prefix     = var.vnet_pe_subnet_prefix
+
+#   depends_on = [ module.resource_group ]
+# }
+
+module "cognito" {
+  source                    = "./modules/cognito"
+  
   dns_prefix                = var.dns_prefix
-  resource_group_name       = module.resource_group.name
-  location                  = var.location
-  vnet_prefix               = var.vnet_prefix
-  vnet_aks_subnet_prefix    = var.vnet_aks_subnet_prefix
-  vnet_apim_subnet_prefix   = var.vnet_apim_subnet_prefix
-  vnet_db_subnet_prefix     = var.vnet_db_subnet_prefix
-  vnet_azfunc_subnet_prefix = var.vnet_azfunc_subnet_prefix
-  vnet_pe_subnet_prefix     = var.vnet_pe_subnet_prefix
-
-  depends_on = [ module.resource_group ]
+  default_customer_password = var.default_customer_password
 }
 
-module "azfunc" {
-  source                      = "./modules/azure_function"
-  dns_prefix                  = var.dns_prefix
-  location                    = var.location
-  resource_group_name         = module.resource_group.name
-  azfunc_subnet_id            = module.vnet.azfunc_subnet_id
-  pe_subnet_id                = module.vnet.pe_subnet_id
-  azfunc_private_dns_zone_id  = module.vnet.azfunc_private_dns_zone_id
-  azfunc_private_ip           = module.vnet.azfunc_private_ip
-  az_func_os_type             = var.az_func_os_type
-  az_func_sku_name            = var.az_func_sku_name
-  sa_account_replication_type = var.azfunc_sa_account_replication_type
-  sa_account_tier             = var.azfunc_sa_account_tier
-  maximum_instance_count      = var.azfunc_maximum_instance_count
-  instance_memory_in_mb       = var.azfunc_instance_memory_in_mb
+# module "azfunc" {
+#   source                      = "./modules/azure_function"
+#   dns_prefix                  = var.dns_prefix
+#   location                    = var.location
+#   resource_group_name         = module.resource_group.name
+#   azfunc_subnet_id            = module.vnet.azfunc_subnet_id
+#   pe_subnet_id                = module.vnet.pe_subnet_id
+#   azfunc_private_dns_zone_id  = module.vnet.azfunc_private_dns_zone_id
+#   azfunc_private_ip           = module.vnet.azfunc_private_ip
+#   az_func_os_type             = var.az_func_os_type
+#   az_func_sku_name            = var.az_func_sku_name
+#   sa_account_replication_type = var.azfunc_sa_account_replication_type
+#   sa_account_tier             = var.azfunc_sa_account_tier
+#   maximum_instance_count      = var.azfunc_maximum_instance_count
+#   instance_memory_in_mb       = var.azfunc_instance_memory_in_mb
 
-  depends_on = [ module.resource_group, module.vnet ]
-}
+#   depends_on = [ module.resource_group, module.vnet ]
+# }
 
 # module "blob" {
 #   source                    = "./modules/blob"

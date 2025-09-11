@@ -12,7 +12,10 @@ jobs:
   terraform-destroy:
     runs-on: ubuntu-latest
     env:
-      TF_VAR_subscription_id: ${{secrets.AZURE_SUBSCRIPTION_ID}}     
+      TF_VAR_subscription_id: ${{secrets.AZURE_SUBSCRIPTION_ID}}
+      TF_VAR_location: ${{secrets.AZURE_REGION}}
+      TF_VAR_aws_location: ${{secrets.AWS_REGION}}
+      TF_VAR_default_customer_password: ${{secrets.DEFAULT_CUSTOMER_PASSWORD}}
 
     defaults:
       run:
@@ -26,6 +29,11 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Configure AWS CLI
+        run: |
+          mkdir -p ~/.aws
+          echo "${{ secrets.AWS_CREDENTIALS }}" > ~/.aws/credentials
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2

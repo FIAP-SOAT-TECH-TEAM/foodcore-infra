@@ -12,8 +12,11 @@
   # Ex: East US (https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits)
   variable "location" {
     type    = string
-    default = "Brazil South" 
     description = "Localização do recurso"
+  }
+  variable "aws_location" {
+    type    = string
+    description = "AWS Region"
   }
   variable "dns_prefix" {
     type = string
@@ -25,6 +28,31 @@
       error_message = "O 'dns_prefix' deve ter entre 1 e 54 caracteres."
     }
   }
+
+# Azure AD
+  variable "api_app_display_name" {
+    description = "Nome do App Registration da API"
+    type        = string
+    default     = "FoodCoreAPI"
+  }
+
+  variable "auth_function_app_display_name" {
+    description = "Nome do App Registration da Function App"
+    type        = string
+    default     = "FoodCoreAuthFunction"
+  }
+
+  variable "admin_default_password" {
+    description = "Senha padrão para o usuário admin criado no Azure AD"
+    type        = string
+    sensitive   = true
+    default     = "foodcore@1234"
+
+    validation {
+      condition     = length(var.admin_default_password) >= 12
+      error_message = "A senha padrão do admin deve ter pelo menos 12 caracteres."
+    }
+}
 
 # VNET
   variable "vnet_prefix" {
@@ -212,4 +240,16 @@
     description = "A quantidade de memória (em MB) alocada para cada instância."
     type        = number
     default     = 512
+  }
+
+# Cognito
+
+  variable "default_customer_password" {
+    type        = string
+    description = "Senha padrão para o usuário cliente."
+    
+    validation {
+      condition     = length(var.default_customer_password) >= 8
+      error_message = "A 'default_customer_password' deve ter pelo menos 8 caracteres."
+    }
   }
