@@ -35,13 +35,20 @@ resource "aws_cognito_user_pool_client" "azfunc_auth_cognito_client" {
   generate_secret = false
 
   allowed_oauth_flows_user_pool_client = true
+
+  # Define a forma como o aplicativo irá obter o token após a autenticação
+  allowed_oauth_flows                  = ["code", "implicit"]
+
+  # Especifica quais informações um aplicativo terá acesso após obter um token
+  allowed_oauth_scopes                 = ["email", "openid"]
+
+  # Define os fluxos de autenticação permitidos para que o aplicativo consiga obter um token
   explicit_auth_flows = [
     "ALLOW_USER_PASSWORD_AUTH",
     "ALLOW_REFRESH_TOKEN_AUTH",
     "ALLOW_ADMIN_USER_PASSWORD_AUTH",
   ]
-  # Especifica quais acessos um aplicativo pode solicitar
-  allowed_oauth_scopes = ["email", "openid"]
+
 }
 
 resource "aws_cognito_user" "guest_customer" {
