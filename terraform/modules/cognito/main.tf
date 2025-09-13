@@ -73,6 +73,7 @@ resource "aws_cognito_user_pool_client" "foodcoreapp_cognito_client" {
     "sub",
     "given_name",
     "email",
+    "email_verified",
     "name",
     "preferred_username",
     "custom:cpf",
