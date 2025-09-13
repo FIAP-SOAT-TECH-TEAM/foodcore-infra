@@ -127,6 +127,11 @@
     value       = module.cognito.cognito_code_login_url
   }
 
+  output "cognito_code_get_token_url" {
+    description = "URL para obtenção do token do Cognito User Pool (usando o fluxo de authorization code)"
+    value       = module.cognito.cognito_code_get_token_url
+  }
+
   output "cognito_implicit_login_url" {
     description = "URL de login do Cognito User Pool (usando o fluxo implícito)"
     value       = module.cognito.cognito_implicit_login_url
