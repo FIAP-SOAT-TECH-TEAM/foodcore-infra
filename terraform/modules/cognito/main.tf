@@ -39,6 +39,8 @@ resource "aws_cognito_user_pool" "cognito_user_pool" {
   }
 }
 
+# Habilita Hosted UI do cognito
+# https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-managed-login.html#set-up-managed-login
 resource "aws_cognito_user_pool_domain" "cognito_user_pool_domain" {
   domain       = "${var.dns_prefix}-auth"
   user_pool_id = aws_cognito_user_pool.cognito_user_pool.id
@@ -49,7 +51,7 @@ resource "aws_cognito_user_pool_client" "foodcoreapp_cognito_client" {
   name                                  = "${var.dns_prefix}_user_pool_client"
   user_pool_id                          = aws_cognito_user_pool.cognito_user_pool.id
   generate_secret                       = false
-  supported_identity_providers          = ["COGNITO"]
+  supported_identity_providers          = ["COGNITO"] # https://stackoverflow.com/questions/49979314/invalid-request-error-on-aws-cognito-custom-ui-page
 
   allowed_oauth_flows_user_pool_client  = true
 
