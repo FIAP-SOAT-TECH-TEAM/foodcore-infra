@@ -257,7 +257,7 @@
   variable "callback_urls" {
     type        = list(string)
     description = "Lista de URLs de callback para o cliente do User Pool."
-    default = [ "https://httpbin.org" ]
+    default = [ "https://httpbin.org/get" ]
     
     validation {
       condition     = length(var.callback_urls) > 0
