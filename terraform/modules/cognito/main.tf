@@ -68,6 +68,15 @@ resource "aws_cognito_user_pool_client" "foodcoreapp_cognito_client" {
     "ALLOW_ADMIN_USER_PASSWORD_AUTH",
   ]
 
+  # Atributos que o aplicativo poderá ler do usuário autenticado
+  read_attributes = [
+    "email",
+    "name",
+    "preferred_username",
+    "custom:cpf",
+    "custom:role"
+  ]
+
   # URLs para onde o usuário será redirecionado após o login
   callback_urls = var.callback_urls
 
