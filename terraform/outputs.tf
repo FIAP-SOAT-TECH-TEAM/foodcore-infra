@@ -111,6 +111,11 @@
     value       = module.cognito.cognito_user_pool_id
   }
 
+  output "cognito_user_pool_client_id" {
+    description = "ID do Cognito User Pool Client"
+    value       = module.cognito.cognito_user_pool_client_id
+  }
+
   output "default_customer_password" {
     description = "Senha padrão do usuário cliente"
     value       = var.default_customer_password
