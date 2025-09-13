@@ -46,17 +46,18 @@ resource "aws_cognito_user_pool_domain" "cognito_user_pool_domain" {
 
 # Representa a “aplicação” que vai se autenticar ou usar o pool de usuários
 resource "aws_cognito_user_pool_client" "foodcoreapp_cognito_client" {
-  name            = "${var.dns_prefix}_user_pool_client"
-  user_pool_id    = aws_cognito_user_pool.cognito_user_pool.id
-  generate_secret = false
+  name                                  = "${var.dns_prefix}_user_pool_client"
+  user_pool_id                          = aws_cognito_user_pool.cognito_user_pool.id
+  generate_secret                       = false
+  supported_identity_providers          = ["COGNITO"]
 
-  allowed_oauth_flows_user_pool_client = true
+  allowed_oauth_flows_user_pool_client  = true
 
   # Define a forma como o aplicativo irá obter o token após a autenticação
-  allowed_oauth_flows                  = ["code", "implicit"]
+  allowed_oauth_flows                   = ["code", "implicit"]
 
   # Especifica quais informações um aplicativo terá acesso após obter um token
-  allowed_oauth_scopes                 = ["email", "openid"]
+  allowed_oauth_scopes                  = ["email", "openid"]
 
   # Define os fluxos de autenticação permitidos para que o aplicativo consiga obter um token
   explicit_auth_flows = [
