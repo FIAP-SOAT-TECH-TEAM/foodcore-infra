@@ -70,6 +70,8 @@ resource "aws_cognito_user_pool_client" "foodcoreapp_cognito_client" {
 
   # Atributos que o aplicativo poderá ler do usuário autenticado
   read_attributes = [
+    "sub",
+    "given_name",
     "email",
     "name",
     "preferred_username",
