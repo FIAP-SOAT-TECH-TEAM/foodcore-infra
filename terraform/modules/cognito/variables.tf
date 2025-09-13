@@ -9,6 +9,11 @@
     }
   }
 
+  variable "aws_location" {
+    type    = string
+    description = "AWS Region"
+  }
+
 variable "default_customer_password" {
   type        = string
   description = "Senha padrão para o usuário cliente."

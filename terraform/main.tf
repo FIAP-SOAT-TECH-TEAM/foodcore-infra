@@ -22,6 +22,7 @@
 module "cognito" {
   source                    = "./modules/cognito"
   
+  aws_location              = var.aws_location
   dns_prefix                = var.dns_prefix
   default_customer_password = var.default_customer_password
   callback_urls             = var.callback_urls

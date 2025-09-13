@@ -121,3 +121,8 @@
     value       = var.default_customer_password
     sensitive   = true
   }
+
+  output "cognito_login_url" {
+    description = "URL de login do Cognito User Pool"
+    value       = module.cognito.cognito_login_url
+  }
