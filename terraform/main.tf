@@ -32,6 +32,8 @@ module "azfunc" {
   source                      = "./modules/azure_function"
   dns_prefix                  = var.dns_prefix
   location                    = var.location
+  aws_location                = var.aws_location
+  aws_credentials             = var.aws_credentials
   resource_group_name         = module.resource_group.name
   azfunc_subnet_id            = module.vnet.azfunc_subnet_id
   pe_subnet_id                = module.vnet.pe_subnet_id
@@ -43,8 +45,11 @@ module "azfunc" {
   sa_account_tier             = var.azfunc_sa_account_tier
   maximum_instance_count      = var.azfunc_maximum_instance_count
   instance_memory_in_mb       = var.azfunc_instance_memory_in_mb
+  cognito_user_pool_id        = module.cognito.cognito_user_pool_id
+  cognito_client_id           = module.cognito.cognito_user_pool_client_id
+  default_customer_password   = var.default_customer_password
 
-  depends_on = [ module.resource_group, module.vnet ]
+  depends_on = [ module.resource_group, module.vnet, module.cognito ]
 }
 
 # module "blob" {

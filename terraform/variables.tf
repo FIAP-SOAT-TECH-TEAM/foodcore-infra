@@ -18,6 +18,11 @@
     type    = string
     description = "AWS Region"
   }
+  variable "aws_credentials" {
+    type        = string
+    description = "AWS Credentials"
+    sensitive   = true
+  }
   variable "dns_prefix" {
     type = string
     description = "Prefixo DNS. Deve ser único globalmente."
