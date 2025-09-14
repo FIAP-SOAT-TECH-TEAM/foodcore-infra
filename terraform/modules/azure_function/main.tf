@@ -54,13 +54,13 @@ resource "azurerm_function_app_flex_consumption" "azfunc" {
     application_insights_key                = azurerm_application_insights.azfunc-app-insights.instrumentation_key
   }
 
-  app_settings = [
-    "AWS_CREDENTIALS=${var.aws_credentials}",
-    "AWS_REGION=${var.aws_location}",
-    "COGNITO_USER_POOL_ID=${var.cognito_user_pool_id}",
-    "COGNITO_CLIENT_ID=${var.cognito_client_id}",
-    "DEFAULT_CUSTOMER_PASSWORD=${var.default_customer_password}",
-  ]
+  app_settings = {
+    AWS_CREDENTIALS            = var.aws_credentials
+    AWS_REGION                 = var.aws_location
+    COGNITO_USER_POOL_ID       = var.cognito_user_pool_id
+    COGNITO_CLIENT_ID          = var.cognito_client_id
+    DEFAULT_CUSTOMER_PASSWORD  = var.default_customer_password
+  }
 
   depends_on = [ azurerm_resource_provider_registration.microsoft_app ]
 }
