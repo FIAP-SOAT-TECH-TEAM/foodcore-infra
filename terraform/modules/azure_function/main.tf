@@ -48,7 +48,9 @@ resource "azurerm_function_app_flex_consumption" "azfunc" {
   
   # Configurado no bloco site_config abaixo
   public_network_access_enabled = true
-  virtual_network_subnet_id     = var.azfunc_subnet_id # Serve para fornecer outbound privado para a Function App
+
+  # Serve para fornecer outbound privado para a Function App
+  virtual_network_subnet_id     = var.azfunc_subnet_id 
   
   site_config {
     application_insights_connection_string  = azurerm_application_insights.azfunc-app-insights.connection_string
