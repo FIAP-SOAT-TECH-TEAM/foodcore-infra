@@ -1,7 +1,7 @@
 #Common
-  # output "resource_group_name" {
-  #   value = module.resource_group.name
-  # }
+  output "resource_group_name" {
+    value = module.resource_group.name
+  }
 
   output "location" {
     value = var.location
@@ -84,25 +84,25 @@
 #   }
 
 # # VNET
-#   output "api_private_dns_fqdn" {
-#     description = "FQDN do registro A da API na zona DNS privada"
-#     value       = module.vnet.api_private_dns_fqdn
-#   }
+  output "api_private_dns_fqdn" {
+    description = "FQDN do registro A da API na zona DNS privada"
+    value       = module.vnet.api_private_dns_fqdn
+  }
 
-#   output "db_subnet_id" {
-#     description = "ID da subnet do banco de dados"
-#     value       = module.vnet.db_subnet_id
-#   }
+  output "db_subnet_id" {
+    description = "ID da subnet do banco de dados"
+    value       = module.vnet.db_subnet_id
+  }
 
-#   output "pgsql_private_dns_zone_id" {
-#     description = "ID da zona DNS privada do PostgreSQL"
-#     value       = module.vnet.pgsql_private_dns_zone_id
-#   }
+  output "pgsql_private_dns_zone_id" {
+    description = "ID da zona DNS privada do PostgreSQL"
+    value       = module.vnet.pgsql_private_dns_zone_id
+  }
 
-#   output "vnet_aks_subnet_prefix" {
-#     description = "Prefixo de endereço da subrede do AKS"
-#     value       = var.vnet_aks_subnet_prefix
-#   }
+  output "vnet_aks_subnet_prefix" {
+    description = "Prefixo de endereço da subrede do AKS"
+    value       = var.vnet_aks_subnet_prefix
+  }
 
 # Cognito
 
@@ -135,4 +135,10 @@
   output "cognito_implicit_login_url" {
     description = "URL de login do Cognito User Pool (usando o fluxo implícito)"
     value       = module.cognito.cognito_implicit_login_url
+  }
+
+# Azure Function
+  output "azfunc_name" {
+    description = "O nome da Azure Function App"
+    value       = module.azfunc.azfunc_name
   }
