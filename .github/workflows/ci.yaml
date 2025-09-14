@@ -60,6 +60,7 @@ jobs:
           TF_VAR_location: ${{secrets.AZURE_REGION}}
           TF_VAR_aws_location: ${{secrets.AWS_REGION}}
           TF_VAR_default_customer_password: ${{secrets.DEFAULT_CUSTOMER_PASSWORD}}
+          TF_VAR_aws_credentials: ${{secrets.AWS_CREDENTIALS}}
 
       - name: Upload Terraform Plan
         uses: actions/upload-artifact@v4

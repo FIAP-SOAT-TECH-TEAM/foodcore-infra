@@ -21,6 +21,30 @@
     description = "Localização do recurso"
     type = string
   }
+  variable "aws_credentials" {
+    type        = string
+    description = "AWS Credentials"
+    sensitive   = true
+  }
+  variable "aws_location" {
+    type    = string
+    description = "AWS Region"
+  }
+
+# Cognito
+  variable "cognito_user_pool_id" {
+    type        = string
+    description = "Cognito User Pool ID"
+  }
+  variable "cognito_client_id" {
+    type        = string
+    description = "Cognito Client ID"
+  }
+  variable "default_customer_password" {
+    type        = string
+    description = "Senha padrão para novos clientes"
+    sensitive   = true
+  }
 
 variable "sa_account_tier" {
   description = "O nível da conta de armazenamento."
@@ -71,3 +95,4 @@ variable "azfunc_private_ip" {
   description = "Endereço IP privado para uso da aplicação hospedada no Azure Functions"
   type        = string
 }
+
