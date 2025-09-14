@@ -46,8 +46,11 @@ resource "azurerm_function_app_flex_consumption" "azfunc" {
   runtime_version               = "9.0"
   https_only                    = true
   
-  public_network_access_enabled = false
-  virtual_network_subnet_id     = var.azfunc_subnet_id # Serve para fornecer outbound privado para a Function App
+  # Configurado no bloco site_config abaixo
+  public_network_access_enabled = true
+
+  # Serve para fornecer outbound privado para a Function App
+  virtual_network_subnet_id     = var.azfunc_subnet_id 
   
   site_config {
     application_insights_connection_string  = azurerm_application_insights.azfunc-app-insights.connection_string
@@ -63,6 +66,10 @@ resource "azurerm_function_app_flex_consumption" "azfunc" {
       # https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/about-githubs-ip-addresses
       ip_address = "0.0.0.0/0"
     }
+
+    ip_restriction_default_action = "Deny"
+    scm_ip_restriction_default_action = "Deny"
+
   }
 
   app_settings = {
