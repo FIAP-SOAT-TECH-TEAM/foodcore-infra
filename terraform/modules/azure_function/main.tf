@@ -46,7 +46,7 @@ resource "azurerm_function_app_flex_consumption" "azfunc" {
   runtime_version               = "9.0"
   https_only                    = true
   
-  # 
+  # Configurado no bloco site_config abaixo
   public_network_access_enabled = true
   virtual_network_subnet_id     = var.azfunc_subnet_id # Serve para fornecer outbound privado para a Function App
   
