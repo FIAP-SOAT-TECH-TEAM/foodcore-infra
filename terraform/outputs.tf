@@ -140,5 +140,5 @@
 # Azure Function
   output "azfunc_name" {
     description = "O nome da Azure Function App"
-    value       = module.azure_function.azfunc_name
+    value       = module.azfunc.azfunc_name
   }
