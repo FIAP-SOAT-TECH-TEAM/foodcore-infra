@@ -53,10 +53,14 @@ resource "azurerm_function_app_flex_consumption" "azfunc" {
     application_insights_connection_string  = azurerm_application_insights.azfunc-app-insights.connection_string
     application_insights_key                = azurerm_application_insights.azfunc-app-insights.instrumentation_key
 
-    ip_restriction {
+    # Libera o acesso público para o SCM (Kudu) da Function App, necessário para deploy via GitHub Actions
+    # https://www.youtube.com/watch?v=syd_155iRxc
+    scm_ip_restriction {
       name                       = "AllowInbound"
       action                     = "Allow"
       priority                   = 300
+      # Poderíamos estudar depois liberar apenas para os IPs do GitHub Actions, embora tenham mais de 2000...
+      # https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/about-githubs-ip-addresses
       ip_address = "0.0.0.0/0"
     }
   }
