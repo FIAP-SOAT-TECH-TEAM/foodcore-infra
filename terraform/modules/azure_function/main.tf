@@ -52,6 +52,13 @@ resource "azurerm_function_app_flex_consumption" "azfunc" {
   site_config {
     application_insights_connection_string  = azurerm_application_insights.azfunc-app-insights.connection_string
     application_insights_key                = azurerm_application_insights.azfunc-app-insights.instrumentation_key
+
+    ip_restriction {
+      name                       = "AllowInbound"
+      action                     = "Allow"
+      priority                   = 300
+      ip_address = "0.0.0.0/0"
+    }
   }
 
   app_settings = {
