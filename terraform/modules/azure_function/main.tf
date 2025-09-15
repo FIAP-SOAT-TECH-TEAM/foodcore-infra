@@ -73,13 +73,14 @@ resource "azurerm_function_app_flex_consumption" "azfunc" {
   }
 
   app_settings = {
-    AWS_CREDENTIALS            = var.aws_credentials
-    AWS_REGION                 = var.aws_location
-    COGNITO_USER_POOL_ID       = var.cognito_user_pool_id
-    COGNITO_CLIENT_ID          = var.cognito_client_id
-    DEFAULT_CUSTOMER_PASSWORD  = var.default_customer_password
+    AWS_CREDENTIALS                 = var.aws_credentials
+    AWS_REGION                      = var.aws_location
+    COGNITO_USER_POOL_ID            = var.cognito_user_pool_id
+    COGNITO_CLIENT_ID               = var.cognito_client_id
+    DEFAULT_CUSTOMER_PASSWORD       = var.default_customer_password
     # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/function_app_flex_consumption#zip_deploy_file-1
-    WEBSITE_RUN_FROM_PACKAGE   = 1
+    WEBSITE_RUN_FROM_PACKAGE        = 1
+    SCM_DO_BUILD_DURING_DEPLOYMENT  = false
   }
 
   depends_on = [ azurerm_resource_provider_registration.microsoft_app ]
