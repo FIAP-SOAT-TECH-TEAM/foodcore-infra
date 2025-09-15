@@ -32,18 +32,13 @@ resource "azurerm_resource_provider_registration" "microsoft_app" {
   name = "Microsoft.App"
 }
 
-# https://github.com/hashicorp/terraform-provider-azurerm/pull/28199
-resource "azurerm_function_app_flex_consumption" "azfunc" {
+resource "azurerm_linux_function_app" "azfunc" {
   name                          = "${var.dns_prefix}-azfunc"
   resource_group_name           = var.resource_group_name
   location                      = var.location
   service_plan_id               = azurerm_service_plan.azfunc-service-plan.id
-  storage_container_type        = "blobContainer"
-  storage_container_endpoint    = "${azurerm_storage_account.azfunc-sa.primary_blob_endpoint}${azurerm_storage_container.azfunc-sa-container.name}"
-  storage_authentication_type   = "StorageAccountConnectionString"
-  storage_access_key            = azurerm_storage_account.azfunc-sa.primary_access_key
-  runtime_name                  = "dotnet-isolated"
-  runtime_version               = "9.0"
+  storage_account_name          = azurerm_storage_account.azfunc-sa.name
+  storage_account_access_key    = azurerm_storage_account.azfunc-sa.primary_access_key
   https_only                    = true
   
   # Configurado no bloco site_config abaixo
@@ -70,6 +65,11 @@ resource "azurerm_function_app_flex_consumption" "azfunc" {
     ip_restriction_default_action = "Deny"
     scm_ip_restriction_default_action = "Deny"
 
+    application_stack {
+      dotnet_version = "9.0"
+      use_dotnet_isolated_runtime = true
+    }
+
   }
 
   app_settings = {
@@ -78,7 +78,6 @@ resource "azurerm_function_app_flex_consumption" "azfunc" {
     COGNITO_USER_POOL_ID            = var.cognito_user_pool_id
     COGNITO_CLIENT_ID               = var.cognito_client_id
     DEFAULT_CUSTOMER_PASSWORD       = var.default_customer_password
-    # https://learn.microsoft.com/pt-br/azure/azure-functions/run-functions-from-deployment-package#enable-functions-to-run-from-a-package
   }
 
   depends_on = [ azurerm_resource_provider_registration.microsoft_app ]
