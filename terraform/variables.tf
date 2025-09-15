@@ -96,12 +96,6 @@
     default     = ["10.0.3.0/24"]
   }
 
-  variable "vnet_azfunc_subnet_prefix" {
-    description = "Prefixo de endereço da subrede do Azure Functions"
-    type        = list(string)
-    default     = ["10.0.4.0/24"]
-  }
-
   variable "vnet_pe_subnet_prefix" {
     description = "Prefixo de endereço da subrede do Private Endpoint"
     type        = list(string)
@@ -226,7 +220,7 @@
   variable "az_func_sku_name" {
     description = "O nome do SKU do plano de serviço."
     type        = string
-    default     = "Y1"
+    default     = "S1"
   }
 
   variable "az_func_os_type" {

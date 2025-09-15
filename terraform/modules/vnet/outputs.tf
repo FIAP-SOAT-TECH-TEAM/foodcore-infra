@@ -33,11 +33,6 @@ output "db_subnet_id" {
   value       = azurerm_subnet.db_subnet.id
 }
 
-output "azfunc_subnet_id" {
-  description = "ID da subnet do Azure Functions"
-  value       = azurerm_subnet.azfunc_subnet.id
-}
-
 output "pe_subnet_id" {
   description = "ID da subnet de Private Endpoint"
   value       = azurerm_subnet.pe_subnet.id
