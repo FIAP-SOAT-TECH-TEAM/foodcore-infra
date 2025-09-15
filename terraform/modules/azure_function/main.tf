@@ -47,6 +47,7 @@ resource "azurerm_linux_function_app" "azfunc" {
   site_config {
     application_insights_connection_string  = azurerm_application_insights.azfunc-app-insights.connection_string
     application_insights_key                = azurerm_application_insights.azfunc-app-insights.instrumentation_key
+    always_on                               = var.azfunc_enable_always_on
 
     # Libera o acesso público para o SCM (Kudu) da Function App, necessário para deploy via GitHub Actions
     # https://www.youtube.com/watch?v=syd_155iRxc
@@ -75,6 +76,8 @@ resource "azurerm_linux_function_app" "azfunc" {
     COGNITO_USER_POOL_ID            = var.cognito_user_pool_id
     COGNITO_CLIENT_ID               = var.cognito_client_id
     DEFAULT_CUSTOMER_PASSWORD       = var.default_customer_password
+
+    # https://learn.microsoft.com/en-us/azure/azure-functions/dotnet-isolated-process-guide?tabs=ihostapplicationbuilder%2Clinux#deployment-requirements
     linuxFxVersion                  = "DOTNET-ISOLATED|9.0"
     WEBSITE_RUN_FROM_PACKAGE        = 1
   }

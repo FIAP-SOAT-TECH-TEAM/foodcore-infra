@@ -91,3 +91,7 @@ variable "azfunc_private_ip" {
   type        = string
 }
 
+variable "azfunc_enable_always_on" {
+  description = "Habilita o recurso Always On na Function App"
+  type        = bool
+}

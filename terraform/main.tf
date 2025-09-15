@@ -34,6 +34,7 @@ module "azfunc" {
   aws_location                = var.aws_location
   aws_credentials             = var.aws_credentials
   resource_group_name         = module.resource_group.name
+  azfunc_enable_always_on     = var.azfunc_enable_always_on
   pe_subnet_id                = module.vnet.pe_subnet_id
   azfunc_private_dns_zone_id  = module.vnet.azfunc_private_dns_zone_id
   azfunc_private_ip           = module.vnet.azfunc_private_ip

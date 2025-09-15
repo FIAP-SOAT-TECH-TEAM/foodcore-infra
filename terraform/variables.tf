@@ -229,6 +229,12 @@
     default     = "Linux"
   }
 
+  variable "azfunc_enable_always_on" {
+    description = "Habilita o recurso Always On na Function App"
+    type        = bool
+    default     = true
+  }
+
   variable "azfunc_maximum_instance_count" {
     description = "O número máximo de instâncias para o plano de serviço."
     type        = number
