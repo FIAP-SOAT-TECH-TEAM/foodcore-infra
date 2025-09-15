@@ -80,7 +80,6 @@ resource "azurerm_function_app_flex_consumption" "azfunc" {
     DEFAULT_CUSTOMER_PASSWORD       = var.default_customer_password
     # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/function_app_flex_consumption#zip_deploy_file-1
     WEBSITE_RUN_FROM_PACKAGE        = 1
-    SCM_DO_BUILD_DURING_DEPLOYMENT  = false
   }
 
   depends_on = [ azurerm_resource_provider_registration.microsoft_app ]
