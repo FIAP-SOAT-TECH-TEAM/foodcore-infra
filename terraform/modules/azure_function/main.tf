@@ -74,7 +74,7 @@ resource "azurerm_linux_function_app" "azfunc" {
     AWS_CREDENTIALS                 = var.aws_credentials
     AWS_REGION                      = var.aws_location
     COGNITO_USER_POOL_ID            = var.cognito_user_pool_id
-    COGNITO_CLIENT_ID               = var.cognito_client_id
+    COGNITO_APP_CLIENT_ID           = var.cognito_client_id
     DEFAULT_CUSTOMER_PASSWORD       = var.default_customer_password
 
     # https://learn.microsoft.com/en-us/azure/azure-functions/dotnet-isolated-process-guide?tabs=ihostapplicationbuilder%2Clinux#deployment-requirements
