@@ -78,8 +78,7 @@ resource "azurerm_function_app_flex_consumption" "azfunc" {
     COGNITO_USER_POOL_ID            = var.cognito_user_pool_id
     COGNITO_CLIENT_ID               = var.cognito_client_id
     DEFAULT_CUSTOMER_PASSWORD       = var.default_customer_password
-    # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/function_app_flex_consumption#zip_deploy_file-1
-    WEBSITE_RUN_FROM_PACKAGE        = 1
+    # https://learn.microsoft.com/pt-br/azure/azure-functions/run-functions-from-deployment-package#enable-functions-to-run-from-a-package
   }
 
   depends_on = [ azurerm_resource_provider_registration.microsoft_app ]
