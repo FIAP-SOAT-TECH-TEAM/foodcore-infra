@@ -43,9 +43,6 @@ resource "azurerm_linux_function_app" "azfunc" {
   
   # Configurado no bloco site_config abaixo
   public_network_access_enabled = true
-
-  # Serve para fornecer outbound privado para a Function App
-  virtual_network_subnet_id     = var.azfunc_subnet_id 
   
   site_config {
     application_insights_connection_string  = azurerm_application_insights.azfunc-app-insights.connection_string
