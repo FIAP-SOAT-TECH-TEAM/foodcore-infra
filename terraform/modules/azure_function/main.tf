@@ -92,7 +92,7 @@ resource "azurerm_private_endpoint" "azfunc_pe" {
 
   private_service_connection {
     name                           = "azfunc-priv-connection"
-    private_connection_resource_id = azurerm_function_app_flex_consumption.azfunc.id
+    private_connection_resource_id = azurerm_linux_function_app.azfunc.id
     subresource_names              = ["sites"]
     is_manual_connection           = false
   }
