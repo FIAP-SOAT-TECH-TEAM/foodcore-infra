@@ -75,7 +75,7 @@ resource "azurerm_linux_function_app" "azfunc" {
     COGNITO_USER_POOL_ID            = var.cognito_user_pool_id
     COGNITO_CLIENT_ID               = var.cognito_client_id
     DEFAULT_CUSTOMER_PASSWORD       = var.default_customer_password
-    linuxFxVersion                  = "DOTNET-ISOLATED|9.0"
+    WEBSITE_RUN_FROM_PACKAGE        = 1
   }
 
   depends_on = [ azurerm_resource_provider_registration.microsoft_app ]
