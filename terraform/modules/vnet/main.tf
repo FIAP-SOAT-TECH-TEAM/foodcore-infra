@@ -37,24 +37,6 @@ resource "azurerm_subnet" "db_subnet" {
   }
 }
 
-resource "azurerm_subnet" "azfunc_subnet" {
-  name                 = "${var.dns_prefix}-azfunc-subnet"
-  resource_group_name  = var.resource_group_name
-  virtual_network_name = azurerm_virtual_network.vnet.name
-  address_prefixes     = var.vnet_azfunc_subnet_prefix
-
-  delegation {
-    name = "azfuncdelegation"
-
-    service_delegation {
-      name = "Microsoft.App/environments"
-      actions = [
-        "Microsoft.Network/virtualNetworks/subnets/join/action",
-      ]
-    }
-  }
-}
-
 resource "azurerm_subnet" "pe_subnet" {
   name                 = "${var.dns_prefix}-pe-subnet"
   resource_group_name  = var.resource_group_name

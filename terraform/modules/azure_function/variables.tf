@@ -76,11 +76,6 @@ variable "instance_memory_in_mb" {
   type        = number
 }
 
-variable "azfunc_subnet_id" {
-  description = "ID da subnet do Azure Functions"
-  type        = string
-}
-
 variable "pe_subnet_id" {
   description = "ID da subnet do Private Endpoint"
   type        = string
