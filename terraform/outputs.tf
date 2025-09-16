@@ -55,35 +55,35 @@
 #     value       = module.acr.acr_resource_group
 #   }
 
-# # APIM
+# APIM
 
-#   output "apim_gateway_url" {
-#     description = "URL do gateway do API Management"
-#     value       = module.apim.apim_gateway_url
-#   }
+  output "apim_gateway_url" {
+    description = "URL do gateway do API Management"
+    value       = module.apim.apim_gateway_url
+  }
 
-#   output "apim_resource_group" {
-#     description = "Resource Group do API Management"
-#     value       = module.apim.apim_resource_group
-#   }
+  output "apim_resource_group" {
+    description = "Resource Group do API Management"
+    value       = module.apim.apim_resource_group
+  }
 
-#   output "apim_name" {
-#     description = "Nome do API Management"
-#     value       = module.apim.apim_name
-#   }
+  output "apim_name" {
+    description = "Nome do API Management"
+    value       = module.apim.apim_name
+  }
 
-#   output "apim_foodcore_start_productid" {
-#     description = "ID do produto do API Management"
-#     value       = module.apim.apim_foodcore_start_productid
-#   }
+  output "apim_foodcore_start_productid" {
+    description = "ID do produto do API Management"
+    value       = module.apim.apim_foodcore_start_productid
+  }
 
-#   output "apim_foodcore_start_subscriptionid" {
-#     description = "ID da assinatura do API Management"
-#     value       = module.apim.apim_foodcore_start_subscriptionid
-#     sensitive   = true
-#   }
+  output "apim_foodcore_start_subscriptionid" {
+    description = "ID da assinatura do API Management"
+    value       = module.apim.apim_foodcore_start_subscriptionid
+    sensitive   = true
+  }
 
-# # VNET
+# VNET
   output "api_private_dns_fqdn" {
     description = "FQDN do registro A da API na zona DNS privada"
     value       = module.vnet.api_private_dns_fqdn
@@ -141,4 +141,9 @@
   output "azfunc_name" {
     description = "O nome da Azure Function App"
     value       = module.azfunc.azfunc_name
+  }
+
+  output "azfunc_private_dns_fqdn" {
+    description = "FQDN do registro A do Azure Functions na zona DNS privada"
+    value       = module.vnet.azfunc_private_dns_fqdn
   }
