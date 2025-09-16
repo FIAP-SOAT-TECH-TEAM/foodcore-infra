@@ -25,7 +25,7 @@ output "api_private_dns_fqdn" {
 
 output "azfunc_private_dns_fqdn" {
   description = "FQDN do registro A do Azure Functions na zona DNS privada"
-  value       = "${azurerm_private_dns_a_record.azfunc_dns_a.name}.${azurerm_private_dns_a_record.azfunc_dns_a.zone_name}"
+  value       = azurerm_private_dns_a_record.azfunc_dns_a.zone_name
 }
 
 output "db_subnet_id" {
