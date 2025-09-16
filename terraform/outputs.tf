@@ -83,7 +83,7 @@
 #     sensitive   = true
 #   }
 
-# # VNET
+# VNET
   output "api_private_dns_fqdn" {
     description = "FQDN do registro A da API na zona DNS privada"
     value       = module.vnet.api_private_dns_fqdn
@@ -141,4 +141,9 @@
   output "azfunc_name" {
     description = "O nome da Azure Function App"
     value       = module.azfunc.azfunc_name
+  }
+
+  output "azfunc_private_dns_fqdn" {
+    description = "FQDN do registro A do Azure Functions na zona DNS privada"
+    value       = module.vnet.azfunc_private_dns_fqdn
   }
