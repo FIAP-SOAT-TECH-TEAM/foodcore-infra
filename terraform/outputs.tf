@@ -15,45 +15,45 @@
     value = var.dns_prefix
   }
 
-# # AKS
-#   output "aks_api_private_ip" {
-#     description = "Endereço IP privado para uso da aplicação hospedada no AKS"
-#     value       = module.vnet.aks_api_private_ip
-#   }
+# AKS
+  output "aks_api_private_ip" {
+    description = "Endereço IP privado para uso da aplicação hospedada no AKS"
+    value       = module.vnet.aks_api_private_ip
+  }
 
-#   output "aks_name" {
-#     value = module.aks.aks_name
-#   }
+  output "aks_name" {
+    value = module.aks.aks_name
+  }
 
-#   output "aks_resource_group" {
-#     description = "Resource Group onde o cluster AKS reside"
-#     value       = module.aks.aks_resource_group
-#   }
+  output "aks_resource_group" {
+    description = "Resource Group onde o cluster AKS reside"
+    value       = module.aks.aks_resource_group
+  }
 
-# # Blob
+# Blob
 
-#   output "storage_container_name" {
-#     description = "Nome do container"
-#     value       = module.blob.storage_container_name
-#   }
+  output "storage_container_name" {
+    description = "Nome do container"
+    value       = module.blob.storage_container_name
+  }
 
-#   output "storage_account_connection_string" {
-#     description = "Connection string primária da conta de armazenamento"
-#     value       = module.blob.storage_account_connection_string
-#     sensitive   = true
-#   }
+  output "storage_account_connection_string" {
+    description = "Connection string primária da conta de armazenamento"
+    value       = module.blob.storage_account_connection_string
+    sensitive   = true
+  }
 
-# # ACR
+# ACR
 
-#   output "acr_name" {
-#     description = "Nome do Azure Container Registry"
-#     value       = module.acr.acr_name
-#   }
+  output "acr_name" {
+    description = "Nome do Azure Container Registry"
+    value       = module.acr.acr_name
+  }
 
-#   output "acr_resource_group" {
-#     description = "Resource Group do ACR"
-#     value       = module.acr.acr_resource_group
-#   }
+  output "acr_resource_group" {
+    description = "Resource Group do ACR"
+    value       = module.acr.acr_resource_group
+  }
 
 # APIM
 
