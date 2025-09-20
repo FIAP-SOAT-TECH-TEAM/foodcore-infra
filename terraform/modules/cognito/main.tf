@@ -90,7 +90,7 @@ resource "aws_cognito_user" "guest_customer" {
   username     = "guest_customer"
 
   attributes = {
-    email = "guest@${var.dns_prefix}.com"
+    email = local.guest_user_email
     name  = "Guest User"
     role  = "CUSTOMER"
   }

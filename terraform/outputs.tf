@@ -137,6 +137,11 @@
     value       = module.cognito.cognito_implicit_login_url
   }
 
+  output "guest_user_email" {
+    description = "Email do usuário convidado (guest)"
+    value       = module.cognito.guest_user_email
+  }
+
 # Azure Function
   output "azfunc_name" {
     description = "O nome da Azure Function App"
