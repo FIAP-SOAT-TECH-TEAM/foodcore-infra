@@ -47,6 +47,7 @@ module "azfunc" {
   cognito_user_pool_id        = module.cognito.cognito_user_pool_id
   cognito_client_id           = module.cognito.cognito_user_pool_client_id
   default_customer_password   = var.default_customer_password
+  guest_user_email            = module.cognito.guest_user_email
 
   depends_on = [ module.resource_group, module.vnet, module.cognito ]
 }

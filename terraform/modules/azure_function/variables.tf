@@ -95,3 +95,8 @@ variable "azfunc_enable_always_on" {
   description = "Habilita o recurso Always On na Function App"
   type        = bool
 }
+
+variable "guest_user_email" {
+  type        = string
+  description = "Email do usuário convidado (guest) que será criado no Cognito"
+}
