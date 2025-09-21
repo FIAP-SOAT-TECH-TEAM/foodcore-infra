@@ -27,11 +27,6 @@ resource "azurerm_service_plan" "azfunc-service-plan" {
   os_type             = var.az_func_os_type
 }
 
-# https://github.com/hashicorp/terraform-provider-azurerm/issues/29696
-resource "azurerm_resource_provider_registration" "microsoft_app" {
-  name = "Microsoft.App"
-}
-
 resource "azurerm_linux_function_app" "azfunc" {
   name                          = "${var.dns_prefix}-azfunc"
   resource_group_name           = var.resource_group_name
