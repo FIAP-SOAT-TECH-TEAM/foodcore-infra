@@ -78,7 +78,6 @@ resource "azurerm_linux_function_app" "azfunc" {
     WEBSITE_RUN_FROM_PACKAGE        = 1
   }
 
-  depends_on = [ azurerm_resource_provider_registration.microsoft_app ]
 }
 
 # Serve para fornecer inbound privado para a Function App
