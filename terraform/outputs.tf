@@ -83,6 +83,12 @@
     sensitive   = true
   }
 
+  output "apim_foodcore_start_subscription_key" {
+    description = "Chave de subscrição do API Management"
+    value       = module.apim.apim_foodcore_start_subscription_key
+    sensitive   = true
+  }
+
 # VNET
   output "api_private_dns_fqdn" {
     description = "FQDN do registro A da API na zona DNS privada"

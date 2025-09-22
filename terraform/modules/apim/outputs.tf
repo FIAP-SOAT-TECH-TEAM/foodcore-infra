@@ -22,3 +22,9 @@ output "apim_foodcore_start_subscriptionid" {
   description = "ID da assinatura do API Management"
   value       = azurerm_api_management_subscription.foodcoreapi_start_subscription.id
 }
+
+output "apim_foodcore_start_subscription_key" {
+  description = "Chave de subscrição do API Management"
+  value       = azurerm_api_management_subscription.foodcoreapi_start_subscription.primary_key
+  sensitive   = true
+}
