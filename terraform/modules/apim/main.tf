@@ -84,16 +84,28 @@ resource "azurerm_api_management_product_policy" "foodcoreapi_start_product_poli
     <inbound>
       <base />
 
-      <!-- Rate limit: 100 chamadas por 60 segundos por assinatura -->
+      <!-- Rate limit (por assinatura) -->
       <rate-limit-by-key 
         calls="100" 
         renewal-period="60" 
         counter-key="@(context.Subscription?.Key)" />
 
-      <!-- Cache de resposta por 60 segundos -->
-      <cache-lookup vary-by-developer="false" 
-                    vary-by-developer-groups="false" 
-                    vary-by-query-parameters="true" />
+      <!-- Cache de resposta -->
+      <cache-lookup 
+        vary-by-developer="false" 
+        vary-by-developer-groups="false"
+        caching-type="internal"
+        downstream-caching-type="private"
+        must-revalidate="true"
+        allow-private-response-caching="true">
+        
+        <!-- Headers que fazem o cache variar -->
+        <vary-by-header>Authorization</vary-by-header>
+
+        <!-- Query parameters que fazem o cache variar -->
+        <vary-by-query-parameter>id</vary-by-query-parameter>
+        <vary-by-query-parameter>topic</vary-by-query-parameter>
+      </cache-lookup>
     </inbound>
 
     <backend>
@@ -103,7 +115,7 @@ resource "azurerm_api_management_product_policy" "foodcoreapi_start_product_poli
     <outbound>
       <base />
 
-      <!-- Armazena a resposta no cache -->
+      <!-- Armazena a resposta em cache -->
       <cache-store duration="60" />
     </outbound>
 
@@ -113,6 +125,7 @@ resource "azurerm_api_management_product_policy" "foodcoreapi_start_product_poli
   </policies>
   XML
 }
+
 
 resource "azurerm_api_management_subscription" "foodcoreapi_start_subscription" {
   api_management_name  = azurerm_api_management.apim.name
