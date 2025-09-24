@@ -64,8 +64,3 @@
     type = string
     description = "ID do Azure Container Registry"
   }
-
-  variable "aks_enable_node_public_ip" {
-    type        = bool
-    description = "Habilitar IP público para os nós do AKS"
-  }

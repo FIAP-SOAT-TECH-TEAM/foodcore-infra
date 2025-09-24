@@ -81,7 +81,6 @@ module "aks" {
   resource_group_name       = module.resource_group.name
   location                  = var.location
   aks_subnet_id             = module.vnet.aks_subnet.id
-  aks_enable_node_public_ip = var.aks_enable_node_public_ip
   node_count                = var.node_count
   vm_size                   = var.vm_size
   identity_type             = var.identity_type
