@@ -114,7 +114,6 @@ resource "azurerm_api_management_product_policy" "foodcoreapi_start_product_poli
   XML
 }
 
-
 resource "azurerm_api_management_subscription" "foodcoreapi_start_subscription" {
   api_management_name  = azurerm_api_management.apim.name
   resource_group_name  = var.resource_group_name
