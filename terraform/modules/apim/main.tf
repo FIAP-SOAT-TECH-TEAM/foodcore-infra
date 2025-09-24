@@ -74,6 +74,46 @@ resource "azurerm_api_management_product" "foodcoreapi_start_product" {
   published             = true
 }
 
+resource "azurerm_api_management_product_policy" "foodcoreapi_start_product_policy" {
+  api_management_name = azurerm_api_management.apim.name
+  product_id          = azurerm_api_management_product.foodcoreapi_start_product.product_id
+  resource_group_name = var.resource_group_name
+
+  xml_content = <<XML
+  <policies>
+    <inbound>
+      <base />
+
+      <!-- Rate limit: 100 chamadas por 60 segundos por assinatura -->
+      <rate-limit-by-key 
+        calls="100" 
+        renewal-period="60" 
+        counter-key="@(context.Subscription?.Key)" />
+
+      <!-- Cache de resposta por 60 segundos -->
+      <cache-lookup vary-by-developer="false" 
+                    vary-by-developer-groups="false" 
+                    vary-by-query-parameters="true" />
+    </inbound>
+
+    <backend>
+      <base />
+    </backend>
+
+    <outbound>
+      <base />
+
+      <!-- Armazena a resposta no cache -->
+      <cache-store duration="60" />
+    </outbound>
+
+    <on-error>
+      <base />
+    </on-error>
+  </policies>
+  XML
+}
+
 resource "azurerm_api_management_subscription" "foodcoreapi_start_subscription" {
   api_management_name  = azurerm_api_management.apim.name
   resource_group_name  = var.resource_group_name
