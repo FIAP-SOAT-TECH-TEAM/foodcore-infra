@@ -123,6 +123,11 @@
     default = "1.32.5"
     description = "Versão do Kubernetes a ser usada no AKS"
   }
+  variable "aks_enable_node_public_ip" {
+    type        = bool
+    description = "Habilitar IP público para os nós do AKS"
+    default     = false
+  }
 
 
 # Blob Storage
