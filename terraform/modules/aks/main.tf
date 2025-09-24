@@ -10,7 +10,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
     node_count                  = var.node_count
     vm_size                     = var.vm_size
     vnet_subnet_id              = var.aks_subnet_id
-    node_public_ip_enabled      = var.aks_enable_node_public_ip
+    node_public_ip_enabled      = false
     temporary_name_for_rotation = "${var.dns_prefix}-aks-temp-nodepool"
   }
 
