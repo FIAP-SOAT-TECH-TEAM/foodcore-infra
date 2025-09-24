@@ -84,13 +84,13 @@ resource "azurerm_api_management_product_policy" "foodcoreapi_start_product_poli
     <inbound>
       <base />
 
-      <!-- Rate limit: 100 chamadas por 60 segundos por assinatura -->
+      <!-- Rate limit (por assinatura) -->
       <rate-limit-by-key 
         calls="100" 
         renewal-period="60" 
         counter-key="@(context.Subscription?.Key)" />
 
-      <!-- Cache de resposta por 60 segundos -->
+      <!-- Cache de resposta -->
       <cache-lookup 
         vary-by-developer="false" 
         vary-by-developer-groups="false"
@@ -115,7 +115,7 @@ resource "azurerm_api_management_product_policy" "foodcoreapi_start_product_poli
     <outbound>
       <base />
 
-      <!-- Armazena a resposta no cache por 60 segundos -->
+      <!-- Armazena a resposta em cache -->
       <cache-store duration="60" />
     </outbound>
 
