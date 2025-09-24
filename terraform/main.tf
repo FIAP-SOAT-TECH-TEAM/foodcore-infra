@@ -76,18 +76,19 @@ module "acr" {
 }
 
 module "aks" {
-  source              = "./modules/aks"
-  dns_prefix          = var.dns_prefix
-  resource_group_name = module.resource_group.name
-  location            = var.location
-  aks_subnet_id       = module.vnet.aks_subnet.id
-  node_count          = var.node_count
-  vm_size             = var.vm_size
-  identity_type       = var.identity_type
-  kubernetes_version  = var.kubernetes_version
-  aks_service_cidr    = var.vnet_aks_service_subnet_prefix
-  aks_dns_service_ip  = var.vnet_aks_dns_service_ip
-  acr_id              = module.acr.acr_id
+  source                    = "./modules/aks"
+  dns_prefix                = var.dns_prefix
+  resource_group_name       = module.resource_group.name
+  location                  = var.location
+  aks_subnet_id             = module.vnet.aks_subnet.id
+  aks_enable_node_public_ip = var.aks_enable_node_public_ip
+  node_count                = var.node_count
+  vm_size                   = var.vm_size
+  identity_type             = var.identity_type
+  kubernetes_version        = var.kubernetes_version
+  aks_service_cidr          = var.vnet_aks_service_subnet_prefix
+  aks_dns_service_ip        = var.vnet_aks_dns_service_ip
+  acr_id                    = module.acr.acr_id
 
   depends_on = [ module.resource_group, module.vnet, module.acr]
 }
