@@ -18,6 +18,15 @@ module "vnet" {
   depends_on = [ module.resource_group ]
 }
 
+module "app_insights" {
+  source              = "./modules/app-insights"
+  dns_prefix          = var.dns_prefix
+  resource_group_name = module.resource_group.name
+  location            = var.location
+  
+  depends_on = [ module.resource_group ]
+}
+
 module "cognito" {
   source                    = "./modules/cognito"
   
@@ -28,28 +37,30 @@ module "cognito" {
 }
 
 module "azfunc" {
-  source                      = "./modules/azure_function"
-  dns_prefix                  = var.dns_prefix
-  location                    = var.location
-  aws_location                = var.aws_location
-  aws_credentials             = var.aws_credentials
-  resource_group_name         = module.resource_group.name
-  azfunc_enable_always_on     = var.azfunc_enable_always_on
-  pe_subnet_id                = module.vnet.pe_subnet_id
-  azfunc_private_dns_zone_id  = module.vnet.azfunc_private_dns_zone_id
-  azfunc_private_ip           = module.vnet.azfunc_private_ip
-  az_func_os_type             = var.az_func_os_type
-  az_func_sku_name            = var.az_func_sku_name
-  sa_account_replication_type = var.azfunc_sa_account_replication_type
-  sa_account_tier             = var.azfunc_sa_account_tier
-  maximum_instance_count      = var.azfunc_maximum_instance_count
-  instance_memory_in_mb       = var.azfunc_instance_memory_in_mb
-  cognito_user_pool_id        = module.cognito.cognito_user_pool_id
-  cognito_client_id           = module.cognito.cognito_user_pool_client_id
-  default_customer_password   = var.default_customer_password
-  guest_user_email            = module.cognito.guest_user_email
+  source                            = "./modules/azure_function"
+  dns_prefix                        = var.dns_prefix
+  location                          = var.location
+  app_insights_instrumentation_key  = module.app_insights.app_insights_instrumentation_key
+  app_insights_connection_string    = module.app_insights.app_insights_connection_string
+  aws_location                      = var.aws_location
+  aws_credentials                   = var.aws_credentials
+  resource_group_name               = module.resource_group.name
+  azfunc_enable_always_on           = var.azfunc_enable_always_on
+  pe_subnet_id                      = module.vnet.pe_subnet_id
+  azfunc_private_dns_zone_id        = module.vnet.azfunc_private_dns_zone_id
+  azfunc_private_ip                 = module.vnet.azfunc_private_ip
+  az_func_os_type                   = var.az_func_os_type
+  az_func_sku_name                  = var.az_func_sku_name
+  sa_account_replication_type       = var.azfunc_sa_account_replication_type
+  sa_account_tier                   = var.azfunc_sa_account_tier
+  maximum_instance_count            = var.azfunc_maximum_instance_count
+  instance_memory_in_mb             = var.azfunc_instance_memory_in_mb
+  cognito_user_pool_id              = module.cognito.cognito_user_pool_id
+  cognito_client_id                 = module.cognito.cognito_user_pool_client_id
+  default_customer_password         = var.default_customer_password
+  guest_user_email                  = module.cognito.guest_user_email
 
-  depends_on = [ module.resource_group, module.vnet, module.cognito ]
+  depends_on = [ module.resource_group, module.vnet, module.cognito, module.app_insights ]
 }
 
 module "blob" {
@@ -95,19 +106,21 @@ module "aks" {
 }
 
 module "apim" {
-  source                          = "./modules/apim"
-  dns_prefix                      = var.dns_prefix
-  resource_group_name             = module.resource_group.name
-  location                        = var.location
-  apim_subnet_id                  = module.vnet.apim_subnet.id
-  publisher_name                  = var.publisher_name
-  publisher_email                 = var.publisher_email
-  sku_name                        = var.sku_name
-  apim_product_id                 = var.apim_product_id
-  apim_product_display_name       = var.apim_product_display_name
-  apim_product_description        = var.apim_product_description
-  apim_subscription_display_name  = var.apim_subscription_display_name
-  apim_subscription_state         = var.apim_subscription_state
+  source                           = "./modules/apim"
+  dns_prefix                       = var.dns_prefix
+  resource_group_name              = module.resource_group.name
+  location                         = var.location
+  app_insights_instrumentation_key = module.app_insights.app_insights_instrumentation_key
+  app_insights_connection_string   = module.app_insights.app_insights_connection_string
+  apim_subnet_id                   = module.vnet.apim_subnet.id
+  publisher_name                   = var.publisher_name
+  publisher_email                  = var.publisher_email
+  sku_name                         = var.sku_name
+  apim_product_id                  = var.apim_product_id
+  apim_product_display_name        = var.apim_product_display_name
+  apim_product_description         = var.apim_product_description
+  apim_subscription_display_name   = var.apim_subscription_display_name
+  apim_subscription_state          = var.apim_subscription_state
 
-  depends_on = [ module.resource_group, module.vnet ]
+  depends_on = [ module.resource_group, module.vnet, module.app_insights ]
 }

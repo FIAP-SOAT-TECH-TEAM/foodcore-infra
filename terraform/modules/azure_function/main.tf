@@ -12,13 +12,6 @@ resource "azurerm_storage_container" "azfunc-sa-container" {
   container_access_type = "private"
 }
 
-resource "azurerm_application_insights" "azfunc-app-insights" {
-  name                = "${var.dns_prefix}-azfunc-app-insights"
-  location            = var.location
-  resource_group_name = var.resource_group_name
-  application_type    = "web"
-}
-
 resource "azurerm_service_plan" "azfunc-service-plan" {
   name                = "${var.dns_prefix}-azfunc-service-plan"
   resource_group_name = var.resource_group_name
@@ -40,8 +33,8 @@ resource "azurerm_linux_function_app" "azfunc" {
   public_network_access_enabled = true
   
   site_config {
-    application_insights_connection_string  = azurerm_application_insights.azfunc-app-insights.connection_string
-    application_insights_key                = azurerm_application_insights.azfunc-app-insights.instrumentation_key
+    application_insights_connection_string  = var.app_insights_connection_string
+    application_insights_key                = var.app_insights_instrumentation_key
     always_on                               = var.azfunc_enable_always_on
 
     # Libera o acesso público para o SCM (Kudu) da Function App, necessário para deploy via GitHub Actions

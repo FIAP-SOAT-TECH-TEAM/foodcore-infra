@@ -62,6 +62,18 @@ resource "azurerm_api_management" "apim" {
   depends_on = [ azurerm_subnet_network_security_group_association.apim_assoc ]
 }
 
+resource "azurerm_api_management_logger" "app_insights_logger" {
+  name                = "${var.dns_prefix}-apim-logger"
+  api_management_name = azurerm_api_management.apim.name
+  resource_group_name = var.resource_group_name
+  
+  application_insights {
+    instrumentation_key = var.app_insights_instrumentation_key
+  }
+
+  depends_on = [ azurerm_api_management.apim ]
+}
+
 resource "azurerm_api_management_product" "foodcoreapi_start_product" {
   product_id            = var.apim_product_id
   api_management_name   = azurerm_api_management.apim.name
@@ -125,7 +137,6 @@ resource "azurerm_api_management_product_policy" "foodcoreapi_start_product_poli
   </policies>
   XML
 }
-
 
 resource "azurerm_api_management_subscription" "foodcoreapi_start_subscription" {
   api_management_name  = azurerm_api_management.apim.name

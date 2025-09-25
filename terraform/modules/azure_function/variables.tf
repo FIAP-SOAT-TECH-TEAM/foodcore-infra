@@ -46,6 +46,17 @@
     sensitive   = true
   }
 
+# Application Insights
+  variable "app_insights_instrumentation_key" {
+    description = "A chave de instrumentação do Application Insights"
+    type        = string
+  }
+
+  variable "app_insights_connection_string" {
+    description = "A connection string do Application Insights"
+    type        = string
+  }
+
 variable "sa_account_tier" {
   description = "O nível da conta de armazenamento."
   type        = string
