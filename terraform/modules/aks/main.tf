@@ -31,10 +31,14 @@ resource "azurerm_role_assignment" "aks_acr_pull" {
   scope                = var.acr_id
   role_definition_name = "AcrPull"
   principal_id         = azurerm_kubernetes_cluster.aks.kubelet_identity[0].object_id
+
+  depends_on = [azurerm_kubernetes_cluster.aks]
 }
 
 resource "azurerm_role_assignment" "aks_subnet_contributor" {
   scope                = var.aks_subnet_id
   role_definition_name = "Network Contributor"
   principal_id         = azurerm_kubernetes_cluster.aks.identity[0].principal_id
+
+  depends_on = [azurerm_kubernetes_cluster.aks]
 }
