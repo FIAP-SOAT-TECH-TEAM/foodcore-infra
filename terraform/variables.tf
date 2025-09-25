@@ -123,6 +123,26 @@
     default = "1.32.5"
     description = "Versão do Kubernetes a ser usada no AKS"
   }
+  variable "node_pool_name" {
+    type        = string
+    default     = "dftnodepool"
+    description = "Nome do pool de nós padrão do AKS"
+    
+    validation {
+      condition     = length(var.node_pool_name) >= 1 && length(var.node_pool_name) <= 12
+      error_message = "O 'node_pool_name' deve ter entre 1 e 12 caracteres."
+    }
+  }
+  variable "node_pool_temp_name" {
+    type        = string
+    default     = "tmpnodepool"
+    description = "Nome temporário do pool de nós do AKS para rotação"
+    
+    validation {
+      condition     = length(var.node_pool_temp_name) >= 1 && length(var.node_pool_temp_name) <= 12
+      error_message = "O 'node_pool_temp_name' deve ter entre 1 e 12 caracteres."
+    }
+  }
 
 # Blob Storage
   variable "container_name" {
