@@ -18,6 +18,16 @@ module "vnet" {
   depends_on = [ module.resource_group ]
 }
 
+module "public_ip" {
+  source              = "./modules/public_ip"
+  dns_prefix          = var.dns_prefix
+  resource_group_name = module.resource_group.name
+  location            = var.location
+  allocation_method   = var.allocation_method
+  sku                 = var.sku
+  depends_on          = [ module.resource_group ]
+}
+
 module "app_insights" {
   source              = "./modules/app-insights"
   dns_prefix          = var.dns_prefix
@@ -87,22 +97,23 @@ module "acr" {
 }
 
 module "aks" {
-  source                    = "./modules/aks"
-  dns_prefix                = var.dns_prefix
-  resource_group_name       = module.resource_group.name
-  node_pool_name            = var.node_pool_name
-  node_pool_temp_name       = var.node_pool_temp_name
-  location                  = var.location
-  aks_subnet_id             = module.vnet.aks_subnet.id
-  node_count                = var.node_count
-  vm_size                   = var.vm_size
-  identity_type             = var.identity_type
-  kubernetes_version        = var.kubernetes_version
-  aks_service_cidr          = var.vnet_aks_service_subnet_prefix
-  aks_dns_service_ip        = var.vnet_aks_dns_service_ip
-  acr_id                    = module.acr.acr_id
+  source                      = "./modules/aks"
+  dns_prefix                  = var.dns_prefix
+  resource_group_name         = module.resource_group.name
+  node_pool_name              = var.node_pool_name
+  node_pool_temp_name         = var.node_pool_temp_name
+  public_ip_resource_group_id = module.resource_group.id
+  location                    = var.location
+  aks_subnet_id               = module.vnet.aks_subnet.id
+  node_count                  = var.node_count
+  vm_size                     = var.vm_size
+  identity_type               = var.identity_type
+  kubernetes_version          = var.kubernetes_version
+  aks_service_cidr            = var.vnet_aks_service_subnet_prefix
+  aks_dns_service_ip          = var.vnet_aks_dns_service_ip
+  acr_id                      = module.acr.acr_id
 
-  depends_on = [ module.resource_group, module.vnet, module.acr]
+  depends_on = [ module.resource_group, module.vnet, module.acr, module.public_ip ]
 }
 
 module "apim" {

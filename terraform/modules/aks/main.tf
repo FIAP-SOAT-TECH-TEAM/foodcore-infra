@@ -42,3 +42,10 @@ resource "azurerm_role_assignment" "aks_subnet_contributor" {
 
   depends_on = [azurerm_kubernetes_cluster.aks]
 }
+
+# Permissão para o AKS acessar o grupo de recursos que contém o IP público
+resource "azurerm_role_assignment" "aks_network_contributor" {
+  scope                = var.public_ip_resource_group_id
+  role_definition_name = "Network Contributor"
+  principal_id         = azurerm_kubernetes_cluster.aks.identity[0].principal_id
+}

@@ -34,6 +34,18 @@
     }
   }
 
+# Public IP
+  variable "allocation_method" {
+    type    = string
+    default = "Static"
+    description = "Método de alocação do IP público"
+  }
+  variable "sku" {
+    type    = string
+    default = "Standard"
+    description = "SKU do IP público"
+  }
+
 # Azure AD
   variable "api_app_display_name" {
     description = "Nome do App Registration da API"
