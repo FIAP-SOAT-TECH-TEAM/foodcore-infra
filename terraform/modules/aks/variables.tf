@@ -82,3 +82,8 @@
       error_message = "O 'node_pool_temp_name' deve ter entre 1 e 12 caracteres."
     }
   }
+
+  variable "public_ip_resource_group_id" {
+    type        = string
+    description = "ID do resource group onde está o IP público do Ingress externo"
+  }

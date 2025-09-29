@@ -110,6 +110,15 @@
     value       = var.vnet_aks_subnet_prefix
   }
 
+# Public IP
+  output "ext_ingress_public_ip" {
+    value = module.public_ip.ip_address
+  }
+
+  output "ext_ingress_public_ip_fqdn" {
+    value = module.public_ip.fqdn
+  }
+
 # Cognito
 
   output "cognito_user_pool_id" {
