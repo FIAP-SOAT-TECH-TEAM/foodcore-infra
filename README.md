@@ -5,18 +5,48 @@ da FIAP (Tech Challenge).
 
 <div align="center">
   <a href="#visao-geral">Visão Geral</a> •
-  <a href="#arquitetura">Arquitetura</a> •
-  <a href="#infra">Infraestrutura</a> •
   <a href="#tecnologias">Tecnologias</a> •
-  <a href="#diagramas">Diagramas</a> •
-  <a href="#eventstorming">Event Storming</a> •
-  <a href="#taskboard">Task Board</a> •
-  <a href="#dicionario">Dicionário de linguagem ubíqua</a> •
-  <a href="#instalacao-e-uso">Instalação e Uso</a> •
-  <a href="#provisionamento-na-nuvem">Provisionar o projeto na nuvem</a> •
-  <a href="#estrutura-do-projeto">Estrutura do Projeto</a> • <br/>
-  <a href="#apis">APIs</a> •
-  <a href="#banco-de-dados">Banco de Dados</a> •
-  <a href="#resolucao-de-problemas">Resolução de Problemas</a> •
-  <a href="#contribuicao-e-licenca">Contribuição e Licença</a>
+  <a href="#fluxo-de-deploy">Fluxo de Deploy</a> •
+  <a href="#componentes-criados">Componentes Criados</a> •
+  <a href="#boas-praticas">Boas Práticas</a>
 </div><br>
+
+# ☁️ Infraestrutura - Kubernetes + Terraform (Azure)
+
+## 📖 Visão Geral
+
+Este repositório contém os **scripts de IaC (Terraform)** responsáveis por provisionar toda a infraestrutura do projeto:
+
+- **Kubernetes (AKS)**
+- **Banco de Dados Postgres (Azure Database)**
+- **Azure APIM**
+- **Configurações de rede, secrets e storage**
+
+## 🚀 Tecnologias
+
+- **Terraform**
+- **Azure AKS**
+- **Azure Database for PostgreSQL**
+- **Azure API Management (APIM)**
+- **GitHub Actions** para CI/CD
+
+## ⚙️ Fluxo de Deploy
+
+1. Alterações de infraestrutura são feitas via **Pull Request**.
+2. **Terraform Plan** roda automaticamente no pipeline.
+3. Após aprovação, **Terraform Apply** executa no merge.
+4. Infraestrutura é provisionada/atualizada automaticamente.
+
+## 🧩 Componentes Criados
+
+- **Cluster AKS** para rodar a aplicação.
+- **Namespace + Secrets + ConfigMaps** no Kubernetes.
+- **Postgres gerenciado** com backup e alta disponibilidade.
+- **Ingress + APIM** para expor a API de forma segura.
+- **Identity Integration** com Cognito para autenticação.
+
+## 🔒 Boas Práticas
+
+- Uso de **Secrets do GitHub** para dados sensíveis.
+- Branch `main` protegida (merge apenas via Pull Request).
+- Toda alteração na cloud é feita via **Terraform**, garantindo rastreabilidade.
