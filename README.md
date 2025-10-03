@@ -15,14 +15,14 @@ da FIAP (Tech Challenge).
   <a href="#boas-praticas">Boas Práticas</a>
 </div><br>
 
-# ☁️ Infraestrutura - Kubernetes + Terraform (Azure)
+# ☁️ Infraestrutura (Azure)
 
 ## 📖 Visão Geral
 
 Este repositório contém os **scripts de IaC (Terraform)** responsáveis por provisionar toda a infraestrutura do projeto:
 
-- **Kubernetes (AKS)**
-- **Banco de Dados Postgres (Azure Database)**
+- **Kubernetes - AKS (Somente a criação do cluster)**
+- **Banco de Dados Postgres - Azure Database (Somente Subnet delegada e zonas de DNS)**
 - **Azure APIM**
 - **Configurações de rede, secrets e storage**
 
@@ -47,7 +47,7 @@ Este repositório contém os **scripts de IaC (Terraform)** responsáveis por pr
 
 - **Resource Group**
 - **Virtual Network (VNET)** com subnets delegadas e zona de DNS privada
-- **AKS (Azure Kubernetes Service)**
+- **AKS (Azure Kubernetes Service)** Somente o Cluster
 - **APIM (Azure API Management)**
 - **Azure Function**
 - **Azure PostgreSQL Flexible Server**
