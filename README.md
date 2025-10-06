@@ -25,6 +25,7 @@ Este repositório contém os **scripts de IaC (Terraform)** responsáveis por pr
 
 - **Terraform**
 - **Azure Cloud**
+- **AWS Cloud**
 - **GitHub Actions** para CI/CD
 
 ### Recursos provisionados
@@ -60,7 +61,7 @@ Este repositório contém os **scripts de IaC (Terraform)** responsáveis por pr
 ### Performance
 
 - A **Azure Function** foi configurada com **Always On**, reduzindo o problema de **cold start**.
-- As requests para o **cognito** possuem um sistema de **caching** no **APIM**, já que o mesmo está provisionado na região East US da AWS e acarreta em uma lentidão
+- Todas as requisições estão sob **caching no Produto da API no APIM**.
 
 ## 🔧 Setup do Tenant e Service Principal
 
