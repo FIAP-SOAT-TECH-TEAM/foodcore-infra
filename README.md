@@ -6,11 +6,11 @@ da FIAP (Tech Challenge).
 <div align="center">
   <a href="#visao-geral">Visão Geral</a> •
   <a href="#tecnologias">Tecnologias</a> •
-  <a href="#componentes-criados">Componentes Criados</a> •
   <a href="#recursos-provisionados">Recursos provisionados</a> •
   <a href="#trafego-e-segurança">Tráfego e Segurança</a> •
   <a href="#localizacao">Localização</a> •
   <a href="#Performance">Performance</a> •
+  <a href="#setup-do-tenant-e-service-principal">Setup do Tenant e Service Principal</a> •
   <a href="#fluxo-de-deploy">Fluxo de Deploy</a> •
   <a href="#boas-praticas">Boas Práticas</a>
 </div><br>
@@ -19,29 +19,13 @@ da FIAP (Tech Challenge).
 
 ## 📖 Visão Geral
 
-Este repositório contém os **scripts de IaC (Terraform)** responsáveis por provisionar toda a infraestrutura do projeto:
-
-- **Kubernetes - AKS (Somente a criação do cluster)**
-- **Banco de Dados Postgres - Azure Database (Somente Subnet delegada e zonas de DNS)**
-- **Azure APIM**
-- **Configurações de rede, secrets e storage**
+Este repositório contém os **scripts de IaC (Terraform)** responsáveis por provisionar toda a infraestrutura do projeto.
 
 ## 🚀 Tecnologias
 
 - **Terraform**
-- **Azure AKS**
-- **Azure Database for PostgreSQL**
-- **Azure API Management (APIM)**
-- **Cognito**
+- **Azure Cloud**
 - **GitHub Actions** para CI/CD
-
-## 🧩 Componentes Criados
-
-- **Cluster AKS** para rodar a aplicação.
-- **Namespace + Secrets + ConfigMaps** no Kubernetes.
-- **Postgres gerenciado** com backup e alta disponibilidade.
-- **Ingress + APIM** para expor a API de forma segura.
-- **Identity Integration** com Cognito para autenticação.
 
 ### Recursos provisionados
 
@@ -49,12 +33,13 @@ Este repositório contém os **scripts de IaC (Terraform)** responsáveis por pr
 - **Virtual Network (VNET)** com subnets delegadas e zona de DNS privada
 - **AKS (Azure Kubernetes Service)** Somente o Cluster
 - **APIM (Azure API Management)**
-- **Azure Function**
 - **Azure PostgreSQL Flexible Server**
 - **ACR (Azure Container Registry)**
 - **Application Insights**
 
 > ⚠️ Nenhum recurso Kubernetes (deployments, services, ingress etc.) é criado por este repositório, apenas o **cluster AKS** em si.
+
+> ⚠️ Este repositório não faz o deploy da **Azure function** de autenticação. Ele somente cria alguns recursos que serão utilizados por ela.
 
 ### Tráfego e Segurança
 
@@ -77,12 +62,77 @@ Este repositório contém os **scripts de IaC (Terraform)** responsáveis por pr
 - A **Azure Function** foi configurada com **Always On**, reduzindo o problema de **cold start**.
 - As requests para o **cognito** possuem um sistema de **caching** no **APIM**, já que o mesmo está provisionado na região East US da AWS e acarreta em uma lentidão
 
+## 🔧 Setup do Tenant e Service Principal
+
+Antes de executar as pipelines de infraestrutura, é necessário configurar o tenant do Azure e criar o **Service Principal** com permissão para o Terraform aplicar as mudanças.
+
+### 1️⃣ Criar Service Principal
+
+Execute o comando abaixo no Azure CLI substituindo `subscription_id` pelo ID da sua assinatura:
+
+```bash
+az ad sp create-for-rbac --name "sp-soat-team8-tc3" --role contributor --scopes /subscriptions/<subscription_id>
+```
+
+Exemplo de saída:
+
+```json
+{
+  "clientId": "a04d156e-5efd-482a-be88-81a1bacefe65",
+  "clientSecret": "b-B8Q~GsvvkDW6KDA3HH3.q6wIII4apIuU0.lbQa",
+  "subscriptionId": "9d2e78eb-cc6c-454d-969f-3665a777b624",
+  "tenantId": "11dbbfe2-89b8-4549-be10-cec364e59551",
+  "activeDirectoryEndpointUrl": "https://login.microsoftonline.com",
+  "resourceManagerEndpointUrl": "https://management.azure.com/",
+  "activeDirectoryGraphResourceId": "https://graph.windows.net/",
+  "sqlManagementEndpointUrl": "https://management.core.windows.net:8443/",
+  "galleryEndpointUrl": "https://gallery.azure.com/",
+  "managementEndpointUrl": "https://management.core.windows.net/"
+}
+```
+
+### 2️⃣ Criar Federação (OIDC)
+
+Para que o Azure confie nos tokens OIDC emitidos pelo GitHub Actions, crie um arquivo cred.json com o seguinte conteúdo:
+
+```json
+{
+  "name": "githubaction-sp-soat-team8-tc3",
+  "issuer": "https://token.actions.githubusercontent.com",
+  "subject": "repo:organization/repo_name:ref:refs/heads/master",
+  "audiences": ["api://AzureADTokenExchange"]
+}
+```
+
+Depois, execute o comando abaixo substituindo **<service_principal_clientId>**:
+
+```bash
+az ad app federated-credential create --id <service_principal_clientId> --parameters cred.json
+```
+
+Isso permitirá que o pipeline do GitHub se autentique no Azure sem precisar armazenar client secret diretamente.
+
+### 3️⃣ Conceder Permissões Adicionais
+
+Conceda ao Service Principal permissão para atribuir roles (necessário para vínculo AKS ↔ ACR e AKS ↔ Subnet):
+
+```bash
+az role assignment create \
+  --assignee <service_principal_clientId> \
+  --role "User Access Administrator" \
+  --scope /subscriptions/<subscription_id>
+```
+
 ## ⚙️ Fluxo de Deploy
 
 1. Alterações de infraestrutura são feitas via **Pull Request**.
 2. **Terraform Plan** roda automaticamente no pipeline.
 3. Após aprovação, **Terraform Apply** executa no merge.
 4. Infraestrutura é provisionada/atualizada automaticamente.
+
+### Fluxo CI/CD
+
+![Diagrama de CI](docs/diagrams/ci-diagram.png)
 
 ## 🔒 Boas Práticas
 
