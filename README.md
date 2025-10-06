@@ -78,7 +78,7 @@ Exemplo de saída:
 
 ```json
 {
-  "clientId": "a04d156e-5efd-482a-be88-81a1bacefe65",
+  "clientId": "seu-client-id",
   "clientSecret": "sua-secret-hash",
   "subscriptionId": "sua-subscription",
   "tenantId": "11dbbfe2-89b8-4549-be10-cec364e59551",
