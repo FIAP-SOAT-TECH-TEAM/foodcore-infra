@@ -79,8 +79,8 @@ Exemplo de saída:
 ```json
 {
   "clientId": "a04d156e-5efd-482a-be88-81a1bacefe65",
-  "clientSecret": "b-B8Q~GsvvkDW6KDA3HH3.q6wIII4apIuU0.lbQa",
-  "subscriptionId": "9d2e78eb-cc6c-454d-969f-3665a777b624",
+  "clientSecret": "sua-secret-hash",
+  "subscriptionId": "sua-subscription",
   "tenantId": "11dbbfe2-89b8-4549-be10-cec364e59551",
   "activeDirectoryEndpointUrl": "https://login.microsoftonline.com",
   "resourceManagerEndpointUrl": "https://management.azure.com/",
