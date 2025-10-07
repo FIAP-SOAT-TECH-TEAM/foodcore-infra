@@ -131,6 +131,10 @@ az role assignment create \
 3. Após aprovação, **Terraform Apply** executa no merge.
 4. Infraestrutura é provisionada/atualizada automaticamente.
 
+Ao finalizar o deploy, será provisionado uma estrutura semelhante a essa
+
+![Diagrama infraestrutura](docs/diagrams/infra.png)
+
 ### Fluxo CI/CD
 
 ![Diagrama de CI](docs/diagrams/ci-diagram.png)
