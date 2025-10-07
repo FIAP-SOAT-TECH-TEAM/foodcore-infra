@@ -34,7 +34,9 @@ Este repositório contém os **scripts de IaC (Terraform)** responsáveis por pr
 - **Virtual Network (VNET)** com subnets delegadas e zona de DNS privada
 - **AKS (Azure Kubernetes Service)** Somente o Cluster
 - **APIM (Azure API Management)**
-- **Azure PostgreSQL Flexible Server**
+- **Azure Function**
+- **Azure Blob**
+- **AWS Cognito**
 - **ACR (Azure Container Registry)**
 - **Application Insights**
 
