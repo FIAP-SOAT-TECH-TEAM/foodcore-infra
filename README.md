@@ -15,6 +15,8 @@ da FIAP (Tech Challenge).
   <a href="#boas-praticas">Boas Práticas</a>
 </div><br>
 
+> 📽️ Vídeo de demonstração da arquitetura: [https://www.youtube.com/watch?v=soaATSbSRPc](https://www.youtube.com/watch?v=XgUpOKJjqak)<br>
+
 # ☁️ Infraestrutura (Azure)
 
 ## 📖 Visão Geral
