@@ -15,6 +15,8 @@ da FIAP (Tech Challenge).
   <a href="#boas-praticas">Boas Práticas</a>
 </div><br>
 
+> 📽️ Vídeo de demonstração da arquitetura: [https://www.youtube.com/watch?v=soaATSbSRPc](https://www.youtube.com/watch?v=XgUpOKJjqak)<br>
+
 # ☁️ Infraestrutura (Azure)
 
 ## 📖 Visão Geral
@@ -34,7 +36,9 @@ Este repositório contém os **scripts de IaC (Terraform)** responsáveis por pr
 - **Virtual Network (VNET)** com subnets delegadas e zona de DNS privada
 - **AKS (Azure Kubernetes Service)** Somente o Cluster
 - **APIM (Azure API Management)**
-- **Azure PostgreSQL Flexible Server**
+- **Azure Function**
+- **Azure Blob**
+- **AWS Cognito**
 - **ACR (Azure Container Registry)**
 - **Application Insights**
 
