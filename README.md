@@ -126,18 +126,51 @@ az role assignment create \
 
 ## ⚙️ Fluxo de Deploy
 
-1. Alterações de infraestrutura são feitas via **Pull Request**.
-2. **Terraform Plan** roda automaticamente no pipeline.
-3. Após aprovação, **Terraform Apply** executa no merge.
-4. Infraestrutura é provisionada/atualizada automaticamente.
+A gestão da infraestrutura segue um processo **automatizado, auditável e controlado** via **Pull Requests** no repositório de provisionamento.
+Esse fluxo garante segurança, rastreabilidade e aprovação formal antes de qualquer mudança aplicada em produção.
+
+1. **Criação de Pull Request**
+   - Todas as alterações de infraestrutura (novos recursos, updates, ou ajustes de configuração) devem ser propostas via **Pull Request (PR)**.
+   - O PR contém os arquivos `.tf` modificados e uma descrição detalhando o impacto da mudança.
+
+2. **Execução Automática do Terraform Plan**
+   - Ao abrir o PR, o pipeline de CI executa automaticamente o comando:
+
+     ```
+     terraform plan
+     ```
+
+   - Esse passo gera uma **prévia das alterações** que seriam aplicadas (criações, destruições, atualizações).
+   - O resultado do `plan` é exibido diretamente nos logs do pipeline, permitindo revisão técnica pelos aprovadores.
+
+3. **Revisão e Aprovação**
+   - O repositório é **protegido**, exigindo no mínimo **2 aprovações** antes do merge.
+   - Nenhum usuário pode aplicar alterações diretamente na branch principal (`main` ou `master`).
+   - Revisores devem garantir:
+     - Que o `plan` não tenha destruições indevidas (`destroy`)
+     - Que as variáveis e roles estejam corretas
+     - Que os módulos sigam o padrão organizacional
+
+4. **Aplicação no Merge**
+   - Após aprovação e merge do PR, o pipeline executa automaticamente:
+
+     ```
+     terraform apply -auto-approve
+     ```
+
+   - O **Terraform Apply** aplica as alterações descritas no `plan` aprovado, provisionando ou atualizando os recursos no Azure.
 
 Ao finalizar o deploy, será provisionado uma estrutura semelhante a essa
 
 ![Diagrama infraestrutura](docs/diagrams/infra.png)
 
+---
+
 ### Fluxo CI/CD
 
 ![Diagrama de CI](docs/diagrams/ci-diagram.png)
+
+---
 
 ## 🔒 Boas Práticas
 
