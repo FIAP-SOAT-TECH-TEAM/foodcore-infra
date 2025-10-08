@@ -11,8 +11,7 @@ da FIAP (Tech Challenge).
   <a href="#localizacao">Localização</a> •
   <a href="#Performance">Performance</a> •
   <a href="#setup-do-tenant-e-service-principal">Setup do Tenant e Service Principal</a> •
-  <a href="#fluxo-de-deploy">Fluxo de Deploy</a> •
-  <a href="#boas-praticas">Boas Práticas</a>
+  <a href="#fluxo-de-deploy">Governança e Fluxo de Deploy</a>
 </div><br>
 
 > 📽️ Vídeo de demonstração da arquitetura: [https://www.youtube.com/watch?v=soaATSbSRPc](https://www.youtube.com/watch?v=XgUpOKJjqak)<br>
