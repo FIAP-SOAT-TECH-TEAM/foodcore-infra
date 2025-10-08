@@ -173,11 +173,3 @@ Ao finalizar o deploy, será provisionado uma estrutura semelhante a essa
 ### Fluxo CI/CD
 
 ![Diagrama de CI](docs/diagrams/ci-diagram.png)
-
----
-
-## 🔒 Boas Práticas
-
-- Uso de **Secrets do GitHub** para dados sensíveis.
-- Branch `main` protegida (merge apenas via Pull Request).
-- Toda alteração na cloud é feita via **Terraform**, garantindo rastreabilidade.
