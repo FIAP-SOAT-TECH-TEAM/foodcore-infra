@@ -1,0 +1,43 @@
+services:
+
+  # Ferramenta para gerenciar banco de dados
+  adminer:
+    image: adminer:latest
+    container_name: foodcore-adminer
+    ports:
+      - "8081:8080"
+    depends_on:
+      - db
+    networks:
+      - fastfood-network
+    restart: unless-stopped
+
+  # RabbitMQ com management UI
+  rabbitmq:
+    image: rabbitmq:3.13-management
+    container_name: foodcore-rabbitmq
+    ports:
+      - "${RABBITMQ_PORT}:${RABBITMQ_PORT}"
+      - "${RABBITMQ_MANAGEMENT_PORT}:${RABBITMQ_MANAGEMENT_PORT}"
+    env_file:
+      - .env
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: [ "CMD", "rabbitmqctl", "status" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - fastfood-network
+    restart: unless-stopped
+
+networks:
+  fastfood-network:
+    driver: bridge
+
+volumes:
+  rabbitmq_data:
