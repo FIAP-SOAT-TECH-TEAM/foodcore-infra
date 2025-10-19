@@ -17,11 +17,14 @@ if ! check_docker; then
   exit 1
 fi
 
-# Navegar para o diretório docker
-cd "$PROJECT_ROOT/docker"
+# Ir para o diretório docker
+cd "$PROJECT_ROOT/docker" || {
+  echo "ERRO: Diretório docker não encontrado."
+  exit 1
+}
 
 # Verificar se já existem containers rodando
-RUNNING_CONTAINERS=$(docker ps --filter "name=food-core" --format "{{.Names}}")
+RUNNING_CONTAINERS=$(docker compose ps --filter "name=foodcore" --format "{{.Name}}" 2>/dev/null)
 
 if [ -n "$RUNNING_CONTAINERS" ]; then
   echo "AVISO: Existem containers da aplicação em execução:"
@@ -36,45 +39,22 @@ if [ -n "$RUNNING_CONTAINERS" ]; then
   fi
 
   echo "-> Parando containers existentes..."
-  docker-compose down
-fi
-
-# Iniciar serviços principais primeiro
-echo "-> Iniciando principais serviços (DB)..."
-docker-compose up -d db
-
-# Verificar se o PostgreSQL está rodando
-echo "-> Verificando status do PostgreSQL..."
-MAX_RETRIES=30
-RETRY_COUNT=0
-
-while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
-    if docker-compose exec db pg_isready -q; then
-        echo "-> PostgreSQL está pronto!"
-        break
-    fi
-
-    RETRY_COUNT=$((RETRY_COUNT+1))
-    echo "Aguardando PostgreSQL inicializar... ($RETRY_COUNT/$MAX_RETRIES)"
-    sleep 2
-done
-
-if [ $RETRY_COUNT -eq $MAX_RETRIES ]; then
-    echo "AVISO: Tempo limite excedido aguardando o PostgreSQL inicializar"
+  docker compose down
 fi
 
 # Iniciar RabbitMQ
 echo "-> Iniciando RabbitMQ..."
-docker-compose up -d rabbitmq
+docker compose up -d rabbitmq
 
-# Verificar se o RabbitMQ está pronto
+# Verificar se o RabbitMQ está pronto (usando healthcheck)
 echo "-> Verificando status do RabbitMQ..."
 MAX_RETRIES=30
 RETRY_COUNT=0
 
 while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
-    STATUS=$(docker exec -i $(docker ps -qf "name=rabbitmq") rabbitmqctl status 2>/dev/null | grep -ic "pid")
-    if [ "$STATUS" -gt 0 ]; then
+    STATUS=$(docker inspect --format='{{.State.Health.Status}}' foodcore-rabbitmq 2>/dev/null)
+
+    if [ "$STATUS" = "healthy" ]; then
         echo "-> RabbitMQ está pronto!"
         break
     fi
@@ -88,17 +68,40 @@ if [ $RETRY_COUNT -eq $MAX_RETRIES ]; then
     echo "AVISO: Tempo limite excedido aguardando o RabbitMQ inicializar"
 fi
 
-# Agora que os serviços principais estão prontos, iniciar o Adminer
-echo "-> Iniciando serviços adicionais (Adminer)..."
-docker-compose up -d adminer
+# Iniciar Zipkin
+echo "-> Iniciando Zipkin..."
+docker compose up -d zipkin
 
+# Verificar se o Zipkin está ativo
+ZIPKIN_RETRIES=15
+ZIPKIN_COUNT=0
+while [ $ZIPKIN_COUNT -lt $ZIPKIN_RETRIES ]; do
+    STATUS=$(docker inspect --format='{{.State.Status}}' foodcore-zipkin 2>/dev/null)
+    if [ "$STATUS" = "running" ]; then
+        echo "-> Zipkin está em execução!"
+        break
+    fi
+
+    ZIPKIN_COUNT=$((ZIPKIN_COUNT+1))
+    echo "Aguardando Zipkin iniciar... ($ZIPKIN_COUNT/$ZIPKIN_RETRIES)"
+    sleep 2
+done
+
+if [ $ZIPKIN_COUNT -eq $ZIPKIN_RETRIES ]; then
+    echo "AVISO: Tempo limite excedido aguardando o Zipkin iniciar"
+fi
+
+# Iniciar Adminer
+echo "-> Iniciando Adminer..."
+docker compose up -d adminer
+
+# Mostrar status final
+echo
 echo "===== Infraestrutura iniciada com sucesso! ====="
+echo
 echo "Serviços disponíveis:"
-echo "- PostgreSQL: localhost:5432"
-echo "- Adminer (gerenciador de BD): http://localhost:8081"
-echo "  Sistema: PostgreSQL"
-echo "  Servidor: db"
-echo "  Usuário: postgres"
-echo "  Senha: postgres"
-echo "  Banco de dados: fastfood"
-echo "- RabbitMQ (painel): http://localhost:15672  (usuário: guest / senha: guest)"
+echo "- Adminer: http://localhost:8083"
+echo "- RabbitMQ (painel de gerenciamento): http://localhost:15672"
+echo "- Zipkin: http://localhost:9411"
+echo
+echo "Use 'docker compose ps' para verificar o status dos serviços."

@@ -5,9 +5,7 @@ services:
     image: adminer:latest
     container_name: foodcore-adminer
     ports:
-      - "8081:8080"
-    depends_on:
-      - db
+      - "${ADMINER_PORT}:8080"
     networks:
       - fastfood-network
     restart: unless-stopped
@@ -31,6 +29,19 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
+    networks:
+      - fastfood-network
+    restart: unless-stopped
+  
+  zipkin:
+    image: openzipkin/zipkin
+    container_name: foodcore-zipkin
+    ports:
+      - "${ZIPKIN_PORT}:${ZIPKIN_PORT}"
+    env_file:
+      - .env
+    environment:
+      - SERVER_PORT=${ZIPKIN_PORT}
     networks:
       - fastfood-network
     restart: unless-stopped

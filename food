@@ -1,58 +1,30 @@
 #!/bin/bash
 
-# Script centralizador para o projeto Food Core API
+# Script centralizador para a infraestrutura do Food Core API
 # Uso: ./food [comando] [opções]
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SCRIPTS_DIR="$SCRIPT_DIR/scripts"
-ACT_DIR="$SCRIPT_DIR/docker/act"
 
 # Função para exibir ajuda
 show_help() {
-  echo "Food Core API - CLI de gerenciamento"
+  echo "Food Core API (Infra) - CLI de gerenciamento da infraestrutura"
   echo
   echo "Uso: ./food [comando] [opções]"
   echo
   echo "Comandos disponíveis:"
-  echo "  start:all        Inicia toda a infraestrutura e a aplicação"
   echo "  start:infra      Inicia apenas a infraestrutura (banco)"
-  echo "  start:app        Inicia apenas a aplicação"
-  echo "  stop:all         Para todos os serviços"
   echo "  stop:infra       Para apenas a infraestrutura"
-  echo "  stop:app         Para apenas a aplicação"
-  echo "  restart:all      Reinicia todos os serviços"
-  echo "  restart:app      Reinicia apenas a aplicação"
-  echo "  db:up            Aplica migrações do banco de dados"
-  echo "  db:reset         Reseta o banco de dados (cuidado!)"
-  echo "  run:action       Executa GitHub Actions localmente usando Act"
-  echo "  run:workflow     Executa um workflow específico do GitHub Actions"
-  echo "  test:unit        Executa apenas testes unitários (sem integração)"
-  echo "  test:all         Executa todos os testes (unitários + integração)"
-  echo "  test:coverage    Executa testes e gera relatório de cobertura"
-  echo "  test:report      Abre o relatório de cobertura no navegador"
-  echo "  sonar:analyze    Executa análise do SonarQube (requer token)"
-  echo "  sonar:cloud      Executa análise para o SonarCloud"
-  echo "  logs             Exibe logs dos containers"
-  echo "  logs:app         Exibe logs apenas da aplicação"
-  echo "  logs:db          Exibe logs apenas do banco de dados"
-  echo "  status           Exibe status dos containers"
-  echo "  clean            Remove containers, imagens e volumes não utilizados"
+  echo "  restart:all      Reinicia todos os serviços da infraestrutura"
   echo "  help             Exibe esta mensagem de ajuda"
   echo
   echo "Opções:"
-  echo "  --build, -b      Reconstrói as imagens antes de iniciar"
   echo "  --force, -f      Força a execução sem confirmação"
   echo
   echo "Exemplos:"
-  echo "  ./food start:all --build    Inicia tudo reconstruindo as imagens"
-  echo "  ./food stop:all             Para todos os serviços"
-  echo "  ./food db:up                Aplica migrações do banco"
-  echo "  ./food test:unit            Executa apenas testes unitários"
-  echo "  ./food test:all             Executa todos os testes"
-  echo "  ./food test:coverage        Executa testes e gera relatório de cobertura"
-  echo "  ./food sonar:analyze        Executa análise do SonarQube local"
-  echo "  ./food run:action           Executa todos os GitHub Actions localmente"
-  echo "  ./food run:workflow .github/workflows/ci-cd.yml  Executa um workflow específico"
+  echo "  ./food start:infra        Inicia a infraestrutura"
+  echo "  ./food stop:infra         Para a infraestrutura"
+  echo "  ./food restart:all        Reinicia a infraestrutura"
 }
 
 # Verificar se o Docker está rodando
@@ -74,15 +46,9 @@ if [ $# -eq 0 ]; then
 fi
 
 # Processar opções
-BUILD_FLAG=""
 FORCE_FLAG=""
-
 while [[ $# -gt 0 ]]; do
   case $1 in
-    --build|-b)
-      BUILD_FLAG="--build"
-      shift
-      ;;
     --force|-f)
       FORCE_FLAG="--force"
       shift
@@ -96,199 +62,22 @@ done
 
 # Executar o comando apropriado
 case "$COMMAND" in
-  start:all)
-    echo "Iniciando toda a infraestrutura e aplicação..."
+  start:infra)
+    echo "Iniciando a infraestrutura..."
     "$SCRIPTS_DIR/infra-up.sh" $FORCE_FLAG
-    "$SCRIPTS_DIR/app-up.sh" $BUILD_FLAG
     # Verificar se a rede fastfood-network existe, se não, criar
     if ! docker network ls | grep -q fastfood-network; then
       echo "Criando rede compartilhada fastfood-network..."
       docker network create fastfood-network
     fi
     ;;
-  start:infra)
-    echo "Iniciando apenas a infraestrutura..."
-    "$SCRIPTS_DIR/infra-up.sh" $FORCE_FLAG
-    ;;
-  start:app)
-    echo "Iniciando apenas a aplicação..."
-    "$SCRIPTS_DIR/app-up.sh" $BUILD_FLAG
-    ;;
-  stop:all)
-    echo "Parando todos os serviços..."
-    "$SCRIPTS_DIR/app-down.sh"
-    "$SCRIPTS_DIR/infra-down.sh"
-    ;;
   stop:infra)
-    echo "Parando apenas a infraestrutura..."
+    echo "Parando a infraestrutura..."
     "$SCRIPTS_DIR/infra-down.sh"
-    ;;
-  stop:app)
-    echo "Parando apenas a aplicação..."
-    "$SCRIPTS_DIR/app-down.sh"
     ;;
   restart:all)
-    echo "Reiniciando todos os serviços..."
-    "$SCRIPTS_DIR/app-restart.sh" $BUILD_FLAG
+    echo "Reiniciando a infraestrutura..."
     "$SCRIPTS_DIR/infra-restart.sh" $FORCE_FLAG
-    ;;
-  restart:app)
-    echo "Reiniciando apenas a aplicação..."
-    "$SCRIPTS_DIR/app-restart.sh" $BUILD_FLAG
-    ;;
-  db:up)
-    echo "Aplicando migrações do banco de dados..."
-    "$SCRIPTS_DIR/apply-migrations.sh"
-    ;;
-  db:reset)
-    if [ "$FORCE_FLAG" != "--force" ]; then
-      read -p "ATENÇÃO: Isso irá resetar o banco de dados. Tem certeza? (s/n): " resposta
-      if [[ ! "$resposta" =~ ^[Ss]$ ]]; then
-        echo "Operação cancelada."
-        exit 0
-      fi
-    fi
-    echo "Resetando o banco de dados..."
-    "$SCRIPTS_DIR/reset-db.sh"
-    ;;
-  run:action)
-    echo "Executando GitHub Actions localmente..."
-    # Verificar se o Act está instalado
-    if ! command -v act &> /dev/null; then
-      echo "ERRO: Act não está instalado."
-      echo "Instale-o seguindo as instruções em: https://github.com/nektos/act"
-      exit 1
-    fi
-    
-    # Verificar se há arquivo de secrets
-    if [ -f "$ACT_DIR/secrets.env" ]; then
-      echo "Usando secrets do arquivo $ACT_DIR/secrets.env"
-      act --secret-file "$ACT_DIR/secrets.env" "$@"
-    else
-      echo "Arquivo de secrets não encontrado. Usando configuração padrão."
-      echo "Para configurar secrets, crie um arquivo em $ACT_DIR/secrets.env"
-      act "$@"
-    fi
-    ;;
-  run:workflow)
-    echo "Executando workflow específico do GitHub Actions..."
-    # Verificar se o Act está instalado
-    if ! command -v act &> /dev/null; then
-      echo "ERRO: Act não está instalado."
-      echo "Instale-o seguindo as instruções em: https://github.com/nektos/act"
-      exit 1
-    fi
-    
-    # Verificar se o workflow foi especificado
-    if [ -z "$1" ]; then
-      echo "ERRO: Especifique o workflow a ser executado."
-      echo "Exemplo: ./food run:workflow .github/workflows/ci-cd.yml"
-      exit 1
-    fi
-    
-    # Verificar se há arquivo de secrets
-    if [ -f "$ACT_DIR/secrets.env" ]; then
-      echo "Usando secrets do arquivo $ACT_DIR/secrets.env"
-      act workflow_dispatch -W "$1" --secret-file "$ACT_DIR/secrets.env" "${@:2}"
-    else
-      echo "Arquivo de secrets não encontrado. Usando configuração padrão."
-      echo "Para configurar secrets, crie um arquivo em $ACT_DIR/secrets.env"
-      act workflow_dispatch -W "$1" "${@:2}"
-          fi
-      ;;
-  test:unit)
-    echo "Executando apenas testes unitários (sem integração)..."
-    ./gradlew clean test --tests "*.unit.*" -Dspring.profiles.active=test
-    ;;
-  test:all)
-    echo "Executando todos os testes (unitários + integração)..."
-    ./gradlew clean test -Dspring.profiles.active=test
-    ;;
-  test:coverage)
-    echo "Executando testes e gerando relatório de cobertura..."
-    ./gradlew clean test jacocoTestReport -Dspring.profiles.active=test
-    echo ""
-    echo "✅ Relatório de cobertura gerado!"
-    echo "📊 Abra o arquivo: build/reports/jacoco/test/html/index.html"
-    echo "📈 Ou execute: ./food test:report"
-    ;;
-  test:report)
-    echo "Abrindo relatório de cobertura no navegador..."
-    if [ -f "build/reports/jacoco/test/html/index.html" ]; then
-      if command -v open &> /dev/null; then
-        # macOS
-        open build/reports/jacoco/test/html/index.html
-      elif command -v xdg-open &> /dev/null; then
-        # Linux
-        xdg-open build/reports/jacoco/test/html/index.html
-      elif command -v start &> /dev/null; then
-        # Windows
-        start build/reports/jacoco/test/html/index.html
-      else
-        echo "Não foi possível abrir automaticamente. Abra manualmente:"
-        echo "build/reports/jacoco/test/html/index.html"
-      fi
-    else
-      echo "❌ Relatório de cobertura não encontrado!"
-      echo "Execute primeiro: ./food test:coverage"
-    fi
-    ;;
-  sonar:analyze)
-    echo "Executando análise do SonarQube..."
-    if [ -z "$SONAR_TOKEN" ]; then
-      echo "⚠️  Variável SONAR_TOKEN não definida."
-      echo "💡 Para usar SonarQube local:"
-      echo "   1. Inicie o SonarQube: docker run -d --name sonarqube -p 9000:9000 sonarqube:lts"
-      echo "   2. Acesse http://localhost:9000 (admin/admin)"
-      echo "   3. Crie um token e defina: export SONAR_TOKEN=seu-token"
-      echo ""
-      echo "🚀 Executando sem token (pode falhar se SonarQube exigir autenticação)..."
-    fi
-    ./gradlew clean test jacocoTestReport sonar -Dspring.profiles.active=test
-    ;;
-  sonar:cloud)
-    echo "Executando análise para o SonarCloud..."
-    if [ -z "$SONAR_TOKEN" ]; then
-      echo "❌ Variável SONAR_TOKEN é obrigatória para SonarCloud!"
-      echo "💡 Configure o token:"
-      echo "   1. Acesse https://sonarcloud.io/account/security/"
-      echo "   2. Gere um token"
-      echo "   3. Defina: export SONAR_TOKEN=seu-token"
-      echo "   4. Configure a organização no build.gradle"
-      exit 1
-    fi
-    echo "🔍 Analisando código para o SonarCloud..."
-    ./gradlew clean test jacocoTestReport sonar \
-      -Dspring.profiles.active=test \
-      -Dsonar.host.url=https://sonarcloud.io \
-      -Dsonar.organization=${SONAR_ORGANIZATION:-"your-org"}
-    ;;
-  logs)
-    echo "Exibindo logs de todos os containers..."
-    cd "$SCRIPT_DIR/docker" && docker-compose logs -f
-    ;;
-  logs:app)
-    echo "Exibindo logs da aplicação..."
-    cd "$SCRIPT_DIR/docker" && docker-compose logs -f app
-    ;;
-  logs:db)
-    echo "Exibindo logs do banco de dados..."
-    cd "$SCRIPT_DIR/docker" && docker-compose logs -f db
-    ;;
-  status)
-    echo "Status dos containers:"
-    cd "$SCRIPT_DIR/docker" && docker-compose ps
-    ;;
-  clean)
-    if [ "$FORCE_FLAG" != "--force" ]; then
-      read -p "ATENÇÃO: Isso irá remover containers, imagens e volumes não utilizados. Tem certeza? (s/n): " resposta
-      if [[ ! "$resposta" =~ ^[Ss]$ ]]; then
-        echo "Operação cancelada."
-        exit 0
-      fi
-    fi
-    echo "Limpando recursos Docker não utilizados..."
-    docker system prune -a --volumes
     ;;
   help)
     show_help
@@ -298,4 +87,4 @@ case "$COMMAND" in
     echo "Use './food help' para ver os comandos disponíveis."
     exit 1
     ;;
-esac 
+esac
