@@ -18,10 +18,13 @@ if ! check_docker; then
 fi
 
 # Navegar para o diretório docker
-cd "$PROJECT_ROOT/docker"
+cd "$PROJECT_ROOT/docker" || {
+  echo "ERRO: Diretório docker não encontrado."
+  exit 1
+}
 
 # Verificar quais contêineres de infraestrutura estão rodando
-INFRA_CONTAINERS=$(docker ps --filter "name=foodcore-(adminer|rabbitmq|zipkin)" --format "{{.Names}}")
+INFRA_CONTAINERS=$(docker ps --filter "name=foodcore-(adminer|azure-service-bus-emulator|zipkin)" --format "{{.Names}}")
 
 if [ -z "$INFRA_CONTAINERS" ]; then
   echo "Nenhum contêiner de infraestrutura em execução."
@@ -33,11 +36,11 @@ echo "$INFRA_CONTAINERS"
 echo
 
 # Parar os contêineres de infraestrutura
-echo "-> Parando serviços de infraestrutura (Adminer, RabbitMQ, Zipkin)..."
-docker-compose stop adminer rabbitmq zipkin
+echo "-> Parando serviços de infraestrutura (Adminer, Azure Service Bus Emulator, SQL Server e Zipkin)..."
+docker compose stop adminer azure-service-bus-emulator azure-service-bus-emulator-sql-server zipkin
 
 # Verificar se todos os contêineres foram parados
-STILL_RUNNING=$(docker ps --filter "name=foodcore-(adminer|rabbitmq|zipkin)" --format "{{.Names}}")
+STILL_RUNNING=$(docker ps --filter "name=foodcore-(adminer|azure-service-bus-emulator|zipkin)" --format "{{.Names}}")
 if [ -z "$STILL_RUNNING" ]; then
   echo "===== Infraestrutura parada com sucesso! ====="
 else
@@ -45,10 +48,10 @@ else
   echo "$STILL_RUNNING"
   echo
   echo "Forçando a parada de todos os contêineres..."
-  docker-compose down
+  docker compose down
 
   # Verificação final
-  STILL_RUNNING=$(docker ps --filter "name=foodcore-(adminer|rabbitmq|zipkin)" --format "{{.Names}}")
+  STILL_RUNNING=$(docker ps --filter "name=foodcore-(adminer|azure-service-bus-emulator|zipkin)" --format "{{.Names}}")
   if [ -z "$STILL_RUNNING" ]; then
     echo "===== Infraestrutura parada com sucesso! ====="
   else

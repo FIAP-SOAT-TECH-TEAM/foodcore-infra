@@ -42,30 +42,52 @@ if [ -n "$RUNNING_CONTAINERS" ]; then
   docker compose down
 fi
 
-# Iniciar RabbitMQ
-echo "-> Iniciando RabbitMQ..."
-docker compose up -d rabbitmq
+# Iniciar SQL Server do Service Bus Emulator
+echo "-> Iniciando SQL Server para Azure Service Bus Emulator..."
+docker compose up -d azure-service-bus-emulator-sql-server
 
-# Verificar se o RabbitMQ está pronto (usando healthcheck)
-echo "-> Verificando status do RabbitMQ..."
-MAX_RETRIES=30
-RETRY_COUNT=0
-
-while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
-    STATUS=$(docker inspect --format='{{.State.Health.Status}}' foodcore-rabbitmq 2>/dev/null)
-
-    if [ "$STATUS" = "healthy" ]; then
-        echo "-> RabbitMQ está pronto!"
+# Aguardar o SQL Server inicializar
+echo "-> Aguardando SQL Server inicializar..."
+SQL_RETRIES=30
+SQL_COUNT=0
+while [ $SQL_COUNT -lt $SQL_RETRIES ]; do
+    STATUS=$(docker inspect --format='{{.State.Status}}' foodcore-azure-service-bus-emulator-sql-server 2>/dev/null)
+    if [ "$STATUS" = "running" ]; then
+        echo "-> SQL Server está em execução!"
         break
     fi
 
-    RETRY_COUNT=$((RETRY_COUNT+1))
-    echo "Aguardando RabbitMQ inicializar... ($RETRY_COUNT/$MAX_RETRIES)"
+    SQL_COUNT=$((SQL_COUNT+1))
+    echo "Aguardando SQL Server... ($SQL_COUNT/$SQL_RETRIES)"
+    sleep 3
+done
+
+if [ $SQL_COUNT -eq $SQL_RETRIES ]; then
+    echo "AVISO: Tempo limite excedido aguardando SQL Server inicializar"
+fi
+
+# Iniciar Azure Service Bus Emulator
+echo "-> Iniciando Azure Service Bus Emulator..."
+docker compose up -d azure-service-bus-emulator
+
+# Aguardar o Service Bus Emulator ficar pronto
+echo "-> Verificando status do Azure Service Bus Emulator..."
+SB_RETRIES=30
+SB_COUNT=0
+while [ $SB_COUNT -lt $SB_RETRIES ]; do
+    STATUS=$(docker inspect --format='{{.State.Status}}' foodcore-azure-service-bus-emulator 2>/dev/null)
+    if [ "$STATUS" = "running" ]; then
+        echo "-> Azure Service Bus Emulator está em execução!"
+        break
+    fi
+
+    SB_COUNT=$((SB_COUNT+1))
+    echo "Aguardando Azure Service Bus Emulator... ($SB_COUNT/$SB_RETRIES)"
     sleep 2
 done
 
-if [ $RETRY_COUNT -eq $MAX_RETRIES ]; then
-    echo "AVISO: Tempo limite excedido aguardando o RabbitMQ inicializar"
+if [ $SB_COUNT -eq $SB_RETRIES ]; then
+    echo "AVISO: Tempo limite excedido aguardando Azure Service Bus Emulator inicializar"
 fi
 
 # Iniciar Zipkin
@@ -101,7 +123,7 @@ echo "===== Infraestrutura iniciada com sucesso! ====="
 echo
 echo "Serviços disponíveis:"
 echo "- Adminer: http://localhost:8083"
-echo "- RabbitMQ (painel de gerenciamento): http://localhost:15672"
+echo "- Azure Service Bus Emulator: 5672 (AMQP), 5300 (Management)"
 echo "- Zipkin: http://localhost:9411"
 echo
 echo "Use 'docker compose ps' para verificar o status dos serviços."

@@ -10,29 +10,35 @@ services:
       - fastfood-network
     restart: unless-stopped
 
-  # RabbitMQ com management UI
-  rabbitmq:
-    image: rabbitmq:3.13-management
-    container_name: foodcore-rabbitmq
-    ports:
-      - "${RABBITMQ_PORT}:${RABBITMQ_PORT}"
-      - "${RABBITMQ_MANAGEMENT_PORT}:${RABBITMQ_MANAGEMENT_PORT}"
-    env_file:
-      - .env
-    environment:
-      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
-      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+  # Azure Service Bus Emulator
+  azure-service-bus-emulator:
+    image: mcr.microsoft.com/azure-messaging/servicebus-emulator:latest
+    container_name: foodcore-azure-service-bus-emulator
+    restart: unless-stopped
     volumes:
-      - rabbitmq_data:/var/lib/rabbitmq
-    healthcheck:
-      test: [ "CMD", "rabbitmqctl", "status" ]
-      interval: 30s
-      timeout: 10s
-      retries: 5
+      - "./config.json:/ServiceBus_Emulator/ConfigFiles/Config.json"
+    depends_on:
+      - azure-service-bus-emulator-sql-server
+    ports:
+      - "${AZ_SVC_BUS_PORT}:5672"
+      - "${AZ_SVC_BUS_MGMT_PORT}:5300"
     networks:
       - fastfood-network
-    restart: unless-stopped
-  
+    env_file:
+      - .env
+      
+  azure-service-bus-emulator-sql-server:
+    container_name: "foodcore-azure-service-bus-emulator-sql-server"
+    image: "mcr.microsoft.com/mssql/server:2022-latest"
+    networks:
+      fastfood-network:
+        aliases:
+          - "${SQL_SERVER}"
+    env_file:
+      - .env
+    volumes:
+    - az_svc_bus_sql_data:/var/opt/mssql
+    
   zipkin:
     image: openzipkin/zipkin
     container_name: foodcore-zipkin
@@ -51,4 +57,4 @@ networks:
     driver: bridge
 
 volumes:
-  rabbitmq_data:
+  az_svc_bus_sql_data:
