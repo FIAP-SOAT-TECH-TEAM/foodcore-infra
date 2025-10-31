@@ -39,6 +39,30 @@
               "RequiresDuplicateDetection": false,
               "RequiresSession": false
             }
+          },
+          {
+            "Name": "payment.reversal.queue",
+            "Properties": {
+              "DeadLetteringOnMessageExpiration": false,
+              "DefaultMessageTimeToLive": "PT1H",
+              "DuplicateDetectionHistoryTimeWindow": "PT20S",
+              "LockDuration": "PT1M",
+              "MaxDeliveryCount": 3,
+              "RequiresDuplicateDetection": false,
+              "RequiresSession": false
+            }
+          },
+          {
+            "Name": "stock.reversal.queue",
+            "Properties": {
+              "DeadLetteringOnMessageExpiration": false,
+              "DefaultMessageTimeToLive": "PT1H",
+              "DuplicateDetectionHistoryTimeWindow": "PT20S",
+              "LockDuration": "PT1M",
+              "MaxDeliveryCount": 3,
+              "RequiresDuplicateDetection": false,
+              "RequiresSession": false
+            }
           }
         ],
         "Topics": [
