@@ -5,18 +5,6 @@
         "Name": "sbemulatorns",
         "Queues": [
           {
-            "Name": "order.canceled.queue",
-            "Properties": {
-              "DeadLetteringOnMessageExpiration": false,
-              "DefaultMessageTimeToLive": "PT1H",
-              "DuplicateDetectionHistoryTimeWindow": "PT20S",
-              "LockDuration": "PT1M",
-              "MaxDeliveryCount": 3,
-              "RequiresDuplicateDetection": false,
-              "RequiresSession": false
-            }
-          },
-          {
             "Name": "payment.approved.queue",
             "Properties": {
               "DeadLetteringOnMessageExpiration": false,
@@ -41,7 +29,7 @@
             }
           },
           {
-            "Name": "payment.reversal.queue",
+            "Name": "stock.reversal.queue",
             "Properties": {
               "DeadLetteringOnMessageExpiration": false,
               "DefaultMessageTimeToLive": "PT1H",
@@ -53,7 +41,7 @@
             }
           },
           {
-            "Name": "stock.reversal.queue",
+            "Name": "stock.debit.queue",
             "Properties": {
               "DeadLetteringOnMessageExpiration": false,
               "DefaultMessageTimeToLive": "PT1H",
@@ -75,7 +63,27 @@
             },
             "Subscriptions": [
               {
-                "Name": "payment.order.created.topic.subscription",
+                "Name": "catalog.order.created.topic.subscription",
+                "Properties": {
+                  "DeadLetteringOnMessageExpiration": false,
+                  "DefaultMessageTimeToLive": "PT1H",
+                  "LockDuration": "PT1M",
+                  "MaxDeliveryCount": 3,
+                  "RequiresSession": false
+                }
+              }
+            ]
+          },
+          {
+            "Name": "order.canceled.topic",
+            "Properties": {
+              "DefaultMessageTimeToLive": "PT1H",
+              "DuplicateDetectionHistoryTimeWindow": "PT20S",
+              "RequiresDuplicateDetection": false
+            },
+            "Subscriptions": [
+              {
+                "Name": "payment.order.canceled.topic.subscription",
                 "Properties": {
                   "DeadLetteringOnMessageExpiration": false,
                   "DefaultMessageTimeToLive": "PT1H",
@@ -85,7 +93,7 @@
                 }
               },
               {
-                "Name": "catalog.order.created.topic.subscription",
+                "Name": "catalog.order.canceled.topic.subscription",
                 "Properties": {
                   "DeadLetteringOnMessageExpiration": false,
                   "DefaultMessageTimeToLive": "PT1H",
