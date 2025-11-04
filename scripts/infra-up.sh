@@ -46,8 +46,7 @@ fi
 echo "-> Iniciando SQL Server para Azure Service Bus Emulator..."
 docker compose up -d azure-service-bus-emulator-sql-server
 
-# Aguardar o SQL Server inicializar
-echo "-> Aguardando SQL Server inicializar..."
+# Aguardar SQL Server inicializar
 SQL_RETRIES=30
 SQL_COUNT=0
 while [ $SQL_COUNT -lt $SQL_RETRIES ]; do
@@ -56,22 +55,16 @@ while [ $SQL_COUNT -lt $SQL_RETRIES ]; do
         echo "-> SQL Server está em execução!"
         break
     fi
-
     SQL_COUNT=$((SQL_COUNT+1))
     echo "Aguardando SQL Server... ($SQL_COUNT/$SQL_RETRIES)"
     sleep 3
 done
 
-if [ $SQL_COUNT -eq $SQL_RETRIES ]; then
-    echo "AVISO: Tempo limite excedido aguardando SQL Server inicializar"
-fi
-
 # Iniciar Azure Service Bus Emulator
 echo "-> Iniciando Azure Service Bus Emulator..."
 docker compose up -d azure-service-bus-emulator
 
-# Aguardar o Service Bus Emulator ficar pronto
-echo "-> Verificando status do Azure Service Bus Emulator..."
+# Aguardar Service Bus Emulator inicializar
 SB_RETRIES=30
 SB_COUNT=0
 while [ $SB_COUNT -lt $SB_RETRIES ]; do
@@ -80,21 +73,16 @@ while [ $SB_COUNT -lt $SB_RETRIES ]; do
         echo "-> Azure Service Bus Emulator está em execução!"
         break
     fi
-
     SB_COUNT=$((SB_COUNT+1))
     echo "Aguardando Azure Service Bus Emulator... ($SB_COUNT/$SB_RETRIES)"
     sleep 2
 done
 
-if [ $SB_COUNT -eq $SB_RETRIES ]; then
-    echo "AVISO: Tempo limite excedido aguardando Azure Service Bus Emulator inicializar"
-fi
-
 # Iniciar Zipkin
 echo "-> Iniciando Zipkin..."
 docker compose up -d zipkin
 
-# Verificar se o Zipkin está ativo
+# Verificar se Zipkin está ativo
 ZIPKIN_RETRIES=15
 ZIPKIN_COUNT=0
 while [ $ZIPKIN_COUNT -lt $ZIPKIN_RETRIES ]; do
@@ -103,19 +91,69 @@ while [ $ZIPKIN_COUNT -lt $ZIPKIN_RETRIES ]; do
         echo "-> Zipkin está em execução!"
         break
     fi
-
     ZIPKIN_COUNT=$((ZIPKIN_COUNT+1))
     echo "Aguardando Zipkin iniciar... ($ZIPKIN_COUNT/$ZIPKIN_RETRIES)"
     sleep 2
 done
 
-if [ $ZIPKIN_COUNT -eq $ZIPKIN_RETRIES ]; then
-    echo "AVISO: Tempo limite excedido aguardando o Zipkin iniciar"
-fi
-
 # Iniciar Adminer
 echo "-> Iniciando Adminer..."
 docker compose up -d adminer
+
+# Iniciar servidor SMTP (MailDev)
+echo "-> Iniciando servidor SMTP (MailDev)..."
+docker compose up -d smtp-server
+
+# Aguardar SMTP iniciar
+SMTP_RETRIES=15
+SMTP_COUNT=0
+while [ $SMTP_COUNT -lt $SMTP_RETRIES ]; do
+    STATUS=$(docker inspect --format='{{.State.Status}}' foodcore-smtp-server 2>/dev/null)
+    if [ "$STATUS" = "running" ]; then
+        echo "-> Servidor SMTP (MailDev) está em execução!"
+        break
+    fi
+    SMTP_COUNT=$((SMTP_COUNT+1))
+    echo "Aguardando SMTP iniciar... ($SMTP_COUNT/$SMTP_RETRIES)"
+    sleep 2
+done
+
+# Iniciar LocalStack
+echo "-> Iniciando LocalStack (AWS Emulator)..."
+docker compose up -d localstack
+
+# Aguardar LocalStack inicializar
+LS_RETRIES=20
+LS_COUNT=0
+while [ $LS_COUNT -lt $LS_RETRIES ]; do
+    STATUS=$(docker inspect --format='{{.State.Status}}' foodcore-localstack 2>/dev/null)
+    if [ "$STATUS" = "running" ]; then
+        echo "-> LocalStack está em execução!"
+        break
+    fi
+    LS_COUNT=$((LS_COUNT+1))
+    echo "Aguardando LocalStack iniciar... ($LS_COUNT/$LS_RETRIES)"
+    sleep 3
+done
+
+# Iniciar Azure Blob Storage Emulator (Azurite)
+echo "-> Iniciando Azure Blob Storage Emulator (Azurite)..."
+docker compose up -d azure-blob-storage-emulator
+
+# Aguardar Azurite inicializar
+AZ_RETRIES=20
+AZ_COUNT=0
+while [ $AZ_COUNT -lt $AZ_RETRIES ]; do
+    STATUS=$(docker inspect --format='{{.State.Status}}' foodcore-azure-blob-emulator 2>/dev/null)
+    if [ "$STATUS" = "running" ]; then
+        echo "-> Azure Blob Storage Emulator (Azurite) está em execução!"
+        break
+    fi
+    AZ_COUNT=$((AZ_COUNT+1))
+    echo "Aguardando Azure Blob Storage Emulator iniciar... ($AZ_COUNT/$AZ_RETRIES)"
+    sleep 2
+done
+
 
 # Mostrar status final
 echo
@@ -125,5 +163,8 @@ echo "Serviços disponíveis:"
 echo "- Adminer: http://localhost:8083"
 echo "- Azure Service Bus Emulator: 5672 (AMQP), 5300 (Management)"
 echo "- Zipkin: http://localhost:9411"
+echo "- SMTP (MailDev): http://localhost:1080"
+echo "- LocalStack (Cognito/Serviços AWS): http://localhost:4566"
+echo "- Azure Blob Storage Emulator (Azurite): http://localhost:10000/devstoreaccount1"
 echo
 echo "Use 'docker compose ps' para verificar o status dos serviços."

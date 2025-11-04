@@ -16,6 +16,7 @@ show_help() {
   echo "  start:infra      Inicia apenas a infraestrutura (banco)"
   echo "  stop:infra       Para apenas a infraestrutura"
   echo "  restart:all      Reinicia todos os serviços da infraestrutura"
+  echo "  init:user        Inicializa o usuário pré-carregado no LocalStack"
   echo "  help             Exibe esta mensagem de ajuda"
   echo
   echo "Opções:"
@@ -78,6 +79,10 @@ case "$COMMAND" in
   restart:all)
     echo "Reiniciando a infraestrutura..."
     "$SCRIPTS_DIR/infra-restart.sh" $FORCE_FLAG
+    ;;
+  init:user)
+    echo "Inicializando usuário no LocalStack..."
+    "$SCRIPTS_DIR/init-user.sh"
     ;;
   help)
     show_help

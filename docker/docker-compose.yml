@@ -1,6 +1,5 @@
 services:
 
-  # Ferramenta para gerenciar banco de dados
   adminer:
     image: adminer:latest
     container_name: foodcore-adminer
@@ -9,8 +8,9 @@ services:
     networks:
       - fastfood-network
     restart: unless-stopped
+    env_file:
+      - .env
 
-  # Azure Service Bus Emulator
   azure-service-bus-emulator:
     image: mcr.microsoft.com/azure-messaging/servicebus-emulator:latest
     container_name: foodcore-azure-service-bus-emulator
@@ -37,20 +37,62 @@ services:
     env_file:
       - .env
     volumes:
-    - az_svc_bus_sql_data:/var/opt/mssql
-    
+      - az_svc_bus_sql_data:/var/opt/mssql
+
+  
+  azure-blob-storage-emulator:
+    image: mcr.microsoft.com/azure-storage/azurite:latest
+    container_name: foodcore-azure-blob-emulator
+    restart: unless-stopped
+    command: azurite -l /data --blobHost 0.0.0.0 --queueHost 0.0.0.0 --tableHost 0.0.0.0 --debug /data/debug.log
+    ports:
+      - "${AZURE_BLOB_BLOB_PORT}:10000"
+      - "${AZURE_BLOB_QUEUE_PORT}:10001"
+      - "${AZURE_BLOB_TABLE_PORT}:10002"
+    volumes:
+      - azurite_data:/data
+    networks:
+      - fastfood-network
+    env_file:
+      - .env
+
   zipkin:
     image: openzipkin/zipkin
     container_name: foodcore-zipkin
     ports:
       - "${ZIPKIN_PORT}:${ZIPKIN_PORT}"
-    env_file:
-      - .env
-    environment:
-      - SERVER_PORT=${ZIPKIN_PORT}
     networks:
       - fastfood-network
     restart: unless-stopped
+    env_file:
+      - .env
+
+  smtp-server:
+    image: maildev/maildev:latest
+    container_name: foodcore-smtp-server
+    restart: unless-stopped
+    ports:
+      - "${SMTP_PORT}:1025"
+      - "${SMTP_UI_PORT}:1080"
+    networks:
+      - fastfood-network
+    env_file:
+      - .env
+
+  localstack:
+    image: localstack/localstack-pro:latest
+    container_name: foodcore-localstack
+    restart: unless-stopped
+    ports:
+      - "${LOCALSTACK_EDGE_PORT}:4566"
+      - "4510-4559:4510-4559"
+    networks:
+      - fastfood-network
+    volumes:
+      - "localstack_data:/var/lib/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    env_file:
+      - .env
 
 networks:
   fastfood-network:
@@ -58,3 +100,5 @@ networks:
 
 volumes:
   az_svc_bus_sql_data:
+  localstack_data:
+  azurite_data:

@@ -13,18 +13,17 @@ check_docker() {
 
 if ! check_docker; then
   echo "ERRO: O Docker não está rodando."
-  echo "Por favor, inicie o Docker Desktop e tente novamente."
   exit 1
 fi
 
-# Navegar para o diretório docker
+# Ir para o diretório docker
 cd "$PROJECT_ROOT/docker" || {
   echo "ERRO: Diretório docker não encontrado."
   exit 1
 }
 
-# Verificar quais contêineres de infraestrutura estão rodando
-INFRA_CONTAINERS=$(docker ps --filter "name=foodcore-(adminer|azure-service-bus-emulator|zipkin)" --format "{{.Names}}")
+# Containers de infraestrutura
+INFRA_CONTAINERS=$(docker ps --filter "name=foodcore-(adminer|azure-service-bus-emulator|zipkin|smtp-server|localstack|azure-blob-emulator)" --format "{{.Names}}")
 
 if [ -z "$INFRA_CONTAINERS" ]; then
   echo "Nenhum contêiner de infraestrutura em execução."
@@ -35,12 +34,12 @@ echo "Contêineres de infraestrutura em execução:"
 echo "$INFRA_CONTAINERS"
 echo
 
-# Parar os contêineres de infraestrutura
-echo "-> Parando serviços de infraestrutura (Adminer, Azure Service Bus Emulator, SQL Server e Zipkin)..."
-docker compose stop adminer azure-service-bus-emulator azure-service-bus-emulator-sql-server zipkin
+# Parar contêineres
+echo "-> Parando serviços de infraestrutura..."
+docker compose stop adminer azure-service-bus-emulator azure-service-bus-emulator-sql-server zipkin smtp-server localstack azure-blob-storage-emulator
 
-# Verificar se todos os contêineres foram parados
-STILL_RUNNING=$(docker ps --filter "name=foodcore-(adminer|azure-service-bus-emulator|zipkin)" --format "{{.Names}}")
+# Verificação final
+STILL_RUNNING=$(docker ps --filter "name=foodcore-(adminer|azure-service-bus-emulator|zipkin|smtp-server|localstack|azure-blob-emulator)" --format "{{.Names}}")
 if [ -z "$STILL_RUNNING" ]; then
   echo "===== Infraestrutura parada com sucesso! ====="
 else
@@ -50,12 +49,11 @@ else
   echo "Forçando a parada de todos os contêineres..."
   docker compose down
 
-  # Verificação final
-  STILL_RUNNING=$(docker ps --filter "name=foodcore-(adminer|azure-service-bus-emulator|zipkin)" --format "{{.Names}}")
+  STILL_RUNNING=$(docker ps --filter "name=foodcore-(adminer|azure-service-bus-emulator|zipkin|smtp-server|localstack|azure-blob-emulator)" --format "{{.Names}}")
   if [ -z "$STILL_RUNNING" ]; then
     echo "===== Infraestrutura parada com sucesso! ====="
   else
     echo "ERRO: Não foi possível parar todos os contêineres."
-    echo "Por favor, verifique e pare-os manualmente com: docker ps"
+    echo "Verifique manualmente com: docker ps"
   fi
 fi
