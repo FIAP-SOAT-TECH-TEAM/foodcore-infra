@@ -23,7 +23,7 @@ cd "$PROJECT_ROOT/docker" || {
 }
 
 # Containers de infraestrutura
-INFRA_CONTAINERS=$(docker ps --filter "name=foodcore-(adminer|azure-service-bus-emulator|zipkin|smtp-server|localstack|azure-blob-emulator)" --format "{{.Names}}")
+INFRA_CONTAINERS=$(docker ps --filter "name=foodcore-(adminer|azure-service-bus-emulator|azure-service-bus-emulator-sql-server|azure-blob-emulator|zipkin|smtp-server|localstack|prometheus)" --format "{{.Names}}")
 
 if [ -z "$INFRA_CONTAINERS" ]; then
   echo "Nenhum contêiner de infraestrutura em execução."
@@ -36,10 +36,10 @@ echo
 
 # Parar contêineres
 echo "-> Parando serviços de infraestrutura..."
-docker compose stop adminer azure-service-bus-emulator azure-service-bus-emulator-sql-server zipkin smtp-server localstack azure-blob-storage-emulator
+docker compose stop adminer azure-service-bus-emulator azure-service-bus-emulator-sql-server azure-blob-storage-emulator zipkin smtp-server localstack prometheus
 
 # Verificação final
-STILL_RUNNING=$(docker ps --filter "name=foodcore-(adminer|azure-service-bus-emulator|zipkin|smtp-server|localstack|azure-blob-emulator)" --format "{{.Names}}")
+STILL_RUNNING=$(docker ps --filter "name=foodcore-(adminer|azure-service-bus-emulator|azure-service-bus-emulator-sql-server|azure-blob-emulator|zipkin|smtp-server|localstack|prometheus)" --format "{{.Names}}")
 if [ -z "$STILL_RUNNING" ]; then
   echo "===== Infraestrutura parada com sucesso! ====="
 else
@@ -49,7 +49,7 @@ else
   echo "Forçando a parada de todos os contêineres..."
   docker compose down
 
-  STILL_RUNNING=$(docker ps --filter "name=foodcore-(adminer|azure-service-bus-emulator|zipkin|smtp-server|localstack|azure-blob-emulator)" --format "{{.Names}}")
+  STILL_RUNNING=$(docker ps --filter "name=foodcore-(adminer|azure-service-bus-emulator|azure-service-bus-emulator-sql-server|azure-blob-emulator|zipkin|smtp-server|localstack|prometheus)" --format "{{.Names}}")
   if [ -z "$STILL_RUNNING" ]; then
     echo "===== Infraestrutura parada com sucesso! ====="
   else

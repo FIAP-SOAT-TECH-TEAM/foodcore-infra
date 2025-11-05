@@ -154,6 +154,25 @@ while [ $AZ_COUNT -lt $AZ_RETRIES ]; do
     sleep 2
 done
 
+# Iniciar Prometheus
+echo "-> Iniciando Prometheus..."
+docker compose up -d prometheus
+
+# Verificar se Prometheus está ativo
+PROM_RETRIES=15
+PROM_COUNT=0
+while [ $PROM_COUNT -lt $PROM_RETRIES ]; do
+    STATUS=$(docker inspect --format='{{.State.Status}}' foodcore-prometheus 2>/dev/null)
+    if [ "$STATUS" = "running" ]; then
+        echo "-> Prometheus está em execução!"
+        break
+    fi
+    PROM_COUNT=$((PROM_COUNT+1))
+    echo "Aguardando Prometheus iniciar... ($PROM_COUNT/$PROM_RETRIES)"
+    sleep 2
+done
+
+
 
 # Mostrar status final
 echo
@@ -163,8 +182,9 @@ echo "Serviços disponíveis:"
 echo "- Adminer: http://localhost:8083"
 echo "- Azure Service Bus Emulator: 5672 (AMQP), 5300 (Management)"
 echo "- Zipkin: http://localhost:9411"
+echo "- Prometheus: http://localhost:9090"
 echo "- SMTP (MailDev): http://localhost:1080"
-echo "- LocalStack (Cognito/Serviços AWS): http://localhost:4566"
+echo "- LocalStack (Cognito/Serviços AWS): http://localhost:4566 (Execute ./food init:user para criar o usuário padrão)"
 echo "- Azure Blob Storage Emulator (Azurite): http://localhost:10000/devstoreaccount1"
 echo
 echo "Use 'docker compose ps' para verificar o status dos serviços."

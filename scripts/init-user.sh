@@ -11,7 +11,7 @@ USER_POOL_ID=$(docker exec foodcore-localstack awslocal cognito-idp create-user-
         {"Name":"createdAt","AttributeDataType":"String","Mutable":true}
     ]' \
     --query 'UserPool.Id' --output text)
-echo "-> User Pool criado: $USER_POOL_ID"
+echo "-> User Pool criado: $USER_POOL_ID (Atualize environment variables onde necessário)"
 
 # Criar usuário pré-carregado
 USER_JSON=$(docker exec foodcore-localstack awslocal cognito-idp admin-create-user \
@@ -26,4 +26,4 @@ USER_JSON=$(docker exec foodcore-localstack awslocal cognito-idp admin-create-us
     --query 'User.Attributes' --output json)
 SUBJECT_ID=$(echo "$USER_JSON" | jq -r '.[] | select(.Name=="sub") | .Value')
 echo "-> Usuário pré-carregado com sucesso!"
-echo "-> Subject ID: $SUBJECT_ID"
+echo "-> Subject ID: $SUBJECT_ID (Utilize isto no cabeçalho 'Auth-Subject' para autenticação simulada)"
