@@ -28,8 +28,8 @@
     type        = list(string)
   }
 
-  variable "vnet_aks_subnet_prefix" {
-    description = "Prefixo de endereço da subrede do AKS"
+  variable "vnet_aks_node_subnet_prefix" {
+    description = "Prefixo de endereço da subrede de nós do AKS"
     type        = list(string)
   }
 
@@ -38,12 +38,12 @@
     type        = list(string)
   }
 
-  variable "vnet_db_subnet_prefix" {
-    description = "Prefixo de endereço da subrede do banco de dados"
+  variable "vnet_azfunc_pe_subnet_prefix" {
+    description = "Prefixo de endereço da subrede de Private Endpoint do Azure Functions"
     type        = list(string)
   }
 
-  variable "vnet_pe_subnet_prefix" {
-    description = "Prefixo de endereço da subrede do Private Endpoint"
+  variable "vnet_sb_subnet_prefix" {
+    description = "Prefixo de endereço da subrede do Service Bus"
     type        = list(string)
   }

@@ -87,7 +87,7 @@ variable "instance_memory_in_mb" {
   type        = number
 }
 
-variable "pe_subnet_id" {
+variable "azfunc_private_endpoint_subnet_id" {
   description = "ID da subnet do Private Endpoint"
   type        = string
 }

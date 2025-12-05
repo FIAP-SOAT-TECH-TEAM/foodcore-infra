@@ -90,24 +90,25 @@
   }
 
 # VNET
+
+  output "vnet_name" {
+    description = "Nome da Virtual Network"
+    value       = module.vnet.vnet_name
+  }
+
+  output "vnet_id" {
+    description = "ID da Virtual Network"
+    value       = module.vnet.vnet_id
+  }
+
   output "api_private_dns_fqdn" {
     description = "FQDN do registro A da API na zona DNS privada"
     value       = module.vnet.api_private_dns_fqdn
   }
 
-  output "db_subnet_id" {
-    description = "ID da subnet do banco de dados"
-    value       = module.vnet.db_subnet_id
-  }
-
-  output "pgsql_private_dns_zone_id" {
-    description = "ID da zona DNS privada do PostgreSQL"
-    value       = module.vnet.pgsql_private_dns_zone_id
-  }
-
-  output "vnet_aks_subnet_prefix" {
-    description = "Prefixo de endereço da subrede do AKS"
-    value       = var.vnet_aks_subnet_prefix
+  output "vnet_aks_node_subnet_prefix" {
+    description = "Prefixo de endereço da subrede de nós do AKS"
+    value       = var.vnet_aks_node_subnet_prefix
   }
 
 # Public IP
@@ -161,4 +162,11 @@
   output "azfunc_private_dns_fqdn" {
     description = "FQDN do registro A do Azure Functions na zona DNS privada"
     value       = module.vnet.azfunc_private_dns_fqdn
+  }
+
+# Service Bus
+  output "sb_connection_string" {
+    description = "Connection string primária do Service Bus Namespace"
+    value       = module.service_bus.sb_connection_string
+    sensitive   = true
   }

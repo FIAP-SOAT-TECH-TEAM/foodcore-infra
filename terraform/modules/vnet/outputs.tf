@@ -1,49 +1,64 @@
-output "aks_api_private_ip" {
-  description = "Endereço IP privado para uso da aplicação hospedada no AKS"
-  value       = local.aks_api_private_ip
-}
+# Common
+  output "vnet_name" {
+    description = "Nome da Virtual Network"
+    value       = azurerm_virtual_network.vnet.name
+  }
 
-output "azfunc_private_ip" {
-  description = "Endereço IP privado para uso da aplicação hospedada no Azure Functions"
-  value       = local.azfunc_private_ip
-}
+  output "vnet_id" {
+    description = "ID da Virtual Network"
+    value       = azurerm_virtual_network.vnet.id
+  }
 
-output "aks_subnet" {
-  description = "Subnet do AKS"
-  value = azurerm_subnet.aks_subnet
-}
+# AKS
+  output "aks_api_private_ip" {
+    description = "Endereço IP privado para uso da aplicação hospedada no AKS"
+    value       = local.aks_api_private_ip
+  }
 
-output "apim_subnet" {
-  description = "Subnet do APIM"
-  value = azurerm_subnet.apim_subnet
-}
+  output "aks_node_subnet" {
+    description = "Subnet do AKS"
+    value = azurerm_subnet.aks_node_subnet
+  }
 
-output "api_private_dns_fqdn" {
-  description = "FQDN do registro A da API na zona DNS privada"
-  value       = "${azurerm_private_dns_a_record.api_dns_a.name}.${azurerm_private_dns_a_record.api_dns_a.zone_name}"
-}
+  output "api_private_dns_fqdn" {
+    description = "FQDN do registro A da API na zona DNS privada"
+    value       = "${azurerm_private_dns_a_record.api_dns_a.name}.${azurerm_private_dns_a_record.api_dns_a.zone_name}"
+  }
 
-output "azfunc_private_dns_fqdn" {
-  description = "FQDN do registro A do Azure Functions na zona DNS privada"
-  value       = azurerm_private_dns_a_record.azfunc_dns_a.zone_name
-}
+# Azure Functions
+  output "azfunc_private_ip" {
+    description = "Endereço IP privado para uso da aplicação hospedada no Azure Functions"
+    value       = local.azfunc_private_ip
+  }
 
-output "db_subnet_id" {
-  description = "ID da subnet do banco de dados"
-  value       = azurerm_subnet.db_subnet.id
-}
+  output "azfunc_private_dns_fqdn" {
+    description = "FQDN do registro A do Azure Functions na zona DNS privada"
+    value       = azurerm_private_dns_a_record.azfunc_dns_a.zone_name
+  }
 
-output "pe_subnet_id" {
-  description = "ID da subnet de Private Endpoint"
-  value       = azurerm_subnet.pe_subnet.id
-}
+  output "azfunc_private_endpoint_subnet_id" {
+    description = "ID da subnet de Private Endpoint"
+    value       = azurerm_subnet.azfunc_pe_subnet.id
+  }
 
-output "pgsql_private_dns_zone_id" {
-  description = "ID da zona DNS privada do PostgreSQL"
-  value       = azurerm_private_dns_zone.postgres_private_dns.id
-}
+  output "azfunc_private_dns_zone_id" {
+    description = "ID da zona DNS privada do Azure Functions"
+    value       = azurerm_private_dns_zone.azfunc_private_dns.id
+  }
 
-output "azfunc_private_dns_zone_id" {
-  description = "ID da zona DNS privada do Azure Functions"
-  value       = azurerm_private_dns_zone.azfunc_private_dns.id
-}
+# APIM
+  output "apim_subnet" {
+    description = "Subnet do APIM"
+    value = azurerm_subnet.apim_subnet
+  }
+
+# Azure Service Bus
+  output "sb_subnet_id" {
+    description = "ID da subnet do Service Bus"
+    value       = azurerm_subnet.sb_subnet.id
+  }
+
+  output "sb_private_dns_zone_id" {
+    description = "ID da zona DNS privada do Service Bus"
+    value       = data.azurerm_private_dns_zone.sb_private_dns.id 
+  }

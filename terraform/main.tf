@@ -5,15 +5,15 @@ module "resource_group" {
 }
 
 module "vnet" {
-  source                    = "./modules/vnet"
-  dns_prefix                = var.dns_prefix
-  resource_group_name       = module.resource_group.name
-  location                  = var.location
-  vnet_prefix               = var.vnet_prefix
-  vnet_aks_subnet_prefix    = var.vnet_aks_subnet_prefix
-  vnet_apim_subnet_prefix   = var.vnet_apim_subnet_prefix
-  vnet_db_subnet_prefix     = var.vnet_db_subnet_prefix
-  vnet_pe_subnet_prefix     = var.vnet_pe_subnet_prefix
+  source                        = "./modules/vnet"
+  dns_prefix                    = var.dns_prefix
+  resource_group_name           = module.resource_group.name
+  location                      = var.location
+  vnet_prefix                   = var.vnet_prefix
+  vnet_aks_node_subnet_prefix   = var.vnet_aks_node_subnet_prefix
+  vnet_apim_subnet_prefix       = var.vnet_apim_subnet_prefix
+  vnet_azfunc_pe_subnet_prefix  = var.vnet_azfunc_pe_subnet_prefix
+  vnet_sb_subnet_prefix         = var.vnet_sb_subnet_prefix
 
   depends_on = [ module.resource_group ]
 }
@@ -56,7 +56,7 @@ module "azfunc" {
   aws_credentials                   = var.aws_credentials
   resource_group_name               = module.resource_group.name
   azfunc_enable_always_on           = var.azfunc_enable_always_on
-  pe_subnet_id                      = module.vnet.pe_subnet_id
+  azfunc_private_endpoint_subnet_id = module.vnet.azfunc_private_endpoint_subnet_id
   azfunc_private_dns_zone_id        = module.vnet.azfunc_private_dns_zone_id
   azfunc_private_ip                 = module.vnet.azfunc_private_ip
   az_func_os_type                   = var.az_func_os_type
@@ -100,20 +100,42 @@ module "aks" {
   source                      = "./modules/aks"
   dns_prefix                  = var.dns_prefix
   resource_group_name         = module.resource_group.name
+  aks_network_plugin          = var.aks_network_plugin
+  aks_network_plugin_mode     = var.aks_network_plugin_mode
+  aks_outbound_type           = var.aks_outbound_type
+  aks_availability_zones      = var.aks_availability_zones
+  aks_auto_scaling_enabled    = var.aks_auto_scaling_enabled
+  aks_max_count               = var.aks_max_count
+  aks_min_count               = var.aks_min_count
   node_pool_name              = var.node_pool_name
   node_pool_temp_name         = var.node_pool_temp_name
   public_ip_resource_group_id = module.resource_group.id
   location                    = var.location
-  aks_subnet_id               = module.vnet.aks_subnet.id
+  aks_node_subnet_id          = module.vnet.aks_node_subnet.id
   node_count                  = var.node_count
   vm_size                     = var.vm_size
   identity_type               = var.identity_type
   kubernetes_version          = var.kubernetes_version
-  aks_service_cidr            = var.vnet_aks_service_subnet_prefix
-  aks_dns_service_ip          = var.vnet_aks_dns_service_ip
   acr_id                      = module.acr.acr_id
 
   depends_on = [ module.resource_group, module.vnet, module.acr, module.public_ip ]
+}
+
+module "service_bus" {
+  source                  = "./modules/azure_service_bus"
+  dns_prefix              = var.dns_prefix
+  resource_group_name     = module.resource_group.name
+  location                = var.location
+  sb_partitions           = var.sb_partitions
+  sb_subnet_id            = module.vnet.sb_subnet_id
+  sb_private_dns_zone_id  = module.vnet.sb_private_dns_zone_id
+  sb_sku                  = var.sb_sku
+  sb_capacity             = var.sb_capacity
+  sb_queues               = var.sb_queues
+  sb_topics               = var.sb_topics
+  sb_subscriptions        = var.sb_subscriptions
+
+  depends_on = [ module.resource_group, module.vnet ]
 }
 
 module "apim" {

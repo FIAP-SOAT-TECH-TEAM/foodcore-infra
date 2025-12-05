@@ -5,17 +5,17 @@
   }
   variable "resource_group_name" {
     type    = string
-    default = "tc3"
+    default = "tc4"
     description = "Nome do resource group"
   }
   # Assinatura Azure For Students não tem permissão para criar recursos em determinadas regiões
   # Ex: East US (https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits)
   variable "location" {
-    type    = string
+    type        = string
     description = "Localização do recurso"
   }
   variable "aws_location" {
-    type    = string
+    type        = string
     description = "AWS Region"
   }
   variable "aws_credentials" {
@@ -46,31 +46,6 @@
     description = "SKU do IP público"
   }
 
-# Azure AD
-  variable "api_app_display_name" {
-    description = "Nome do App Registration da API"
-    type        = string
-    default     = "FoodCoreAPI"
-  }
-
-  variable "auth_function_app_display_name" {
-    description = "Nome do App Registration da Function App"
-    type        = string
-    default     = "FoodCoreAuthFunction"
-  }
-
-  variable "admin_default_password" {
-    description = "Senha padrão para o usuário admin criado no Azure AD"
-    type        = string
-    sensitive   = true
-    default     = "foodcore@1234"
-
-    validation {
-      condition     = length(var.admin_default_password) >= 12
-      error_message = "A senha padrão do admin deve ter pelo menos 12 caracteres."
-    }
-}
-
 # VNET
   variable "vnet_prefix" {
     description = "Prefixo de endereço da rede"
@@ -78,47 +53,71 @@
     default     = ["10.0.0.0/16"]
   }
 
-  variable "vnet_aks_service_subnet_prefix" {
-    description = "Prefixo de endereço da subrede de serviço do AKS"
-    type        = string
-    default     = "10.0.0.0/24"
-  }
-
-  variable "vnet_aks_dns_service_ip" {
-    description = "IP do serviço DNS do AKS"
-    type        = string
-    default     = "10.0.0.10"
-  }
-
-  variable "vnet_aks_subnet_prefix" {
-    description = "Prefixo de endereço da subrede do AKS"
+  variable "vnet_aks_node_subnet_prefix" {
+    description = "Prefixo de endereço da subrede de nós do AKS"
     type        = list(string)
-    default     = ["10.0.1.0/24"]
+    default     = ["10.0.2.0/24"]
   }
 
   variable "vnet_apim_subnet_prefix" {
     description = "Prefixo de endereço da subrede do APIM"
     type        = list(string)
-    default     = ["10.0.2.0/24"]
-  }
-
-  variable "vnet_db_subnet_prefix" {
-    description = "Prefixo de endereço da subrede do banco de dados"
-    type        = list(string)
     default     = ["10.0.3.0/24"]
   }
 
-  variable "vnet_pe_subnet_prefix" {
-    description = "Prefixo de endereço da subrede do Private Endpoint"
+  variable "vnet_azfunc_pe_subnet_prefix" {
+    description = "Prefixo de endereço da subrede de Private Endpoint do Azure Functions"
+    type        = list(string)
+    default     = ["10.0.4.0/24"]
+  }
+
+  variable "vnet_sb_subnet_prefix" {
+    description = "Prefixo de endereço da subrede do Service Bus"
     type        = list(string)
     default     = ["10.0.5.0/24"]
   }
 
 # AKS
+  variable "aks_network_plugin" {
+    type        = string
+    description = "Plugin de rede para o AKS" 
+    default     = "azure"
+  }
+  variable "aks_network_plugin_mode" {
+    type        = string
+    description = "Modo do plugin de rede para o AKS. Somente aplicável se o plugin de rede for 'azure'" 
+    default     = "overlay"
+  }
+  variable "aks_outbound_type" {
+    type        = string
+    description = "Tipo de saída de rede para o AKS" 
+    default     = "LoadBalancer"
+  }
   variable "node_count" {
-    type    = number
-    default = 1
+    type        = number
+    default     = 1
     description = "Número de nós no cluster AKS"
+  }
+  variable "aks_auto_scaling_enabled" {
+    type        = bool
+    description = "Habilita ou desabilita o auto scaling no pool de nós do AKS"
+    default     = true
+    
+  }
+  variable "aks_max_count" {
+    type        = number
+    description = "Número máximo de nós para auto scaling no pool de nós do AKS"
+    default     = 5
+  }
+  variable "aks_min_count" {
+    type        = number
+    description = "Número mínimo de nós para auto scaling no pool de nós do AKS"
+    default     = 1
+  }
+  variable "aks_availability_zones" {
+    type        = list(string)
+    description = "Zonas de disponibilidade para o pool de nós do AKS"
+    default = [ "1", "2", "3" ]
   }
   variable "vm_size" {
     type    = string
@@ -298,5 +297,163 @@
     validation {
       condition     = length(var.callback_urls) > 0
       error_message = "A lista 'callback_urls' não pode estar vazia."
+    }
+  }
+
+
+# Azure Service Bus
+  variable "sb_sku" {
+    description = "SKU do Azure Service Bus Namespace"
+    type = string
+    default = "Premium"
+  }
+  variable "sb_capacity" {
+    description = "Capacidade do Azure Service Bus Namespace"
+    type        = number
+    default     = 2
+  }
+  variable "sb_partitions" {
+    description = "Número de partições para o Azure Service Bus Namespace Premium"
+    type        = number
+    default     = 2
+  }
+
+  variable "sb_queues" {
+    description = "Filas do Azure Service Bus"
+    type = map(object({
+      DeadLetteringOnMessageExpiration    = bool
+      DefaultMessageTimeToLive            = string
+      DuplicateDetectionHistoryTimeWindow = string
+      LockDuration                        = string
+      MaxDeliveryCount                    = number
+      RequiresDuplicateDetection          = bool
+      RequiresSession                     = bool
+    }))
+
+    default = {
+      "order.ready.queue" = {
+        DeadLetteringOnMessageExpiration    = false
+        DefaultMessageTimeToLive            = "PT1H"
+        DuplicateDetectionHistoryTimeWindow = "PT20S"
+        LockDuration                        = "PT1M"
+        MaxDeliveryCount                    = 3
+        RequiresDuplicateDetection          = false
+        RequiresSession                     = false
+      }
+      "payment.approved.queue" = {
+        DeadLetteringOnMessageExpiration    = false
+        DefaultMessageTimeToLive            = "PT1H"
+        DuplicateDetectionHistoryTimeWindow = "PT20S"
+        LockDuration                        = "PT1M"
+        MaxDeliveryCount                    = 3
+        RequiresDuplicateDetection          = false
+        RequiresSession                     = false
+      }
+      "payment.expired.queue" = {
+        DeadLetteringOnMessageExpiration    = false
+        DefaultMessageTimeToLive            = "PT1H"
+        DuplicateDetectionHistoryTimeWindow = "PT20S"
+        LockDuration                        = "PT1M"
+        MaxDeliveryCount                    = 3
+        RequiresDuplicateDetection          = false
+        RequiresSession                     = false
+      }
+      "stock.reversal.queue" = {
+        DeadLetteringOnMessageExpiration    = false
+        DefaultMessageTimeToLive            = "PT1H"
+        DuplicateDetectionHistoryTimeWindow = "PT20S"
+        LockDuration                        = "PT1M"
+        MaxDeliveryCount                    = 3
+        RequiresDuplicateDetection          = false
+        RequiresSession                     = false
+      }
+      "stock.debit.queue" = {
+        DeadLetteringOnMessageExpiration    = false
+        DefaultMessageTimeToLive            = "PT1H"
+        DuplicateDetectionHistoryTimeWindow = "PT20S"
+        LockDuration                        = "PT1M"
+        MaxDeliveryCount                    = 3
+        RequiresDuplicateDetection          = false
+        RequiresSession                     = false
+      }
+    }
+  }
+
+
+  variable "sb_topics" {
+    description = "Tópicos do Azure Service Bus"
+    type = map(object({
+      Properties = object({
+        DefaultMessageTimeToLive            = string
+        DuplicateDetectionHistoryTimeWindow = string
+        RequiresDuplicateDetection          = bool
+      })
+    }))
+
+    default = {
+      "order.created.topic" = {
+        Properties = {
+          DefaultMessageTimeToLive            = "PT1H"
+          DuplicateDetectionHistoryTimeWindow = "PT20S"
+          RequiresDuplicateDetection          = false
+        }
+      }
+
+      "order.canceled.topic" = {
+        Properties = {
+          DefaultMessageTimeToLive            = "PT1H"
+          DuplicateDetectionHistoryTimeWindow = "PT20S"
+          RequiresDuplicateDetection          = false
+        }
+      }
+    }
+  }
+
+  variable "sb_subscriptions" {
+    description = "Assinaturas dos tópicos do Azure Service Bus"
+    type = map(object({
+      topic_id   = string
+      properties = object({
+        DeadLetteringOnMessageExpiration = bool
+        DefaultMessageTimeToLive         = string
+        LockDuration                     = string
+        MaxDeliveryCount                 = number
+        RequiresSession                  = bool
+      })
+    }))
+
+    default = {
+      "catalog.order.created.topic.subscription" = {
+        topic_id = "order.created.topic"
+        properties = {
+          DeadLetteringOnMessageExpiration = false
+          DefaultMessageTimeToLive         = "PT1H"
+          LockDuration                     = "PT1M"
+          MaxDeliveryCount                 = 3
+          RequiresSession                  = false
+        }
+      }
+
+      "payment.order.canceled.topic.subscription" = {
+        topic_id = "order.canceled.topic"
+        properties = {
+          DeadLetteringOnMessageExpiration = false
+          DefaultMessageTimeToLive         = "PT1H"
+          LockDuration                     = "PT1M"
+          MaxDeliveryCount                 = 3
+          RequiresSession                  = false
+        }
+      }
+
+      "catalog.order.canceled.topic.subscription" = {
+        topic_id = "order.canceled.topic"
+        properties = {
+          DeadLetteringOnMessageExpiration = false
+          DefaultMessageTimeToLive         = "PT1H"
+          LockDuration                     = "PT1M"
+          MaxDeliveryCount                 = 3
+          RequiresSession                  = false
+        }
+      }
     }
   }

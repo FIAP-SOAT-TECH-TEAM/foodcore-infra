@@ -78,7 +78,7 @@ resource "azurerm_private_endpoint" "azfunc_pe" {
   name                = "${var.dns_prefix}-azfunc-pe"
   location            = var.location
   resource_group_name = var.resource_group_name
-  subnet_id           = var.pe_subnet_id
+  subnet_id           = var.azfunc_private_endpoint_subnet_id
 
   private_service_connection {
     name                           = "azfunc-priv-connection"

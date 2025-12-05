@@ -32,6 +32,45 @@
       error_message = "O 'node_count' deve ser um número entre 1 e 5."
     }
   }
+  variable "aks_auto_scaling_enabled" {
+    type        = bool
+    description = "Habilita ou desabilita o auto scaling no pool de nós do AKS"
+    
+  }
+  variable "aks_max_count" {
+    type        = number
+    description = "Número máximo de nós para auto scaling no pool de nós do AKS"
+    
+  }
+  variable "aks_min_count" {
+    type        = number
+    description = "Número mínimo de nós para auto scaling no pool de nós do AKS"
+    
+  }
+  variable "aks_availability_zones" {
+    type        = list(string)
+    description = "Zonas de disponibilidade para o pool de nós do AKS" 
+  }
+  variable "aks_network_plugin" {
+    type        = string
+    description = "Plugin de rede para o AKS" 
+  }
+  variable "aks_network_plugin_mode" {
+    type        = string
+    description = "Modo do plugin de rede. Somente válido quando network_plugin = azure"
+    
+    validation {
+      condition = (
+        var.aks_network_plugin == "azure" && var.aks_network_plugin_mode == "overlay" ||
+        var.aks_network_plugin != "azure" && var.aks_network_plugin_mode == ""
+      )
+      error_message = "O modo 'overlay' só pode ser usado quando aks_network_plugin = 'azure'. Caso contrário, deixe aks_network_plugin_mode vazio."
+    }
+  }
+  variable "aks_outbound_type" {
+    type        = string
+    description = "Tipo de saída de rede para o AKS" 
+  }
   variable "vm_size" {
     type    = string
     description = "Tamanho da VM para os nós do AKS"
@@ -45,19 +84,9 @@
     description = "Versão do Kubernetes a ser usada no AKS"
   }
 
-  variable "aks_subnet_id" {
+  variable "aks_node_subnet_id" {
     type = string
     description = "ID da sub-rede do AKS"
-  }
-
-  variable "aks_service_cidr" {
-    type = string
-    description = "CIDR para o serviço AKS"
-  }
-
-  variable "aks_dns_service_ip" {
-    type = string
-    description = "IP do serviço DNS do AKS"
   }
 
   variable "acr_id" {
