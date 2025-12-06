@@ -261,7 +261,7 @@
   variable "az_func_sku_name" {
     description = "O nome do SKU do plano de serviço."
     type        = string
-    default     = "P1v2"
+    default     = "P0v3"
   }
 
   variable "az_func_os_type" {
