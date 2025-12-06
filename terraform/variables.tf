@@ -169,7 +169,7 @@
   variable "account_replication_type" {
     description = "Tipo de replicação da conta de armazenamento"
     type        = string
-    default     = "LRS"
+    default     = "ZRS"
   }
 
 # ACR
@@ -183,8 +183,19 @@
     type        = bool
     default     = true
   }
+  variable "acr_zone_redundancy_enabled" {
+    description = "Habilita zone redundancy"
+    type        = bool
+    default     = true
+  }
 
 # APIM
+
+  variable "apim_zones" {
+    description = "Zonas de disponibilidade para o API Management"
+    type        = list(string)
+    default     = [ "1", "2", "3" ]
+  }
 
   variable "publisher_name" {
     description = "Nome do publicador do API Management"
@@ -201,7 +212,7 @@
   variable "sku_name" {
     description = "SKU do API Management"
     type        = string
-    default     = "Developer_1"
+    default     = "Premium_3"
   }
 
   variable "apim_product_id" {
@@ -275,6 +286,30 @@
     description = "A quantidade de memória (em MB) alocada para cada instância."
     type        = number
     default     = 512
+  }
+
+  variable "az_premium_plan_auto_scale_enabled" {
+    description = "Habilita o auto scale para o plano premium"
+    type        = bool
+    default     = true
+  }
+
+  variable "az_maximum_elastic_worker_count" {
+    description = "Número máximo de workers elásticos para o plano de serviço"
+    type        = number
+    default     = 5
+  }
+
+  variable "az_worker_count" {
+    description = "Número de workers para o plano de serviço"
+    type        = number
+    default     = 1
+  }
+
+  variable "az_zone_balancing_enabled" {
+    description = "Habilita o balanceamento de zona para o plano de serviço"
+    type        = bool
+    default     = true
   }
 
 # Cognito

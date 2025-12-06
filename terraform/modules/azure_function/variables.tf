@@ -111,3 +111,23 @@ variable "guest_user_email" {
   type        = string
   description = "Email do usuário convidado (guest) que será criado no Cognito"
 }
+
+variable "az_premium_plan_auto_scale_enabled" {
+  description = "Habilita o auto scale para o plano premium"
+  type        = bool
+}
+
+variable "az_maximum_elastic_worker_count" {
+  description = "Número máximo de workers elásticos para o plano de serviço"
+  type        = number
+}
+
+variable "az_worker_count" {
+  description = "Número de workers para o plano de serviço"
+  type        = number
+}
+
+variable "az_zone_balancing_enabled" {
+  description = "Habilita o balanceamento de zona para o plano de serviço"
+  type        = bool
+}

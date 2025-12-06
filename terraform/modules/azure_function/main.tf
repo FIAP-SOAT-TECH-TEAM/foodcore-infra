@@ -13,11 +13,15 @@ resource "azurerm_storage_container" "azfunc-sa-container" {
 }
 
 resource "azurerm_service_plan" "azfunc-service-plan" {
-  name                = "${var.dns_prefix}-azfunc-service-plan"
-  resource_group_name = var.resource_group_name
-  location            = var.location
-  sku_name            = var.az_func_sku_name
-  os_type             = var.az_func_os_type
+  name                            = "${var.dns_prefix}-azfunc-service-plan"
+  resource_group_name             = var.resource_group_name
+  location                        = var.location
+  sku_name                        = var.az_func_sku_name
+  os_type                         = var.az_func_os_type
+  premium_plan_auto_scale_enabled = var.az_premium_plan_auto_scale_enabled
+  maximum_elastic_worker_count    = var.az_maximum_elastic_worker_count
+  worker_count                    = var.az_worker_count 
+  zone_balancing_enabled          = var.az_zone_balancing_enabled
 }
 
 resource "azurerm_linux_function_app" "azfunc" {
@@ -36,6 +40,7 @@ resource "azurerm_linux_function_app" "azfunc" {
     application_insights_connection_string  = var.app_insights_connection_string
     application_insights_key                = var.app_insights_instrumentation_key
     always_on                               = var.azfunc_enable_always_on
+    app_scale_limit                         = var.az_maximum_elastic_worker_count
 
     # Libera o acesso público para o SCM (Kudu) da Function App, necessário para deploy via GitHub Actions
     # https://www.youtube.com/watch?v=syd_155iRxc
