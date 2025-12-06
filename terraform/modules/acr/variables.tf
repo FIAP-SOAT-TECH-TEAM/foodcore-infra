@@ -33,3 +33,8 @@
     description = "Habilita usuário admin"
     type        = bool
   }
+
+  variable "acr_zone_redundancy_enabled" {
+    description = "Habilita zone redundancy"
+    type        = bool
+  }

@@ -4,12 +4,16 @@ resource "azurerm_kubernetes_cluster" "aks" {
   resource_group_name = var.resource_group_name
   dns_prefix          = var.dns_prefix
   kubernetes_version  = var.kubernetes_version
-
+  
   default_node_pool {
     name                        = var.node_pool_name
     node_count                  = var.node_count
     vm_size                     = var.vm_size
-    vnet_subnet_id              = var.aks_subnet_id
+    vnet_subnet_id              = var.aks_node_subnet_id
+    auto_scaling_enabled        = var.aks_auto_scaling_enabled
+    max_count                   = var.aks_max_count
+    min_count                   = var.aks_min_count
+    zones                       = var.aks_availability_zones
     node_public_ip_enabled      = false
     temporary_name_for_rotation = var.node_pool_temp_name
   }
@@ -19,9 +23,9 @@ resource "azurerm_kubernetes_cluster" "aks" {
   }
 
   network_profile {
-    network_plugin    = "azure"
-    service_cidr      = var.aks_service_cidr
-    dns_service_ip    = var.aks_dns_service_ip
+    network_plugin      = var.aks_network_plugin
+    network_plugin_mode = var.aks_network_plugin_mode
+    outbound_type       = var.aks_outbound_type
   }
 
   role_based_access_control_enabled = true
@@ -36,7 +40,7 @@ resource "azurerm_role_assignment" "aks_acr_pull" {
 }
 
 resource "azurerm_role_assignment" "aks_subnet_contributor" {
-  scope                = var.aks_subnet_id
+  scope                = var.aks_node_subnet_id
   role_definition_name = "Network Contributor"
   principal_id         = azurerm_kubernetes_cluster.aks.identity[0].principal_id
 

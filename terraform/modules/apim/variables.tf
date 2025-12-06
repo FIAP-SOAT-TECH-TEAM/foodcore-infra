@@ -35,6 +35,11 @@
 
 # APIM
 
+  variable "apim_zones" {
+    description = "Zonas de disponibilidade para o API Management"
+    type        = list(string)
+  }
+
   variable "apim_subnet_id" {
     type = string
     description = "ID da sub-rede do APIM"
