@@ -60,5 +60,5 @@
 
   output "sb_private_dns_zone_id" {
     description = "ID da zona DNS privada do Service Bus"
-    value       = data.azurerm_private_dns_zone.sb_private_dns.id 
+    value       = azurerm_private_dns_zone.sb_private_dns.id 
   }
