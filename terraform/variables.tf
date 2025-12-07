@@ -91,7 +91,7 @@
   variable "aks_outbound_type" {
     type        = string
     description = "Tipo de saída de rede para o AKS" 
-    default     = "LoadBalancer"
+    default     = "loadBalancer"
   }
   variable "node_count" {
     type        = number
