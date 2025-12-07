@@ -33,11 +33,6 @@
     type        = list(string)
   }
 
-  variable "vnet_aks_service_subnet_prefix" {
-    description = "Prefixo de endereço da subrede de serviços do AKS"
-    type        = list(string)
-  }
-
   variable "vnet_apim_subnet_prefix" {
     description = "Prefixo de endereço da subrede do APIM"
     type        = list(string)

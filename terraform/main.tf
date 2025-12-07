@@ -9,7 +9,6 @@ module "vnet" {
   dns_prefix                      = var.dns_prefix
   resource_group_name             = module.resource_group.name
   location                        = var.location
-  vnet_aks_service_subnet_prefix  = var.vnet_aks_service_subnet_prefix
   vnet_prefix                     = var.vnet_prefix
   vnet_aks_node_subnet_prefix     = var.vnet_aks_node_subnet_prefix
   vnet_apim_subnet_prefix         = var.vnet_apim_subnet_prefix

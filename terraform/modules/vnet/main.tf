@@ -12,13 +12,6 @@ resource "azurerm_subnet" "aks_node_subnet" {
   address_prefixes     = var.vnet_aks_node_subnet_prefix
 }
 
-resource "azurerm_subnet" "aks_service_subnet" {
-  name                 = "${var.dns_prefix}-aks-service-subnet"
-  resource_group_name  = var.resource_group_name
-  virtual_network_name = azurerm_virtual_network.vnet.name
-  address_prefixes     = var.vnet_aks_service_subnet_prefix
-}
-
 resource "azurerm_subnet" "apim_subnet" {
   name                 = "${var.dns_prefix}-apim-subnet"
   resource_group_name  = var.resource_group_name
