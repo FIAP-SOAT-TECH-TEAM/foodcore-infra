@@ -5,15 +5,16 @@ module "resource_group" {
 }
 
 module "vnet" {
-  source                        = "./modules/vnet"
-  dns_prefix                    = var.dns_prefix
-  resource_group_name           = module.resource_group.name
-  location                      = var.location
-  vnet_prefix                   = var.vnet_prefix
-  vnet_aks_node_subnet_prefix   = var.vnet_aks_node_subnet_prefix
-  vnet_apim_subnet_prefix       = var.vnet_apim_subnet_prefix
-  vnet_azfunc_pe_subnet_prefix  = var.vnet_azfunc_pe_subnet_prefix
-  vnet_sb_subnet_prefix         = var.vnet_sb_subnet_prefix
+  source                          = "./modules/vnet"
+  dns_prefix                      = var.dns_prefix
+  resource_group_name             = module.resource_group.name
+  location                        = var.location
+  vnet_aks_service_subnet_prefix  = var.vnet_aks_service_subnet_prefix
+  vnet_prefix                     = var.vnet_prefix
+  vnet_aks_node_subnet_prefix     = var.vnet_aks_node_subnet_prefix
+  vnet_apim_subnet_prefix         = var.vnet_apim_subnet_prefix
+  vnet_azfunc_pe_subnet_prefix    = var.vnet_azfunc_pe_subnet_prefix
+  vnet_sb_subnet_prefix           = var.vnet_sb_subnet_prefix
 
   depends_on = [ module.resource_group ]
 }
@@ -108,6 +109,7 @@ module "aks" {
   aks_network_plugin          = var.aks_network_plugin
   aks_network_plugin_mode     = var.aks_network_plugin_mode
   aks_outbound_type           = var.aks_outbound_type
+  aks_service_subnet_prefix   = var.vnet_aks_service_subnet_prefix[0]
   aks_availability_zones      = var.aks_availability_zones
   aks_auto_scaling_enabled    = var.aks_auto_scaling_enabled
   aks_max_count               = var.aks_max_count
