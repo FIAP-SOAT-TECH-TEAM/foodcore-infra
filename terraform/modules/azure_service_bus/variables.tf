@@ -70,7 +70,7 @@ variable "sb_topics" {
 variable "sb_subscriptions" {
   description = "Assinaturas dos tópicos do Azure Service Bus"
   type = map(object({
-    topic_id    = string
+    topic_name  = string
     properties  = object({
       DeadLetteringOnMessageExpiration = bool
       DefaultMessageTimeToLive         = string
