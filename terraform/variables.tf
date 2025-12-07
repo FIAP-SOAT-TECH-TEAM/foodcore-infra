@@ -176,7 +176,7 @@
   variable "acr_sku" {
     description = "SKU do ACR"
     type        = string
-    default     = "Basic"
+    default     = "Premium"
   }
   variable "acr_admin_enabled" {
     description = "Habilita usuário admin"

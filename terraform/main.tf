@@ -77,29 +77,29 @@ module "azfunc" {
   depends_on = [ module.resource_group, module.vnet, module.cognito, module.app_insights ]
 }
 
-# module "blob" {
-#   source                    = "./modules/blob"
-#   dns_prefix                = var.dns_prefix
-#   resource_group_name       = module.resource_group.name
-#   location                  = var.location
-#   container_name            = var.container_name
-#   account_tier              = var.account_tier
-#   account_replication_type  = var.account_replication_type
+module "blob" {
+  source                    = "./modules/blob"
+  dns_prefix                = var.dns_prefix
+  resource_group_name       = module.resource_group.name
+  location                  = var.location
+  container_name            = var.container_name
+  account_tier              = var.account_tier
+  account_replication_type  = var.account_replication_type
 
-#   depends_on = [ module.resource_group ]
-# }
+  depends_on = [ module.resource_group ]
+}
 
-# module "acr" {
-#   source                      = "./modules/acr"
-#   dns_prefix                  = var.dns_prefix
-#   resource_group_name         = module.resource_group.name
-#   location                    = var.location
-#   acr_sku                     = var.acr_sku
-#   acr_admin_enabled           = var.acr_admin_enabled
-#   acr_zone_redundancy_enabled = var.acr_zone_redundancy_enabled
+module "acr" {
+  source                      = "./modules/acr"
+  dns_prefix                  = var.dns_prefix
+  resource_group_name         = module.resource_group.name
+  location                    = var.location
+  acr_sku                     = var.acr_sku
+  acr_admin_enabled           = var.acr_admin_enabled
+  acr_zone_redundancy_enabled = var.acr_zone_redundancy_enabled
 
-#   depends_on = [ module.resource_group ]
-# }
+  depends_on = [ module.resource_group ]
+}
 
 # module "aks" {
 #   source                      = "./modules/aks"
