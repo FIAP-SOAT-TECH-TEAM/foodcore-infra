@@ -52,6 +52,7 @@ module "azfunc" {
   location                            = var.location
   az_premium_plan_auto_scale_enabled  = var.az_premium_plan_auto_scale_enabled
   az_maximum_elastic_worker_count     = var.az_maximum_elastic_worker_count
+  az_minimum_elastic_worker_count     = var.az_minimum_elastic_worker_count
   az_worker_count                     = var.az_worker_count
   az_zone_balancing_enabled           = var.az_zone_balancing_enabled
   app_insights_instrumentation_key    = module.app_insights.app_insights_instrumentation_key
@@ -67,7 +68,6 @@ module "azfunc" {
   az_func_sku_name                    = var.az_func_sku_name
   sa_account_replication_type         = var.azfunc_sa_account_replication_type
   sa_account_tier                     = var.azfunc_sa_account_tier
-  maximum_instance_count              = var.azfunc_maximum_instance_count
   instance_memory_in_mb               = var.azfunc_instance_memory_in_mb
   cognito_user_pool_id                = module.cognito.cognito_user_pool_id
   cognito_client_id                   = module.cognito.cognito_user_pool_client_id

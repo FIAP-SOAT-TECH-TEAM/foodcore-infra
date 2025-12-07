@@ -77,11 +77,6 @@ variable "az_func_os_type" {
   type        = string
 }
 
-variable "maximum_instance_count" {
-  description = "O número máximo de instâncias para o plano de serviço."
-  type        = number
-}
-
 variable "instance_memory_in_mb" {
   description = "A quantidade de memória (em MB) alocada para cada instância."
   type        = number
@@ -119,6 +114,11 @@ variable "az_premium_plan_auto_scale_enabled" {
 
 variable "az_maximum_elastic_worker_count" {
   description = "Número máximo de workers elásticos para o plano de serviço"
+  type        = number
+}
+
+variable "az_minimum_elastic_worker_count" {
+  description = "Número mínimo de workers elásticos para o plano de serviço"
   type        = number
 }
 
