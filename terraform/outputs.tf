@@ -91,25 +91,25 @@
 
 # # VNET
 
-#   output "vnet_name" {
-#     description = "Nome da Virtual Network"
-#     value       = module.vnet.vnet_name
-#   }
+  output "vnet_name" {
+    description = "Nome da Virtual Network"
+    value       = module.vnet.vnet_name
+  }
 
-#   output "vnet_id" {
-#     description = "ID da Virtual Network"
-#     value       = module.vnet.vnet_id
-#   }
+  output "vnet_id" {
+    description = "ID da Virtual Network"
+    value       = module.vnet.vnet_id
+  }
 
-#   output "api_private_dns_fqdn" {
-#     description = "FQDN do registro A da API na zona DNS privada"
-#     value       = module.vnet.api_private_dns_fqdn
-#   }
+  output "api_private_dns_fqdn" {
+    description = "FQDN do registro A da API na zona DNS privada"
+    value       = module.vnet.api_private_dns_fqdn
+  }
 
-#   output "vnet_aks_node_subnet_prefix" {
-#     description = "Prefixo de endereço da subrede de nós do AKS"
-#     value       = var.vnet_aks_node_subnet_prefix
-#   }
+  output "vnet_aks_node_subnet_prefix" {
+    description = "Prefixo de endereço da subrede de nós do AKS"
+    value       = var.vnet_aks_node_subnet_prefix
+  }
 
 # # Public IP
 #   output "ext_ingress_public_ip" {
