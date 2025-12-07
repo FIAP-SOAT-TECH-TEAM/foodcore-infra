@@ -447,7 +447,7 @@
   variable "sb_subscriptions" {
     description = "Assinaturas dos tópicos do Azure Service Bus"
     type = map(object({
-      topic_id   = string
+      topic_name = string
       properties = object({
         DeadLetteringOnMessageExpiration = bool
         DefaultMessageTimeToLive         = string
@@ -459,7 +459,7 @@
 
     default = {
       "catalog.order.created.topic.subscription" = {
-        topic_id = "order.created.topic"
+        topic_name = "order.created.topic"
         properties = {
           DeadLetteringOnMessageExpiration = false
           DefaultMessageTimeToLive         = "PT1H"
@@ -470,7 +470,7 @@
       }
 
       "payment.order.canceled.topic.subscription" = {
-        topic_id = "order.canceled.topic"
+        topic_name = "order.canceled.topic"
         properties = {
           DeadLetteringOnMessageExpiration = false
           DefaultMessageTimeToLive         = "PT1H"
@@ -481,7 +481,7 @@
       }
 
       "catalog.order.canceled.topic.subscription" = {
-        topic_id = "order.canceled.topic"
+        topic_name = "order.canceled.topic"
         properties = {
           DeadLetteringOnMessageExpiration = false
           DefaultMessageTimeToLive         = "PT1H"

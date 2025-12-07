@@ -126,22 +126,22 @@ module "azfunc" {
 #   depends_on = [ module.resource_group, module.vnet, module.acr, module.public_ip ]
 # }
 
-# module "service_bus" {
-#   source                  = "./modules/azure_service_bus"
-#   dns_prefix              = var.dns_prefix
-#   resource_group_name     = module.resource_group.name
-#   location                = var.location
-#   sb_partitions           = var.sb_partitions
-#   sb_subnet_id            = module.vnet.sb_subnet_id
-#   sb_private_dns_zone_id  = module.vnet.sb_private_dns_zone_id
-#   sb_sku                  = var.sb_sku
-#   sb_capacity             = var.sb_capacity
-#   sb_queues               = var.sb_queues
-#   sb_topics               = var.sb_topics
-#   sb_subscriptions        = var.sb_subscriptions
+module "service_bus" {
+  source                  = "./modules/azure_service_bus"
+  dns_prefix              = var.dns_prefix
+  resource_group_name     = module.resource_group.name
+  location                = var.location
+  sb_partitions           = var.sb_partitions
+  sb_subnet_id            = module.vnet.sb_subnet_id
+  sb_private_dns_zone_id  = module.vnet.sb_private_dns_zone_id
+  sb_sku                  = var.sb_sku
+  sb_capacity             = var.sb_capacity
+  sb_queues               = var.sb_queues
+  sb_topics               = var.sb_topics
+  sb_subscriptions        = var.sb_subscriptions
 
-#   depends_on = [ module.resource_group, module.vnet ]
-# }
+  depends_on = [ module.resource_group, module.vnet ]
+}
 
 # module "apim" {
 #   source                           = "./modules/apim"
