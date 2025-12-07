@@ -25,6 +25,7 @@ resource "azurerm_servicebus_queue" "sb_queues" {
   max_delivery_count                        = each.value.MaxDeliveryCount
   requires_duplicate_detection              = each.value.RequiresDuplicateDetection
   requires_session                          = each.value.RequiresSession
+  partitioning_enabled                      = each.value.PartitioningEnabled
 }
 
 resource "azurerm_servicebus_topic" "sb_topics" {
@@ -36,6 +37,7 @@ resource "azurerm_servicebus_topic" "sb_topics" {
   default_message_ttl                       = each.value.Properties.DefaultMessageTimeToLive
   duplicate_detection_history_time_window   = each.value.Properties.DuplicateDetectionHistoryTimeWindow
   requires_duplicate_detection              = each.value.Properties.RequiresDuplicateDetection
+  partitioning_enabled                      = each.value.Properties.PartitioningEnabled
 }
 
 resource "azurerm_servicebus_subscription" "sb_subscriptions" {

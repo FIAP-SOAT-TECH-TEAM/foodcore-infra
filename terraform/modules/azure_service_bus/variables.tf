@@ -53,6 +53,7 @@ variable "sb_queues" {
     MaxDeliveryCount                    = number
     RequiresDuplicateDetection          = bool
     RequiresSession                     = bool
+    PartitioningEnabled                 = bool
   }))
 }
 
@@ -63,6 +64,7 @@ variable "sb_topics" {
       DefaultMessageTimeToLive            = string
       DuplicateDetectionHistoryTimeWindow = string
       RequiresDuplicateDetection          = bool
+      PartitioningEnabled                 = bool
     })
   }))
 }

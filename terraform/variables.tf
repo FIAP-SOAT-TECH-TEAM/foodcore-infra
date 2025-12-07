@@ -363,6 +363,7 @@
       MaxDeliveryCount                    = number
       RequiresDuplicateDetection          = bool
       RequiresSession                     = bool
+      PartitioningEnabled                 = bool
     }))
 
     default = {
@@ -374,6 +375,7 @@
         MaxDeliveryCount                    = 3
         RequiresDuplicateDetection          = false
         RequiresSession                     = false
+        PartitioningEnabled                 = true
       }
       "payment.approved.queue" = {
         DeadLetteringOnMessageExpiration    = false
@@ -383,6 +385,7 @@
         MaxDeliveryCount                    = 3
         RequiresDuplicateDetection          = false
         RequiresSession                     = false
+        PartitioningEnabled                 = true
       }
       "payment.expired.queue" = {
         DeadLetteringOnMessageExpiration    = false
@@ -392,6 +395,7 @@
         MaxDeliveryCount                    = 3
         RequiresDuplicateDetection          = false
         RequiresSession                     = false
+        PartitioningEnabled                 = true
       }
       "stock.reversal.queue" = {
         DeadLetteringOnMessageExpiration    = false
@@ -401,6 +405,7 @@
         MaxDeliveryCount                    = 3
         RequiresDuplicateDetection          = false
         RequiresSession                     = false
+        PartitioningEnabled                 = true
       }
       "stock.debit.queue" = {
         DeadLetteringOnMessageExpiration    = false
@@ -410,6 +415,7 @@
         MaxDeliveryCount                    = 3
         RequiresDuplicateDetection          = false
         RequiresSession                     = false
+        PartitioningEnabled                 = true
       }
     }
   }
@@ -422,6 +428,7 @@
         DefaultMessageTimeToLive            = string
         DuplicateDetectionHistoryTimeWindow = string
         RequiresDuplicateDetection          = bool
+        PartitioningEnabled                 = bool
       })
     }))
 
@@ -431,6 +438,7 @@
           DefaultMessageTimeToLive            = "PT1H"
           DuplicateDetectionHistoryTimeWindow = "PT20S"
           RequiresDuplicateDetection          = false
+          PartitioningEnabled                 = true
         }
       }
 
@@ -439,6 +447,7 @@
           DefaultMessageTimeToLive            = "PT1H"
           DuplicateDetectionHistoryTimeWindow = "PT20S"
           RequiresDuplicateDetection          = false
+          PartitioningEnabled                 = true
         }
       }
     }
