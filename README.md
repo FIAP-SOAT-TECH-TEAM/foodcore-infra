@@ -173,4 +173,3 @@ Ao finalizar o deploy, será provisionado uma estrutura semelhante a essa
 ### Fluxo CI/CD
 
 ![Diagrama de CI](docs/diagrams/ci-diagram.png)
-
