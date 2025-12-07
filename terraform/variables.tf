@@ -200,7 +200,7 @@
   variable "apim_zones" {
     description = "Zonas de disponibilidade para o API Management"
     type        = list(string)
-    default     = [ "1", "2", "3" ]
+    default     = [ "2", "3" ]
   }
 
   variable "publisher_name" {
@@ -218,7 +218,7 @@
   variable "sku_name" {
     description = "SKU do API Management"
     type        = string
-    default     = "Premium_3"
+    default     = "Premium_2"
   }
 
   variable "apim_product_id" {
