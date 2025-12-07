@@ -42,7 +42,7 @@ resource "azurerm_servicebus_subscription" "sb_subscriptions" {
   for_each = var.sb_subscriptions
 
   name                                  = each.key
-  topic_id                              = each.value.topic_id
+  topic_id                              = azurerm_servicebus_topic.sb_topics[each.value.topic_name].id
 
   dead_lettering_on_message_expiration  = each.value.properties.DeadLetteringOnMessageExpiration
   default_message_ttl                   = each.value.properties.DefaultMessageTimeToLive
