@@ -459,7 +459,7 @@
 
     default = {
       "catalog.order.created.topic.subscription" = {
-        topic_id = "order.created.topic"
+        topic_name = "order.created.topic"
         properties = {
           DeadLetteringOnMessageExpiration = false
           DefaultMessageTimeToLive         = "PT1H"
@@ -470,7 +470,7 @@
       }
 
       "payment.order.canceled.topic.subscription" = {
-        topic_id = "order.canceled.topic"
+        topic_name = "order.canceled.topic"
         properties = {
           DeadLetteringOnMessageExpiration = false
           DefaultMessageTimeToLive         = "PT1H"
@@ -481,7 +481,7 @@
       }
 
       "catalog.order.canceled.topic.subscription" = {
-        topic_id = "order.canceled.topic"
+        topic_name = "order.canceled.topic"
         properties = {
           DeadLetteringOnMessageExpiration = false
           DefaultMessageTimeToLive         = "PT1H"
