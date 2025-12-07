@@ -53,6 +53,12 @@
     default     = ["10.0.0.0/16"]
   }
 
+  variable "vnet_aks_service_subnet_prefix" {
+    description = "Prefixo de endereço da subrede de serviços do AKS"
+    type        = list(string)
+    default     = ["10.0.1.0/24"]
+  }
+
   variable "vnet_aks_node_subnet_prefix" {
     description = "Prefixo de endereço da subrede de nós do AKS"
     type        = list(string)

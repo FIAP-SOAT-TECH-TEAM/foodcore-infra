@@ -89,6 +89,11 @@
     description = "ID da sub-rede do AKS"
   }
 
+  variable "aks_service_subnet_prefix" {
+    description = "Prefixo de endereço da subrede de serviços do AKS"
+    type        = string
+  }
+
   variable "acr_id" {
     type = string
     description = "ID do Azure Container Registry"
