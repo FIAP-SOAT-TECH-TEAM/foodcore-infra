@@ -101,30 +101,30 @@ module "acr" {
   depends_on = [ module.resource_group ]
 }
 
-# module "aks" {
-#   source                      = "./modules/aks"
-#   dns_prefix                  = var.dns_prefix
-#   resource_group_name         = module.resource_group.name
-#   aks_network_plugin          = var.aks_network_plugin
-#   aks_network_plugin_mode     = var.aks_network_plugin_mode
-#   aks_outbound_type           = var.aks_outbound_type
-#   aks_availability_zones      = var.aks_availability_zones
-#   aks_auto_scaling_enabled    = var.aks_auto_scaling_enabled
-#   aks_max_count               = var.aks_max_count
-#   aks_min_count               = var.aks_min_count
-#   node_pool_name              = var.node_pool_name
-#   node_pool_temp_name         = var.node_pool_temp_name
-#   public_ip_resource_group_id = module.resource_group.id
-#   location                    = var.location
-#   aks_node_subnet_id          = module.vnet.aks_node_subnet.id
-#   node_count                  = var.node_count
-#   vm_size                     = var.vm_size
-#   identity_type               = var.identity_type
-#   kubernetes_version          = var.kubernetes_version
-#   acr_id                      = module.acr.acr_id
+module "aks" {
+  source                      = "./modules/aks"
+  dns_prefix                  = var.dns_prefix
+  resource_group_name         = module.resource_group.name
+  aks_network_plugin          = var.aks_network_plugin
+  aks_network_plugin_mode     = var.aks_network_plugin_mode
+  aks_outbound_type           = var.aks_outbound_type
+  aks_availability_zones      = var.aks_availability_zones
+  aks_auto_scaling_enabled    = var.aks_auto_scaling_enabled
+  aks_max_count               = var.aks_max_count
+  aks_min_count               = var.aks_min_count
+  node_pool_name              = var.node_pool_name
+  node_pool_temp_name         = var.node_pool_temp_name
+  public_ip_resource_group_id = module.resource_group.id
+  location                    = var.location
+  aks_node_subnet_id          = module.vnet.aks_node_subnet.id
+  node_count                  = var.node_count
+  vm_size                     = var.vm_size
+  identity_type               = var.identity_type
+  kubernetes_version          = var.kubernetes_version
+  acr_id                      = module.acr.acr_id
 
-#   depends_on = [ module.resource_group, module.vnet, module.acr, module.public_ip ]
-# }
+  depends_on = [ module.resource_group, module.vnet, module.acr, module.public_ip ]
+}
 
 module "service_bus" {
   source                  = "./modules/azure_service_bus"
