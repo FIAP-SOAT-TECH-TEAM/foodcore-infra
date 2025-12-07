@@ -19,6 +19,6 @@ provider "azurerm" {
   subscription_id = var.subscription_id
 }
 
-provider "aws" {
-  region = var.aws_location
-}
+# provider "aws" {
+#   region = var.aws_location
+# }
