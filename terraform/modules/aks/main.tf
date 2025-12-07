@@ -27,6 +27,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
     network_plugin_mode = var.aks_network_plugin_mode
     outbound_type       = var.aks_outbound_type
     service_cidr        = var.aks_service_subnet_prefix
+    dns_service_ip      = local.aks_dns_service_ip
   }
 
   role_based_access_control_enabled = true
