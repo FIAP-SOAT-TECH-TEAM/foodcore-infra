@@ -276,12 +276,6 @@
     default     = true
   }
 
-  variable "azfunc_maximum_instance_count" {
-    description = "O número máximo de instâncias para o plano de serviço."
-    type        = number
-    default     = 2
-  }
-
   variable "azfunc_instance_memory_in_mb" {
     description = "A quantidade de memória (em MB) alocada para cada instância."
     type        = number
@@ -298,6 +292,12 @@
     description = "Número máximo de workers elásticos para o plano de serviço"
     type        = number
     default     = 5
+  }
+
+  variable "az_minimum_elastic_worker_count" {
+    description = "Número mínimo de workers elásticos para o plano de serviço"
+    type        = number
+    default     = 2
   }
 
   variable "az_worker_count" {
