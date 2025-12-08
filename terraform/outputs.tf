@@ -122,36 +122,36 @@
 
 # Cognito
 
-  output "cognito_user_pool_id" {
-    description = "ID do Cognito User Pool"
-    value       = module.cognito.cognito_user_pool_id
-  }
+  # output "cognito_user_pool_id" {
+  #   description = "ID do Cognito User Pool"
+  #   value       = module.cognito.cognito_user_pool_id
+  # }
 
-  output "cognito_user_pool_client_id" {
-    description = "ID do Cognito User Pool Client"
-    value       = module.cognito.cognito_user_pool_client_id
-  }
+  # output "cognito_user_pool_client_id" {
+  #   description = "ID do Cognito User Pool Client"
+  #   value       = module.cognito.cognito_user_pool_client_id
+  # }
 
-  output "default_customer_password" {
-    description = "Senha padrão do usuário cliente"
-    value       = var.default_customer_password
-    sensitive   = true
-  }
+  # output "default_customer_password" {
+  #   description = "Senha padrão do usuário cliente"
+  #   value       = var.default_customer_password
+  #   sensitive   = true
+  # }
 
-  output "cognito_code_login_url" {
-    description = "URL de login do Cognito User Pool (usando o fluxo de authorization code)"
-    value       = module.cognito.cognito_code_login_url
-  }
+  # output "cognito_code_login_url" {
+  #   description = "URL de login do Cognito User Pool (usando o fluxo de authorization code)"
+  #   value       = module.cognito.cognito_code_login_url
+  # }
 
-  output "cognito_code_get_token_url" {
-    description = "URL para obtenção do token do Cognito User Pool (usando o fluxo de authorization code)"
-    value       = module.cognito.cognito_code_get_token_url
-  }
+  # output "cognito_code_get_token_url" {
+  #   description = "URL para obtenção do token do Cognito User Pool (usando o fluxo de authorization code)"
+  #   value       = module.cognito.cognito_code_get_token_url
+  # }
 
-  output "cognito_implicit_login_url" {
-    description = "URL de login do Cognito User Pool (usando o fluxo implícito)"
-    value       = module.cognito.cognito_implicit_login_url
-  }
+  # output "cognito_implicit_login_url" {
+  #   description = "URL de login do Cognito User Pool (usando o fluxo implícito)"
+  #   value       = module.cognito.cognito_implicit_login_url
+  # }
 
 # Azure Function
   output "azfunc_name" {
