@@ -15,6 +15,37 @@
     value = var.dns_prefix
   }
 
+# Public IP
+  output "ext_ingress_public_ip" {
+    value = module.public_ip.ip_address
+  }
+
+  output "ext_ingress_public_ip_fqdn" {
+    value = module.public_ip.fqdn
+  }
+
+# VNET
+
+  output "vnet_name" {
+    description = "Nome da Virtual Network"
+    value       = module.vnet.vnet_name
+  }
+
+  output "vnet_id" {
+    description = "ID da Virtual Network"
+    value       = module.vnet.vnet_id
+  }
+
+  output "api_private_dns_fqdn" {
+    description = "FQDN do registro A da API na zona DNS privada"
+    value       = module.vnet.api_private_dns_fqdn
+  }
+
+  output "vnet_aks_node_subnet_prefix" {
+    description = "Prefixo de endereço da subrede de nós do AKS"
+    value       = var.vnet_aks_node_subnet_prefix
+  }
+
 # # AKS
 #   output "aks_api_private_ip" {
 #     description = "Endereço IP privado para uso da aplicação hospedada no AKS"
@@ -89,36 +120,9 @@
 #     sensitive   = true
 #   }
 
-# # VNET
 
-  output "vnet_name" {
-    description = "Nome da Virtual Network"
-    value       = module.vnet.vnet_name
-  }
 
-  output "vnet_id" {
-    description = "ID da Virtual Network"
-    value       = module.vnet.vnet_id
-  }
 
-  output "api_private_dns_fqdn" {
-    description = "FQDN do registro A da API na zona DNS privada"
-    value       = module.vnet.api_private_dns_fqdn
-  }
-
-  output "vnet_aks_node_subnet_prefix" {
-    description = "Prefixo de endereço da subrede de nós do AKS"
-    value       = var.vnet_aks_node_subnet_prefix
-  }
-
-# # Public IP
-#   output "ext_ingress_public_ip" {
-#     value = module.public_ip.ip_address
-#   }
-
-#   output "ext_ingress_public_ip_fqdn" {
-#     value = module.public_ip.fqdn
-#   }
 
 # # Cognito
 
@@ -164,9 +168,9 @@
 #     value       = module.vnet.azfunc_private_dns_fqdn
 #   }
 
-# # Service Bus
-#   output "sb_connection_string" {
-#     description = "Connection string primária do Service Bus Namespace"
-#     value       = module.service_bus.sb_connection_string
-#     sensitive   = true
-#   }
+# Service Bus
+  output "sb_connection_string" {
+    description = "Connection string primária do Service Bus Namespace"
+    value       = module.service_bus.sb_connection_string
+    sensitive   = true
+  }

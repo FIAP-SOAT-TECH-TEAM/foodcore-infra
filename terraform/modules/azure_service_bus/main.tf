@@ -7,9 +7,70 @@ resource "azurerm_servicebus_namespace" "sb_ns" {
   capacity                      = var.sb_capacity
   premium_messaging_partitions  = var.sb_partitions
 
-
   # https://github.com/hashicorp/terraform-provider-azurerm/issues/27239#issuecomment-2420234755
   #zone_redundant     = true
+}
+
+resource "azurerm_monitor_autoscale_setting" "servicebus_namespace_autoscale" {
+  name                = "${var.dns_prefix}-sb-autoscale"
+  enabled             = true
+  resource_group_name = var.resource_group_name
+  location            = var.location
+  target_resource_id  = azurerm_servicebus_namespace.sb_ns.id
+
+  profile {
+    name = "CPU-based scaling"
+
+    capacity {
+      default = var.sb_capacity
+      minimum = var.sb_capacity
+      maximum = var.sb_max_capacity
+    }
+
+    # Scale Out
+    rule {
+      metric_trigger {
+        metric_name        = "NamespaceCpuUsage"
+        metric_namespace   = "microsoft.servicebus/namespaces"
+        metric_resource_id = azurerm_servicebus_namespace.sb_ns.id
+        time_grain         = "PT1M"
+        statistic          = "Average"
+        time_window        = "PT5M"
+        time_aggregation   = "Average"
+        operator           = "GreaterThan"
+        threshold          = 60
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ServiceAllowedNextValue"
+        value     = "1"
+        cooldown  = "PT5M"
+      }
+    }
+
+    # Scale In
+    rule {
+      metric_trigger {
+        metric_name        = "NamespaceCpuUsage"
+        metric_namespace   = "microsoft.servicebus/namespaces"
+        metric_resource_id = azurerm_servicebus_namespace.sb_ns.id
+        time_grain         = "PT1M"
+        statistic          = "Average"
+        time_window        = "PT5M"
+        time_aggregation   = "Average"
+        operator           = "LessThan"
+        threshold          = 60
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ServiceAllowedNextValue"
+        value     = "1"
+        cooldown  = "PT5M"
+      }
+    }
+  }
 }
 
 resource "azurerm_servicebus_queue" "sb_queues" {

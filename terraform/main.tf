@@ -127,22 +127,23 @@ module "app_insights" {
 #   depends_on = [ module.resource_group, module.vnet, module.acr, module.public_ip ]
 # }
 
-# module "service_bus" {
-#   source                  = "./modules/azure_service_bus"
-#   dns_prefix              = var.dns_prefix
-#   resource_group_name     = module.resource_group.name
-#   location                = var.location
-#   sb_partitions           = var.sb_partitions
-#   sb_subnet_id            = module.vnet.sb_subnet_id
-#   sb_private_dns_zone_id  = module.vnet.sb_private_dns_zone_id
-#   sb_sku                  = var.sb_sku
-#   sb_capacity             = var.sb_capacity
-#   sb_queues               = var.sb_queues
-#   sb_topics               = var.sb_topics
-#   sb_subscriptions        = var.sb_subscriptions
+module "service_bus" {
+  source                  = "./modules/azure_service_bus"
+  dns_prefix              = var.dns_prefix
+  resource_group_name     = module.resource_group.name
+  location                = var.location
+  sb_partitions           = var.sb_partitions
+  sb_subnet_id            = module.vnet.sb_subnet_id
+  sb_private_dns_zone_id  = module.vnet.sb_private_dns_zone_id
+  sb_sku                  = var.sb_sku
+  sb_capacity             = var.sb_capacity
+  sb_max_capacity         = var.sb_max_capacity
+  sb_queues               = var.sb_queues
+  sb_topics               = var.sb_topics
+  sb_subscriptions        = var.sb_subscriptions
 
-#   depends_on = [ module.resource_group, module.vnet ]
-# }
+  depends_on = [ module.resource_group, module.vnet ]
+}
 
 # module "apim" {
 #   source                           = "./modules/apim"
@@ -153,9 +154,11 @@ module "app_insights" {
 #   app_insights_instrumentation_key = module.app_insights.app_insights_instrumentation_key
 #   app_insights_connection_string   = module.app_insights.app_insights_connection_string
 #   apim_subnet_id                   = module.vnet.apim_subnet.id
-#   publisher_name                   = var.publisher_name
-#   publisher_email                  = var.publisher_email
-#   sku_name                         = var.sku_name
+#   apim_publisher_name              = var.apim_publisher_name
+#   apim_publisher_email             = var.apim_publisher_email
+#   apim_sku_name                    = var.apim_sku_name
+#   apim_capacity                    = var.apim_apacity
+#   apim_max_capacity                = var.apim_max_capacity
 #   apim_product_id                  = var.apim_product_id
 #   apim_product_display_name        = var.apim_product_display_name
 #   apim_product_description         = var.apim_product_description
