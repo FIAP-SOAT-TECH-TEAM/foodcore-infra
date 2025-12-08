@@ -45,19 +45,29 @@
     description = "ID da sub-rede do APIM"
   }
 
-  variable "publisher_name" {
+  variable "apim_publisher_name" {
     description = "Nome do publicador do API Management"
     type        = string
   }
 
-  variable "publisher_email" {
+  variable "apim_publisher_email" {
     description = "Email do publicador do API Management"
     type        = string
   }
 
-  variable "sku_name" {
+  variable "apim_sku_name" {
     description = "SKU do API Management"
     type        = string
+  }
+
+  variable "apim_capacity" {
+    description = "Capacidade do API Management"
+    type        = number
+  }
+
+  variable "apim_max_capacity" {
+    description = "Capacidade máxima do API Management"
+    type        = number
   }
 
   variable "apim_product_id" {

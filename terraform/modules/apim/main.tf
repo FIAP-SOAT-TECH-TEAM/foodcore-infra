@@ -2,9 +2,9 @@ resource "azurerm_api_management" "apim" {
   name                = "${var.dns_prefix}-apim"
   location            = var.location
   resource_group_name = var.resource_group_name
-  publisher_name      = var.publisher_name
-  publisher_email     = var.publisher_email
-  sku_name            = var.sku_name
+  publisher_name      = var.apim_publisher_name
+  publisher_email     = var.apim_publisher_email
+  sku_name            = "${var.apim_sku_name}_${var.apim_capacity}"
   zones               = var.apim_zones
 
   virtual_network_type = "External"
@@ -25,6 +25,67 @@ resource "azurerm_api_management_logger" "app_insights_logger" {
 
   depends_on = [ azurerm_api_management.apim ]
 }
+
+resource "azurerm_monitor_autoscale_setting" "apim_autoscale" {
+  name                = "${var.dns_prefix}-apim-autoscale"
+  resource_group_name = var.resource_group_name
+  location            = var.location
+  target_resource_id  = azurerm_api_management.apim.id
+  enabled             = true
+
+  profile {
+    name = "Request-based scaling"
+
+    capacity {
+      default = var.apim_capacity
+      minimum = var.apim_capacity
+      maximum = var.apim_max_capacity
+    }
+
+    # Scale Out
+    rule {
+      metric_trigger {
+        metric_name        = "Requests"
+        metric_resource_id = azurerm_api_management.apim.id
+        time_grain         = "PT1M"
+        statistic          = "Total"
+        time_window        = "PT5M"
+        time_aggregation   = "Total"
+        operator           = "GreaterThan"
+        threshold          = 1000
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT5M"
+      }
+    }
+
+    # Scale In
+    rule {
+      metric_trigger {
+        metric_name        = "Requests"
+        metric_resource_id = azurerm_api_management.apim.id
+        time_grain         = "PT1M"
+        statistic          = "Total"
+        time_window        = "PT5M"
+        time_aggregation   = "Total"
+        operator           = "LessThan"
+        threshold          = 200
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT10M"
+      }
+    }
+  }
+}
+
 
 resource "azurerm_api_management_product" "foodcoreapi_start_product" {
   product_id            = var.apim_product_id

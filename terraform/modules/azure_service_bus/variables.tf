@@ -38,6 +38,10 @@ variable "sb_capacity" {
   description = "Capacidade do Azure Service Bus Namespace"
   type        = number
 }
+variable "sb_max_capacity" {
+  description = "Capacidade máxima do Azure Service Bus Namespace"
+  type        = number
+}
 variable "sb_partitions" {
   description = "Número de partições para o Azure Service Bus Namespace Premium"
   type        = number
