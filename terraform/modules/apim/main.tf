@@ -50,7 +50,7 @@ resource "azurerm_monitor_autoscale_setting" "apim_autoscale" {
         time_grain         = "PT1M"
         statistic          = "Sum"
         time_window        = "PT5M"
-        time_aggregation   = "Sum"
+        time_aggregation   = "Total"
         operator           = "GreaterThan"
         threshold          = 1000
       }
@@ -71,7 +71,7 @@ resource "azurerm_monitor_autoscale_setting" "apim_autoscale" {
         time_grain         = "PT1M"
         statistic          = "Sum"
         time_window        = "PT5M"
-        time_aggregation   = "Sum"
+        time_aggregation   = "Total"
         operator           = "LessThan"
         threshold          = 200
       }
