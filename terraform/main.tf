@@ -37,95 +37,95 @@ module "app_insights" {
   depends_on = [ module.resource_group ]
 }
 
-# module "cognito" {
-#   source                    = "./modules/cognito"
+module "cognito" {
+  source                    = "./modules/cognito"
   
-#   aws_location              = var.aws_location
-#   dns_prefix                = var.dns_prefix
-#   default_customer_password = var.default_customer_password
-#   callback_urls             = var.callback_urls
-# }
+  aws_location              = var.aws_location
+  dns_prefix                = var.dns_prefix
+  default_customer_password = var.default_customer_password
+  callback_urls             = var.callback_urls
+}
 
-# module "azfunc" {
-#   source                              = "./modules/azure_function"
-#   dns_prefix                          = var.dns_prefix
-#   location                            = var.location
-#   az_premium_plan_auto_scale_enabled  = var.az_premium_plan_auto_scale_enabled
-#   az_maximum_elastic_worker_count     = var.az_maximum_elastic_worker_count
-#   az_minimum_elastic_worker_count     = var.az_minimum_elastic_worker_count
-#   az_worker_count                     = var.az_worker_count
-#   az_zone_balancing_enabled           = var.az_zone_balancing_enabled
-#   app_insights_instrumentation_key    = module.app_insights.app_insights_instrumentation_key
-#   app_insights_connection_string      = module.app_insights.app_insights_connection_string
-#   aws_location                        = var.aws_location
-#   aws_credentials                     = var.aws_credentials
-#   resource_group_name                 = module.resource_group.name
-#   azfunc_enable_always_on             = var.azfunc_enable_always_on
-#   azfunc_private_endpoint_subnet_id   = module.vnet.azfunc_private_endpoint_subnet_id
-#   azfunc_private_dns_zone_id          = module.vnet.azfunc_private_dns_zone_id
-#   azfunc_private_ip                   = module.vnet.azfunc_private_ip
-#   az_func_os_type                     = var.az_func_os_type
-#   az_func_sku_name                    = var.az_func_sku_name
-#   sa_account_replication_type         = var.azfunc_sa_account_replication_type
-#   sa_account_tier                     = var.azfunc_sa_account_tier
-#   instance_memory_in_mb               = var.azfunc_instance_memory_in_mb
-#   cognito_user_pool_id                = module.cognito.cognito_user_pool_id
-#   cognito_client_id                   = module.cognito.cognito_user_pool_client_id
-#   default_customer_password           = var.default_customer_password
-#   guest_user_email                    = module.cognito.guest_user_email
+module "azfunc" {
+  source                              = "./modules/azure_function"
+  dns_prefix                          = var.dns_prefix
+  location                            = var.location
+  az_premium_plan_auto_scale_enabled  = var.az_premium_plan_auto_scale_enabled
+  az_maximum_elastic_worker_count     = var.az_maximum_elastic_worker_count
+  az_minimum_elastic_worker_count     = var.az_minimum_elastic_worker_count
+  az_worker_count                     = var.az_worker_count
+  az_zone_balancing_enabled           = var.az_zone_balancing_enabled
+  app_insights_instrumentation_key    = module.app_insights.app_insights_instrumentation_key
+  app_insights_connection_string      = module.app_insights.app_insights_connection_string
+  aws_location                        = var.aws_location
+  aws_credentials                     = var.aws_credentials
+  resource_group_name                 = module.resource_group.name
+  azfunc_enable_always_on             = var.azfunc_enable_always_on
+  azfunc_private_endpoint_subnet_id   = module.vnet.azfunc_private_endpoint_subnet_id
+  azfunc_private_dns_zone_id          = module.vnet.azfunc_private_dns_zone_id
+  azfunc_private_ip                   = module.vnet.azfunc_private_ip
+  az_func_os_type                     = var.az_func_os_type
+  az_func_sku_name                    = var.az_func_sku_name
+  sa_account_replication_type         = var.azfunc_sa_account_replication_type
+  sa_account_tier                     = var.azfunc_sa_account_tier
+  instance_memory_in_mb               = var.azfunc_instance_memory_in_mb
+  cognito_user_pool_id                = module.cognito.cognito_user_pool_id
+  cognito_client_id                   = module.cognito.cognito_user_pool_client_id
+  default_customer_password           = var.default_customer_password
+  guest_user_email                    = module.cognito.guest_user_email
 
-#   depends_on = [ module.resource_group, module.vnet, module.cognito, module.app_insights ]
-# }
+  depends_on = [ module.resource_group, module.vnet, module.cognito, module.app_insights ]
+}
 
-# module "blob" {
-#   source                    = "./modules/blob"
-#   dns_prefix                = var.dns_prefix
-#   resource_group_name       = module.resource_group.name
-#   location                  = var.location
-#   container_name            = var.container_name
-#   account_tier              = var.account_tier
-#   account_replication_type  = var.account_replication_type
+module "blob" {
+  source                    = "./modules/blob"
+  dns_prefix                = var.dns_prefix
+  resource_group_name       = module.resource_group.name
+  location                  = var.location
+  container_name            = var.container_name
+  account_tier              = var.account_tier
+  account_replication_type  = var.account_replication_type
 
-#   depends_on = [ module.resource_group ]
-# }
+  depends_on = [ module.resource_group ]
+}
 
-# module "acr" {
-#   source                      = "./modules/acr"
-#   dns_prefix                  = var.dns_prefix
-#   resource_group_name         = module.resource_group.name
-#   location                    = var.location
-#   acr_sku                     = var.acr_sku
-#   acr_admin_enabled           = var.acr_admin_enabled
-#   acr_zone_redundancy_enabled = var.acr_zone_redundancy_enabled
+module "acr" {
+  source                      = "./modules/acr"
+  dns_prefix                  = var.dns_prefix
+  resource_group_name         = module.resource_group.name
+  location                    = var.location
+  acr_sku                     = var.acr_sku
+  acr_admin_enabled           = var.acr_admin_enabled
+  acr_zone_redundancy_enabled = var.acr_zone_redundancy_enabled
 
-#   depends_on = [ module.resource_group ]
-# }
+  depends_on = [ module.resource_group ]
+}
 
-# module "aks" {
-#   source                      = "./modules/aks"
-#   dns_prefix                  = var.dns_prefix
-#   resource_group_name         = module.resource_group.name
-#   aks_network_plugin          = var.aks_network_plugin
-#   aks_network_plugin_mode     = var.aks_network_plugin_mode
-#   aks_outbound_type           = var.aks_outbound_type
-#   aks_service_subnet_prefix   = var.vnet_aks_service_subnet_prefix[0]
-#   aks_availability_zones      = var.aks_availability_zones
-#   aks_auto_scaling_enabled    = var.aks_auto_scaling_enabled
-#   aks_max_count               = var.aks_max_count
-#   aks_min_count               = var.aks_min_count
-#   node_pool_name              = var.node_pool_name
-#   node_pool_temp_name         = var.node_pool_temp_name
-#   public_ip_resource_group_id = module.resource_group.id
-#   location                    = var.location
-#   aks_node_subnet_id          = module.vnet.aks_node_subnet.id
-#   node_count                  = var.node_count
-#   vm_size                     = var.vm_size
-#   identity_type               = var.identity_type
-#   kubernetes_version          = var.kubernetes_version
-#   acr_id                      = module.acr.acr_id
+module "aks" {
+  source                      = "./modules/aks"
+  dns_prefix                  = var.dns_prefix
+  resource_group_name         = module.resource_group.name
+  aks_network_plugin          = var.aks_network_plugin
+  aks_network_plugin_mode     = var.aks_network_plugin_mode
+  aks_outbound_type           = var.aks_outbound_type
+  aks_service_subnet_prefix   = var.vnet_aks_service_subnet_prefix[0]
+  aks_availability_zones      = var.aks_availability_zones
+  aks_auto_scaling_enabled    = var.aks_auto_scaling_enabled
+  aks_max_count               = var.aks_max_count
+  aks_min_count               = var.aks_min_count
+  node_pool_name              = var.node_pool_name
+  node_pool_temp_name         = var.node_pool_temp_name
+  public_ip_resource_group_id = module.resource_group.id
+  location                    = var.location
+  aks_node_subnet_id          = module.vnet.aks_node_subnet.id
+  node_count                  = var.node_count
+  vm_size                     = var.vm_size
+  identity_type               = var.identity_type
+  kubernetes_version          = var.kubernetes_version
+  acr_id                      = module.acr.acr_id
 
-#   depends_on = [ module.resource_group, module.vnet, module.acr, module.public_ip ]
-# }
+  depends_on = [ module.resource_group, module.vnet, module.acr, module.public_ip ]
+}
 
 module "service_bus" {
   source                  = "./modules/azure_service_bus"
