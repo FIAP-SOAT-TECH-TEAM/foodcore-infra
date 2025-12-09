@@ -145,25 +145,25 @@ module "service_bus" {
   depends_on = [ module.resource_group, module.vnet ]
 }
 
-# module "apim" {
-#   source                           = "./modules/apim"
-#   dns_prefix                       = var.dns_prefix
-#   resource_group_name              = module.resource_group.name
-#   location                         = var.location
-#   apim_zones                       = var.apim_zones
-#   app_insights_instrumentation_key = module.app_insights.app_insights_instrumentation_key
-#   app_insights_connection_string   = module.app_insights.app_insights_connection_string
-#   apim_subnet_id                   = module.vnet.apim_subnet.id
-#   apim_publisher_name              = var.apim_publisher_name
-#   apim_publisher_email             = var.apim_publisher_email
-#   apim_sku_name                    = var.apim_sku_name
-#   apim_capacity                    = var.apim_apacity
-#   apim_max_capacity                = var.apim_max_capacity
-#   apim_product_id                  = var.apim_product_id
-#   apim_product_display_name        = var.apim_product_display_name
-#   apim_product_description         = var.apim_product_description
-#   apim_subscription_display_name   = var.apim_subscription_display_name
-#   apim_subscription_state          = var.apim_subscription_state
+module "apim" {
+  source                           = "./modules/apim"
+  dns_prefix                       = var.dns_prefix
+  resource_group_name              = module.resource_group.name
+  location                         = var.location
+  apim_zones                       = var.apim_zones
+  app_insights_instrumentation_key = module.app_insights.app_insights_instrumentation_key
+  app_insights_connection_string   = module.app_insights.app_insights_connection_string
+  apim_subnet_id                   = module.vnet.apim_subnet.id
+  apim_publisher_name              = var.apim_publisher_name
+  apim_publisher_email             = var.apim_publisher_email
+  apim_sku_name                    = var.apim_sku_name
+  apim_capacity                    = var.apim_apacity
+  apim_max_capacity                = var.apim_max_capacity
+  apim_product_id                  = var.apim_product_id
+  apim_product_display_name        = var.apim_product_display_name
+  apim_product_description         = var.apim_product_description
+  apim_subscription_display_name   = var.apim_subscription_display_name
+  apim_subscription_state          = var.apim_subscription_state
 
-#   depends_on = [ module.resource_group, module.vnet, module.app_insights ]
-# }
+  depends_on = [ module.resource_group, module.vnet, module.app_insights ]
+}
