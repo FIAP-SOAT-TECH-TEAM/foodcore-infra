@@ -48,9 +48,9 @@ resource "azurerm_monitor_autoscale_setting" "apim_autoscale" {
         metric_name        = "Requests"
         metric_resource_id = azurerm_api_management.apim.id
         time_grain         = "PT1M"
-        statistic          = "Total"
+        statistic          = "Sum"
         time_window        = "PT5M"
-        time_aggregation   = "Total"
+        time_aggregation   = "Sum"
         operator           = "GreaterThan"
         threshold          = 1000
       }
@@ -69,9 +69,9 @@ resource "azurerm_monitor_autoscale_setting" "apim_autoscale" {
         metric_name        = "Requests"
         metric_resource_id = azurerm_api_management.apim.id
         time_grain         = "PT1M"
-        statistic          = "Total"
+        statistic          = "Sum"
         time_window        = "PT5M"
-        time_aggregation   = "Total"
+        time_aggregation   = "Sum"
         operator           = "LessThan"
         threshold          = 200
       }
