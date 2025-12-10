@@ -33,6 +33,13 @@ resource "azurerm_subnet" "sb_subnet" {
   address_prefixes     = var.vnet_sb_subnet_prefix
 }
 
+resource "azurerm_subnet" "appgw_subnet" {
+  name                 = "${var.dns_prefix}-appgw-subnet"
+  resource_group_name  = var.resource_group_name
+  virtual_network_name = azurerm_virtual_network.vnet.name
+  address_prefixes     = var.vnet_appgw_subnet_prefix
+}
+
 resource "azurerm_private_dns_zone" "private_dns" {
   name                = "${var.dns_prefix}.local"
   resource_group_name = var.resource_group_name
@@ -73,12 +80,28 @@ resource "azurerm_private_dns_zone_virtual_network_link" "sb_private_dns" {
   
 }
 
-resource "azurerm_private_dns_a_record" "api_dns_a" {
-  name                = "api"
+resource "azurerm_private_dns_a_record" "api_order_dns_a" {
+  name                = "order"
   zone_name           = azurerm_private_dns_zone.private_dns.name
   resource_group_name = var.resource_group_name
   ttl                 = 300
-  records             = [local.aks_api_private_ip]
+  records             = [local.aks_ingress_private_ip]
+}
+
+resource "azurerm_private_dns_a_record" "api_payment_dns_a" {
+  name                = "payment"
+  zone_name           = azurerm_private_dns_zone.private_dns.name
+  resource_group_name = var.resource_group_name
+  ttl                 = 300
+  records             = [local.aks_ingress_private_ip]
+}
+
+resource "azurerm_private_dns_a_record" "api_catalog_dns_a" {
+  name                = "catalog"
+  zone_name           = azurerm_private_dns_zone.private_dns.name
+  resource_group_name = var.resource_group_name
+  ttl                 = 300
+  records             = [local.aks_ingress_private_ip]
 }
 
 resource "azurerm_private_dns_a_record" "azfunc_dns_a" {
@@ -180,4 +203,52 @@ resource "azurerm_network_security_group" "sb_nsg" {
 resource "azurerm_subnet_network_security_group_association" "sb_assoc" {
   subnet_id                 = azurerm_subnet.sb_subnet.id
   network_security_group_id = azurerm_network_security_group.sb_nsg.id
+}
+
+resource "azurerm_network_security_group" "appgw_nsg" {
+  name                = "${var.dns_prefix}-appgw-nsg"
+  location            = var.location
+  resource_group_name = var.resource_group_name
+
+  # https://learn.microsoft.com/en-us/azure/application-gateway/configuration-infrastructure#required-security-rules
+  security_rule {
+    name                       = "AllowApimInbound"
+    priority                   = 100
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "80"
+    source_address_prefix      = azurerm_subnet.apim_subnet.address_prefixes[0]
+    destination_address_prefix = local.aks_ingress_private_ip
+  }
+  security_rule {
+    name                       = "AllowPublicInbound"
+    priority                   = 100
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "80"
+    source_address_prefix      = "*"
+    destination_address_prefix = var.aks_ingress_public_ip
+  }
+
+  security_rule {
+    name                       = "AllowGatewayManagementInbound"
+    priority                   = 100
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "65200-65535"
+    source_address_prefix      = "GatewayManager"
+    destination_address_prefix = "*"
+  }
+  
+}
+
+resource "azurerm_subnet_network_security_group_association" "appgw_assoc" {
+  subnet_id                 = azurerm_subnet.appgw_subnet.id
+  network_security_group_id = azurerm_network_security_group.appgw_nsg.id
 }

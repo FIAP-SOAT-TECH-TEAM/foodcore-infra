@@ -30,6 +30,10 @@ resource "azurerm_kubernetes_cluster" "aks" {
     dns_service_ip      = local.aks_dns_service_ip
   }
 
+  ingress_application_gateway {
+     gateway_id = var.aks_app_gw_id
+  }
+
   role_based_access_control_enabled = true
 }
 

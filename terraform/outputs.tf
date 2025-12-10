@@ -16,12 +16,8 @@
   }
 
 # Public IP
-  output "ext_ingress_public_ip" {
-    value = module.public_ip.ip_address
-  }
-
-  output "ext_ingress_public_ip_fqdn" {
-    value = module.public_ip.fqdn
+  output "default_public_ip_address_fqdn" {
+    value = module.public_ip.public_ip_address_fqdn
   }
 
 # VNET
@@ -36,9 +32,19 @@
     value       = module.vnet.vnet_id
   }
 
-  output "api_private_dns_fqdn" {
-    description = "FQDN do registro A da API na zona DNS privada"
-    value       = module.vnet.api_private_dns_fqdn
+  output "api_order_private_dns_fqdn" {
+    description = "FQDN do registro A do microsserviço de order na zona DNS privada"
+    value       = module.vnet.api_order_private_dns_fqdn
+  }
+
+  output "api_payment_private_dns_fqdn" {
+    description = "FQDN do registro A do microsserviço de payment na zona DNS privada"
+    value       = module.vnet.api_payment_private_dns_fqdn
+  }
+
+  output "api_catalog_private_dns_fqdn" {
+    description = "FQDN do registro A do microsserviço de catalog na zona DNS privada"
+    value       = module.vnet.api_catalog_private_dns_fqdn
   }
 
   output "vnet_aks_node_subnet_prefix" {
@@ -47,11 +53,6 @@
   }
 
 # AKS
-  output "aks_api_private_ip" {
-    description = "Endereço IP privado para uso da aplicação hospedada no AKS"
-    value       = module.vnet.aks_api_private_ip
-  }
-
   output "aks_name" {
     value = module.aks.aks_name
   }

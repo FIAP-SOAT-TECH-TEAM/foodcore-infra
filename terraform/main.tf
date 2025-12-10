@@ -4,6 +4,16 @@ module "resource_group" {
   location            = var.location
 }
 
+module "public_ip" {
+  source              = "./modules/public_ip"
+  dns_prefix          = var.dns_prefix
+  resource_group_name = module.resource_group.name
+  location            = var.location
+  allocation_method   = var.allocation_method
+  sku                 = var.sku
+  depends_on          = [ module.resource_group ]
+}
+
 module "vnet" {
   source                          = "./modules/vnet"
   dns_prefix                      = var.dns_prefix
@@ -14,18 +24,25 @@ module "vnet" {
   vnet_apim_subnet_prefix         = var.vnet_apim_subnet_prefix
   vnet_azfunc_pe_subnet_prefix    = var.vnet_azfunc_pe_subnet_prefix
   vnet_sb_subnet_prefix           = var.vnet_sb_subnet_prefix
+  vnet_appgw_subnet_prefix        = var.vnet_appgw_subnet_prefix
+  aks_ingress_public_ip           = module.public_ip.aks_ingress_public_ip.ip_address
 
-  depends_on = [ module.resource_group ]
+  depends_on = [ module.resource_group, module.public_ip ]
 }
 
-module "public_ip" {
-  source              = "./modules/public_ip"
-  dns_prefix          = var.dns_prefix
-  resource_group_name = module.resource_group.name
-  location            = var.location
-  allocation_method   = var.allocation_method
-  sku                 = var.sku
-  depends_on          = [ module.resource_group ]
+module "appgw" {
+  source                    = "./modules/appgw"
+  dns_prefix                = var.dns_prefix
+  resource_group_name       = module.resource_group.name
+  location                  = var.location
+  aks_app_gateway_zones     = var.aks_app_gateway_zones
+  aks_app_gateway_tier      = var.aks_app_gateway_tier
+  aks_app_gateway_capacity  = var.aks_app_gateway_capacity
+  appgw_subnet_id           = module.vnet.appgw_subnet.id
+  aks_appgw_private_ip      = module.vnet.aks_ingress_private_ip
+  aks_appgw_public_ip_id    = module.public_ip.aks_ingress_public_ip.id
+
+  depends_on = [ module.resource_group, module.vnet, module.public_ip ]
 }
 
 module "app_insights" {
@@ -108,6 +125,7 @@ module "aks" {
   aks_network_plugin          = var.aks_network_plugin
   aks_network_plugin_mode     = var.aks_network_plugin_mode
   aks_outbound_type           = var.aks_outbound_type
+  aks_app_gw_id               = module.appgw.aks_appgw_id
   aks_service_subnet_prefix   = var.vnet_aks_service_subnet_prefix[0]
   aks_availability_zones      = var.aks_availability_zones
   aks_auto_scaling_enabled    = var.aks_auto_scaling_enabled
@@ -124,7 +142,7 @@ module "aks" {
   kubernetes_version          = var.kubernetes_version
   acr_id                      = module.acr.acr_id
 
-  depends_on = [ module.resource_group, module.vnet, module.acr, module.public_ip ]
+  depends_on = [ module.resource_group, module.vnet, module.acr, module.public_ip, module.appgw ]
 }
 
 module "service_bus" {

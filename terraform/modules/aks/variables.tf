@@ -121,3 +121,8 @@
     type        = string
     description = "ID do resource group onde está o IP público do Ingress externo"
   }
+
+  variable "aks_app_gw_id" {
+    type        = string
+    description = "ID do Application Gateway para ingress do AKS"
+  }
