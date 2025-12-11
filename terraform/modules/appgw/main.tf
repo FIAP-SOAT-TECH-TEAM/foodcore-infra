@@ -25,8 +25,9 @@ resource "azurerm_application_gateway" "aks_appgw" {
    }
 
    frontend_ip_configuration {
-     name               = local.frontend_private_ip_configuration_name
-     private_ip_address = var.aks_appgw_private_ip
+     name                           = local.frontend_private_ip_configuration_name
+     private_ip_address             = var.aks_appgw_private_ip
+     private_ip_address_allocation  = "Static"
    }
 
    frontend_ip_configuration {
