@@ -34,7 +34,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
      gateway_id = var.aks_app_gw_id
   }
 
-  # Impede a recriação acidental do IP público se o Azure alterar o gerenciamento da propriedade 'zones'
+  # Impede recriação acidental se o Azure alterar o gerenciamento da propriedade 'zones'
   lifecycle {
     ignore_changes = [
       zones

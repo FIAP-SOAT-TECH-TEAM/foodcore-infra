@@ -13,7 +13,7 @@ resource "azurerm_api_management" "apim" {
     subnet_id = var.apim_subnet_id
   }
 
-  # Impede a recriação acidental do IP público se o Azure alterar o gerenciamento da propriedade 'zones'
+  # Impede recriação acidental se o Azure alterar o gerenciamento da propriedade 'zones'
   lifecycle {
     ignore_changes = [
       zones

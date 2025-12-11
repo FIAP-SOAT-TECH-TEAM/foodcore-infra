@@ -7,7 +7,7 @@ resource "azurerm_public_ip" "aks-ingress-ip" {
   zones               = var.aks_ingress_public_ip_zones
   domain_name_label   = "${var.dns_prefix}monitor"
 
-  # Impede a recriação acidental do IP público se o Azure alterar o gerenciamento da propriedade 'zones'
+  # Impede recriação acidental se o Azure alterar o gerenciamento da propriedade 'zones'
   lifecycle {
     ignore_changes = [
       zones
