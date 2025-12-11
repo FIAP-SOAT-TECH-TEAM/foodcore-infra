@@ -16,7 +16,7 @@ resource "azurerm_application_gateway" "aks_appgw" {
 
    gateway_ip_configuration {
      name      = "appGatewayIpConfig"
-     subnet_id = var.appgw_subnet_id
+     subnet_id = var.appgw_subnet.id
    }
 
    frontend_port {
@@ -27,7 +27,7 @@ resource "azurerm_application_gateway" "aks_appgw" {
    frontend_ip_configuration {
      name                           = local.frontend_private_ip_configuration_name
      private_ip_address             = var.aks_appgw_private_ip
-     subnet_id                      = var.aks_appgw_subnet_id
+     subnet_id                      = var.appgw_subnet_id
      private_ip_address_allocation  = "Static"
    }
 
