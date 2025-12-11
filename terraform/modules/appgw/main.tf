@@ -16,7 +16,7 @@ resource "azurerm_application_gateway" "aks_appgw" {
 
    gateway_ip_configuration {
      name      = "appGatewayIpConfig"
-     subnet_id = var.appgw_subnet.id
+     subnet_id = var.appgw_subnet_id
    }
 
    frontend_port {
