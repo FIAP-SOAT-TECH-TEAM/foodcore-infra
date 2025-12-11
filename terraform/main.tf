@@ -5,12 +5,13 @@ module "resource_group" {
 }
 
 module "public_ip" {
-  source              = "./modules/public_ip"
-  dns_prefix          = var.dns_prefix
-  resource_group_name = module.resource_group.name
-  location            = var.location
-  allocation_method   = var.allocation_method
-  sku                 = var.sku
+  source                        = "./modules/public_ip"
+  dns_prefix                    = var.dns_prefix
+  resource_group_name           = module.resource_group.name
+  location                      = var.location
+  aks_ingress_allocation_method = var.aks_ingress_allocation_method
+  aks_ingress_sku               = var.aks_ingress_sku
+  aks_ingress_public_ip_zones   = var.aks_ingress_public_ip_zones
   depends_on          = [ module.resource_group ]
 }
 
@@ -35,7 +36,8 @@ module "appgw" {
   dns_prefix                = var.dns_prefix
   resource_group_name       = module.resource_group.name
   location                  = var.location
-  aks_app_gateway_zones     = var.aks_app_gateway_zones
+  # Deve ser as mesmas do IP público escolhido para o Frontend Configuration púbico do App Gateway
+  aks_app_gateway_zones     = var.aks_ingress_public_ip_zones
   aks_app_gateway_tier      = var.aks_app_gateway_tier
   aks_appgw_min_capacity    = var.aks_appgw_min_capacity
   aks_appgw_max_capacity    = var.aks_appgw_max_capacity 

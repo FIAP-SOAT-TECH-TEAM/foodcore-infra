@@ -23,11 +23,15 @@
   }
 
 # Public IP
-  variable "allocation_method" {
+  variable "aks_ingress_allocation_method" {
     description = "Método de alocação do IP público"
     type = string
   }
-  variable "sku" {
+  variable "aks_ingress_sku" {
     description = "SKU do IP público"
     type = string
+  }
+  variable "aks_ingress_public_ip_zones" {
+    description = "Zonas de disponibilidade para o IP público do AKS Ingress"
+    type        = list(string)
   }
