@@ -53,6 +53,11 @@ variable "aks_appgw_private_ip" {
   description = "O endereço IP privado atribuído ao Frontend do Application Gateway para AKS."
 }
 
+variable "aks_appgw_subnet_id" {
+  type        = string
+  description = "O ID da subnet associada ao Frontend IP privado do Application Gateway para AKS."
+}
+
 variable "aks_appgw_public_ip_id" {
   type        = string
   description = "O ID do endereço IP público atribuído ao Frontend do Application Gateway para AKS."
