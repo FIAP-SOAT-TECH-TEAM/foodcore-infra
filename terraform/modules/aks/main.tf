@@ -37,7 +37,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
   # Impede recriação acidental se o Azure alterar o gerenciamento da propriedade 'zones'
   lifecycle {
     ignore_changes = [
-      zones
+      default_node_pool[0].zones
     ]
   }
 
