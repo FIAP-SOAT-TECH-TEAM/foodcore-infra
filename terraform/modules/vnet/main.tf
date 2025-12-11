@@ -236,7 +236,7 @@ resource "azurerm_network_security_group" "appgw_nsg" {
 
   security_rule {
     name                       = "AllowGatewayManagementInbound"
-    priority                   = 103
+    priority                   = 102
     direction                  = "Inbound"
     access                     = "Allow"
     protocol                   = "Tcp"
