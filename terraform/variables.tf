@@ -35,15 +35,20 @@
   }
 
 # Public IP
-  variable "allocation_method" {
+  variable "aks_ingress_allocation_method" {
     type    = string
     default = "Static"
     description = "Método de alocação do IP público"
   }
-  variable "sku" {
+  variable "aks_ingress_sku" {
     type    = string
     default = "Standard"
     description = "SKU do IP público"
+  }
+  variable "aks_ingress_public_ip_zones" {
+    description = "Zonas de disponibilidade para o IP público do Ingress do AKS"
+    type        = list(string)
+    default     = [ "2", "3" ]
   }
 
 # VNET
@@ -172,11 +177,6 @@
     description = "Tier do Application Gateway para o AKS"
     type        = string
     default     = "Standard_v2"
-  }
-  variable "aks_app_gateway_zones" {
-    description = "Zonas de disponibilidade para o Application Gateway do AKS"
-    type        = list(string)
-    default     = [ "2", "3" ]
   }
 
   variable "aks_appgw_min_capacity" {
