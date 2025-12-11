@@ -171,7 +171,7 @@
   variable "aks_app_gateway_tier" {
     description = "Tier do Application Gateway para o AKS"
     type        = string
-    default     = "Standard_V2"
+    default     = "Standard_v2"
   }
   variable "aks_app_gateway_zones" {
     description = "Zonas de disponibilidade para o Application Gateway do AKS"

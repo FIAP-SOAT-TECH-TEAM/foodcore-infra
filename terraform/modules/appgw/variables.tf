@@ -25,11 +25,11 @@
 
 variable "aks_app_gateway_tier" {
   type        = string
-  description = "O nível do Application Gateway para AKS. Pode ser 'Standard_V2' ou 'WAF_V2'."
+  description = "O nível do Application Gateway para AKS. Pode ser 'Standard_v2' ou 'WAF_V2'."
   
   validation {
-    condition     = var.aks_app_gateway_tier == "Standard_V2" || var.aks_app_gateway_tier == "WAF_V2"
-    error_message = "O 'aks_app_gateway_tier' deve ser 'Standard_V2' ou 'WAF_V2'."
+    condition     = var.aks_app_gateway_tier == "Standard_v2" || var.aks_app_gateway_tier == "WAF_V2"
+    error_message = "O 'aks_app_gateway_tier' deve ser 'Standard_v2' ou 'WAF_V2'."
   }
 }
 
