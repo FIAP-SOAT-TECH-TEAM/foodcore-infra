@@ -83,6 +83,12 @@
     default     = ["10.0.5.0/24"]
   }
 
+  variable "vnet_appgw_subnet_prefix" {
+    description = "Prefixo de endereço da subrede do Application Gateway"
+    type        = list(string)
+    default     = ["10.0.6.0/24"]
+  }
+
 # AKS
   variable "aks_network_plugin" {
     type        = string
@@ -159,6 +165,30 @@
       condition     = length(var.node_pool_temp_name) >= 1 && length(var.node_pool_temp_name) <= 12
       error_message = "O 'node_pool_temp_name' deve ter entre 1 e 12 caracteres."
     }
+  }
+
+# Application Gateway
+  variable "aks_app_gateway_tier" {
+    description = "Tier do Application Gateway para o AKS"
+    type        = string
+    default     = "Standard_v2"
+  }
+  variable "aks_app_gateway_zones" {
+    description = "Zonas de disponibilidade para o Application Gateway do AKS"
+    type        = list(string)
+    default     = [ "2", "3" ]
+  }
+
+  variable "aks_appgw_min_capacity" {
+    type        = number
+    description = "A capacidade mínima para o dimensionamento automático do Application Gateway para AKS."
+    default = 2
+  }
+
+  variable "aks_appgw_max_capacity" {
+    type        = number
+    description = "A capacidade máxima para o dimensionamento automático do Application Gateway para AKS."
+    default = 5
   }
 
 # Blob Storage

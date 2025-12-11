@@ -16,12 +16,8 @@
   }
 
 # Public IP
-  output "ext_ingress_public_ip" {
-    value = module.public_ip.ip_address
-  }
-
-  output "ext_ingress_public_ip_fqdn" {
-    value = module.public_ip.fqdn
+  output "aks_ingress_public_ip_fqdn" {
+    value = module.public_ip.aks_ingress_public_ip_fqdn
   }
 
 # VNET
@@ -36,9 +32,19 @@
     value       = module.vnet.vnet_id
   }
 
-  output "api_private_dns_fqdn" {
-    description = "FQDN do registro A da API na zona DNS privada"
-    value       = module.vnet.api_private_dns_fqdn
+  output "api_order_private_dns_fqdn" {
+    description = "FQDN do registro A do microsserviço de order na zona DNS privada"
+    value       = module.vnet.api_order_private_dns_fqdn
+  }
+
+  output "api_payment_private_dns_fqdn" {
+    description = "FQDN do registro A do microsserviço de payment na zona DNS privada"
+    value       = module.vnet.api_payment_private_dns_fqdn
+  }
+
+  output "api_catalog_private_dns_fqdn" {
+    description = "FQDN do registro A do microsserviço de catalog na zona DNS privada"
+    value       = module.vnet.api_catalog_private_dns_fqdn
   }
 
   output "vnet_aks_node_subnet_prefix" {
@@ -46,20 +52,15 @@
     value       = var.vnet_aks_node_subnet_prefix
   }
 
-# # AKS
-#   output "aks_api_private_ip" {
-#     description = "Endereço IP privado para uso da aplicação hospedada no AKS"
-#     value       = module.vnet.aks_api_private_ip
-#   }
+# AKS
+  output "aks_name" {
+    value = module.aks.aks_name
+  }
 
-#   output "aks_name" {
-#     value = module.aks.aks_name
-#   }
-
-#   output "aks_resource_group" {
-#     description = "Resource Group onde o cluster AKS reside"
-#     value       = module.aks.aks_resource_group
-#   }
+  output "aks_resource_group" {
+    description = "Resource Group onde o cluster AKS reside"
+    value       = module.aks.aks_resource_group
+  }
 
 # # Blob
 
@@ -74,51 +75,51 @@
 #     sensitive   = true
 #   }
 
-# # ACR
+# ACR
 
-#   output "acr_name" {
-#     description = "Nome do Azure Container Registry"
-#     value       = module.acr.acr_name
+  output "acr_name" {
+    description = "Nome do Azure Container Registry"
+    value       = module.acr.acr_name
+  }
+
+  output "acr_resource_group" {
+    description = "Resource Group do ACR"
+    value       = module.acr.acr_resource_group
+  }
+
+# # APIM
+
+#   output "apim_gateway_url" {
+#     description = "URL do gateway do API Management"
+#     value       = module.apim.apim_gateway_url
 #   }
 
-#   output "acr_resource_group" {
-#     description = "Resource Group do ACR"
-#     value       = module.acr.acr_resource_group
+#   output "apim_resource_group" {
+#     description = "Resource Group do API Management"
+#     value       = module.apim.apim_resource_group
 #   }
 
-# APIM
+#   output "apim_name" {
+#     description = "Nome do API Management"
+#     value       = module.apim.apim_name
+#   }
 
-  output "apim_gateway_url" {
-    description = "URL do gateway do API Management"
-    value       = module.apim.apim_gateway_url
-  }
+#   output "apim_foodcore_start_productid" {
+#     description = "ID do produto do API Management"
+#     value       = module.apim.apim_foodcore_start_productid
+#   }
 
-  output "apim_resource_group" {
-    description = "Resource Group do API Management"
-    value       = module.apim.apim_resource_group
-  }
+#   output "apim_foodcore_start_subscriptionid" {
+#     description = "ID da assinatura do API Management"
+#     value       = module.apim.apim_foodcore_start_subscriptionid
+#     sensitive   = true
+#   }
 
-  output "apim_name" {
-    description = "Nome do API Management"
-    value       = module.apim.apim_name
-  }
-
-  output "apim_foodcore_start_productid" {
-    description = "ID do produto do API Management"
-    value       = module.apim.apim_foodcore_start_productid
-  }
-
-  output "apim_foodcore_start_subscriptionid" {
-    description = "ID da assinatura do API Management"
-    value       = module.apim.apim_foodcore_start_subscriptionid
-    sensitive   = true
-  }
-
-  output "apim_foodcore_start_subscription_key" {
-    description = "Chave de subscrição do API Management"
-    value       = module.apim.apim_foodcore_start_subscription_key
-    sensitive   = true
-  }
+#   output "apim_foodcore_start_subscription_key" {
+#     description = "Chave de subscrição do API Management"
+#     value       = module.apim.apim_foodcore_start_subscription_key
+#     sensitive   = true
+#   }
 
 # # Cognito
 
@@ -164,9 +165,9 @@
 #     value       = module.vnet.azfunc_private_dns_fqdn
 #   }
 
-# Service Bus
-  output "sb_connection_string" {
-    description = "Connection string primária do Service Bus Namespace"
-    value       = module.service_bus.sb_connection_string
-    sensitive   = true
-  }
+# # Service Bus
+#   output "sb_connection_string" {
+#     description = "Connection string primária do Service Bus Namespace"
+#     value       = module.service_bus.sb_connection_string
+#     sensitive   = true
+#   }

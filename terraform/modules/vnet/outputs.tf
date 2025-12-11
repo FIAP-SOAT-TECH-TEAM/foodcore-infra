@@ -10,9 +10,9 @@
   }
 
 # AKS
-  output "aks_api_private_ip" {
-    description = "Endereço IP privado para uso da aplicação hospedada no AKS"
-    value       = local.aks_api_private_ip
+  output "aks_ingress_private_ip" {
+    description = "Endereço IP privado para uso do Frontend Configuration do Application Gateway do AKS"
+    value       = local.aks_ingress_private_ip
   }
 
   output "aks_node_subnet" {
@@ -20,9 +20,19 @@
     value = azurerm_subnet.aks_node_subnet
   }
 
-  output "api_private_dns_fqdn" {
-    description = "FQDN do registro A da API na zona DNS privada"
-    value       = "${azurerm_private_dns_a_record.api_dns_a.name}.${azurerm_private_dns_a_record.api_dns_a.zone_name}"
+  output "api_order_private_dns_fqdn" {
+    description = "FQDN do registro A do microsserviço de order na zona DNS privada"
+    value       = "${azurerm_private_dns_a_record.api_order_dns_a.name}.${azurerm_private_dns_a_record.api_order_dns_a.zone_name}"
+  }
+
+  output "api_payment_private_dns_fqdn" {
+    description = "FQDN do registro A do microsserviço de payment na zona DNS privada"
+    value       = "${azurerm_private_dns_a_record.api_payment_dns_a.name}.${azurerm_private_dns_a_record.api_payment_dns_a.zone_name}"
+  }
+
+  output "api_catalog_private_dns_fqdn" {
+    description = "FQDN do registro A do microsserviço de catalog na zona DNS privada"
+    value       = "${azurerm_private_dns_a_record.api_catalog_dns_a.name}.${azurerm_private_dns_a_record.api_catalog_dns_a.zone_name}"
   }
 
 # Azure Functions
@@ -61,4 +71,10 @@
   output "sb_private_dns_zone_id" {
     description = "ID da zona DNS privada do Service Bus"
     value       = azurerm_private_dns_zone.sb_private_dns.id 
+  }
+
+# Application Gateway
+  output "appgw_subnet" {
+    description = "Subnet do Application Gateway"
+    value = azurerm_subnet.appgw_subnet
   }
