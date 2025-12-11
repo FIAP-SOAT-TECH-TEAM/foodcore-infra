@@ -45,10 +45,11 @@
     default = "Standard"
     description = "SKU do IP público"
   }
+  # https://github.com/hashicorp/terraform-provider-azurerm/issues/16470
   variable "aks_ingress_public_ip_zones" {
     description = "Zonas de disponibilidade para o IP público do Ingress do AKS"
     type        = list(string)
-    default     = [ "2", "3" ]
+    default     = [ "1", "2", "3" ]
   }
 
 # VNET
@@ -112,7 +113,7 @@
   }
   variable "node_count" {
     type        = number
-    default     = 1
+    default     = 2
     description = "Número de nós no cluster AKS"
   }
   variable "aks_auto_scaling_enabled" {
