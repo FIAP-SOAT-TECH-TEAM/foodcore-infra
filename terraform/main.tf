@@ -43,7 +43,7 @@ module "appgw" {
   aks_appgw_max_capacity    = var.aks_appgw_max_capacity 
   appgw_subnet_id           = module.vnet.appgw_subnet.id
   aks_appgw_private_ip      = module.vnet.aks_ingress_private_ip
-  aks_appgw_subnet_id       = module.vnet.aks_node_subnet
+  aks_appgw_subnet_id       = module.vnet.aks_node_subnet.id
   aks_appgw_public_ip_id    = module.public_ip.aks_ingress_public_ip.id
 
   depends_on = [ module.resource_group, module.vnet, module.public_ip ]
