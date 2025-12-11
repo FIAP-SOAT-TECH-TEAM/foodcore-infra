@@ -34,13 +34,6 @@ resource "azurerm_kubernetes_cluster" "aks" {
      gateway_id = var.aks_app_gw_id
   }
 
-  # Impede recriação acidental se o Azure alterar o gerenciamento da propriedade 'zones'
-  lifecycle {
-    ignore_changes = [
-      default_node_pool[0].zones
-    ]
-  }
-
   role_based_access_control_enabled = true
 }
 

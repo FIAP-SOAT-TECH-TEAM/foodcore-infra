@@ -77,8 +77,7 @@ resource "azurerm_application_gateway" "aks_appgw" {
        backend_http_settings,
        http_listener,
        probe,
-       request_routing_rule,
-       zones
+       request_routing_rule
      ]
    }
  }

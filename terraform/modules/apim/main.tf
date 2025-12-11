@@ -12,13 +12,6 @@ resource "azurerm_api_management" "apim" {
   virtual_network_configuration {
     subnet_id = var.apim_subnet_id
   }
-
-  # Impede recriação acidental se o Azure alterar o gerenciamento da propriedade 'zones'
-  lifecycle {
-    ignore_changes = [
-      zones
-    ]
-  }
 }
 
 resource "azurerm_api_management_logger" "app_insights_logger" {
