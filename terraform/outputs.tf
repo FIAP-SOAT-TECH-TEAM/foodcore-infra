@@ -16,8 +16,8 @@
   }
 
 # Public IP
-  output "default_public_ip_address_fqdn" {
-    value = module.public_ip.public_ip_address_fqdn
+  output "aks_ingress_public_ip_fqdn" {
+    value = module.public_ip.aks_ingress_public_ip_fqdn
   }
 
 # VNET
