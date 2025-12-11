@@ -33,16 +33,6 @@ variable "aks_app_gateway_tier" {
   }
 }
 
-variable "aks_app_gateway_capacity" {
-  type        = number
-  description = "A capacidade (número de instâncias) do Application Gateway para AKS."
-  
-  validation {
-    condition     = var.aks_app_gateway_capacity >= 1 && var.aks_app_gateway_capacity <= 10
-    error_message = "A 'aks_app_gateway_capacity' deve estar entre 1 e 10."
-  }
-}
-
 variable "aks_app_gateway_zones" {
   type        = list(string)
   description = "As zonas de disponibilidade para o Application Gateway para AKS. Deve conter 1, 2 ou 3 zonas."
@@ -66,4 +56,24 @@ variable "aks_appgw_private_ip" {
 variable "aks_appgw_public_ip_id" {
   type        = string
   description = "O ID do endereço IP público atribuído ao Frontend do Application Gateway para AKS."
+}
+
+variable "aks_appgw_min_capacity" {
+  type        = number
+  description = "A capacidade mínima para o dimensionamento automático do Application Gateway para AKS."
+  
+  validation {
+    condition     = var.aks_appgw_min_capacity >= 1 && var.aks_appgw_min_capacity <= 10
+    error_message = "A 'aks_appgw_min_capacity' deve estar entre 1 e 10."
+  }
+}
+
+variable "aks_appgw_max_capacity" {
+  type        = number
+  description = "A capacidade máxima para o dimensionamento automático do Application Gateway para AKS."
+  
+  validation {
+    condition     = var.aks_appgw_max_capacity >= var.aks_appgw_min_capacity && var.aks_appgw_max_capacity <= 20
+    error_message = "A 'aks_appgw_max_capacity' deve ser maior ou igual a 'aks_appgw_min_capacity' e estar entre 1 e 20."
+  }
 }

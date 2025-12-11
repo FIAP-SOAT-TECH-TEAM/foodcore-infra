@@ -4,10 +4,14 @@ resource "azurerm_application_gateway" "aks_appgw" {
    location            = var.location
    zones               = var.aks_app_gateway_zones
 
+   autoscale_configuration {
+     min_capacity = var.aks_appgw_min_capacity
+     max_capacity = var.aks_appgw_max_capacity
+   }
+
    sku {
      name     = var.aks_app_gateway_tier
      tier     = var.aks_app_gateway_tier
-     capacity = var.aks_app_gateway_capacity
    }
 
    gateway_ip_configuration {

@@ -173,15 +173,22 @@
     type        = string
     default     = "Standard_V2"
   }
-  variable "aks_app_gateway_capacity" {
-    description = "Capacidade do Application Gateway para o AKS"
-    type        = number
-    default     = 1
-  }
   variable "aks_app_gateway_zones" {
     description = "Zonas de disponibilidade para o Application Gateway do AKS"
     type        = list(string)
     default     = [ "2", "3" ]
+  }
+
+  variable "aks_appgw_min_capacity" {
+    type        = number
+    description = "A capacidade mínima para o dimensionamento automático do Application Gateway para AKS."
+    default = 2
+  }
+
+  variable "aks_appgw_max_capacity" {
+    type        = number
+    description = "A capacidade máxima para o dimensionamento automático do Application Gateway para AKS."
+    default = 5
   }
 
 # Blob Storage
