@@ -11,7 +11,7 @@
 
 # AKS
   output "aks_ingress_private_ip" {
-    description = "Endereço IP privado para uso do Frontend Configuration do Application Gateway do AKS"
+    description = "Endereço IP privado para uso do Frontend Configuration do Application Gateway do AKS. Precisa ser da mesma subnet do Application Gateway."
     value       = local.aks_ingress_private_ip
   }
 
