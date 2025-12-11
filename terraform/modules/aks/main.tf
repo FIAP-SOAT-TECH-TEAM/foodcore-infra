@@ -14,7 +14,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
     max_count                   = var.aks_max_count
     min_count                   = var.aks_min_count
     # "The zone(s) '3' for resource 'dftnodepool' is not supported. The supported zones for location 'brazilsouth' are ''
-    # zones                       = var.aks_availability_zones
+    zones                       = var.aks_availability_zones
     node_public_ip_enabled      = false
     temporary_name_for_rotation = var.node_pool_temp_name
   }
