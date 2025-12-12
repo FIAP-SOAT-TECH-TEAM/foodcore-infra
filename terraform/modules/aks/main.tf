@@ -13,7 +13,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
     auto_scaling_enabled        = var.aks_auto_scaling_enabled
     max_count                   = var.aks_max_count
     min_count                   = var.aks_min_count
-    # "The zone(s) '3' for resource 'dftnodepool' is not supported. The supported zones for location 'brazilsouth' are ''
+    # Caso comece a falhar, avaliar se a subscription do azure possui Quota disponível para o SKU escolhido através do comando: az vm list-usage --location region -o table
     zones                       = var.aks_availability_zones
     node_public_ip_enabled      = false
     temporary_name_for_rotation = var.node_pool_temp_name
@@ -58,21 +58,21 @@ resource "azurerm_role_assignment" "aks_subnet_contributor" {
  resource "azurerm_role_assignment" "agic_reader_rg" {
    scope                = var.resource_group_id
    role_definition_name = "Reader"
-   principal_id         = data.azurerm_user_assigned_identity.agic_identity.principal_id
+   principal_id         = azurerm_kubernetes_cluster.aks.ingress_application_gateway[0].ingress_application_gateway_identity[0].object_id
 
    depends_on = [azurerm_kubernetes_cluster.aks]
  }
  resource "azurerm_role_assignment" "agic_network_contributor_vnet" {
    scope                = var.vnet_id
    role_definition_name = "Network Contributor"
-   principal_id         = data.azurerm_user_assigned_identity.agic_identity.principal_id
+   principal_id         = azurerm_kubernetes_cluster.aks.ingress_application_gateway[0].ingress_application_gateway_identity[0].object_id
 
    depends_on = [azurerm_kubernetes_cluster.aks]
  }
  resource "azurerm_role_assignment" "agic_contributor_appgw" {
    scope                = var.appgw_id
    role_definition_name = "Contributor"
-   principal_id         = data.azurerm_user_assigned_identity.agic_identity.principal_id
+   principal_id         = azurerm_kubernetes_cluster.aks.ingress_application_gateway[0].ingress_application_gateway_identity[0].object_id
 
    depends_on = [azurerm_kubernetes_cluster.aks]
  }
