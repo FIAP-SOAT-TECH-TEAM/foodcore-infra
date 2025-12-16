@@ -95,6 +95,47 @@
     default     = ["10.0.6.0/24"]
   }
 
+  variable "vnet_akv_subnet_prefix" {
+    description = "Prefixo de endereço da subrede do Azure Key Vault"
+    type        = list(string)
+    default     = ["10.0.7.0/24"]
+  }
+
+# AKV
+
+  variable "akv_sku_name" {
+    type        = string
+    description = "SKU do Azure Key Vault"
+    default     = "standard"
+  }
+  variable "akv_soft_delete_retention_days" {
+    type        = number
+    description = "Número de dias para retenção de soft delete no Azure Key Vault"
+    default     = 7
+  }
+
+# AKV Secrets
+  variable "server_mail_username" {
+    type        = string
+    description = "Username do servidor de e-mail SMTP"
+  }
+
+  variable "server_mail_password" {
+    type        = string
+    description = "Password do servidor de e-mail SMTP"
+    sensitive   = true
+  }
+
+  variable "server_mail_host" {
+    type        = string
+    description = "Host do servidor de e-mail SMTP"
+  }
+
+  variable "server_mail_port" {
+    type        = string
+    description = "Porta do servidor de e-mail SMTP"
+  }
+
 # AKS
   variable "aks_network_plugin" {
     type        = string
@@ -122,6 +163,7 @@
     default     = true
     
   }
+  # Com uma assinatura do Azure For Students, a Quota máxima de VCPU para família Ev3 é 4 na região brazilsouth
   variable "aks_max_count" {
     type        = number
     description = "Número máximo de nós para auto scaling no pool de nós do AKS"

@@ -26,6 +26,7 @@ module "vnet" {
   vnet_azfunc_pe_subnet_prefix    = var.vnet_azfunc_pe_subnet_prefix
   vnet_sb_subnet_prefix           = var.vnet_sb_subnet_prefix
   vnet_appgw_subnet_prefix        = var.vnet_appgw_subnet_prefix
+  vnet_akv_subnet_prefix          = var.vnet_akv_subnet_prefix
   aks_ingress_public_ip           = module.public_ip.aks_ingress_public_ip.ip_address
 
   depends_on = [ module.resource_group, module.public_ip ]
@@ -48,6 +49,26 @@ module "appgw" {
   depends_on = [ module.resource_group, module.vnet, module.public_ip ]
 }
 
+module "akv" {
+  source = "./modules/azure_key_vault"
+  dns_prefix                      = var.dns_prefix
+  resource_group_name             = module.resource_group.name
+  location                        = var.location
+  akv_soft_delete_retention_days  = var.akv_soft_delete_retention_days
+  akv_sku_name                    = var.akv_sku_name
+  tenant_id                       = data.azurerm_client_config.current.tenant_id
+  aws_credentials                 = var.aws_credentials
+  akv_private_dns_zone_id         = module.vnet.akv_private_dns_zone_id
+  akv_subnet_id                   = module.vnet.akv_private_endpoint_subnet_id
+
+  server_mail_username            = var.server_mail_username
+  server_mail_password            = var.server_mail_password
+  server_mail_host                = var.server_mail_host
+  server_mail_port                = var.server_mail_port
+
+  depends_on = [ module.resource_group ]
+}
+
 module "app_insights" {
   source              = "./modules/app-insights"
   dns_prefix          = var.dns_prefix
@@ -64,6 +85,8 @@ module "app_insights" {
 #   dns_prefix                = var.dns_prefix
 #   default_customer_password = var.default_customer_password
 #   callback_urls             = var.callback_urls
+#   akv_id                    = module.akv.akv_id
+  
 # }
 
 # module "azfunc" {
@@ -146,27 +169,29 @@ module "aks" {
   resource_group_id           = module.resource_group.id
   vnet_id                     = module.vnet.vnet_id
   appgw_id                    = module.appgw.aks_appgw_id
+  akv_id                      = module.akv.akv_id
 
   depends_on = [ module.resource_group, module.vnet, module.acr, module.public_ip, module.appgw ]
 }
 
-# module "service_bus" {
-#   source                  = "./modules/azure_service_bus"
-#   dns_prefix              = var.dns_prefix
-#   resource_group_name     = module.resource_group.name
-#   location                = var.location
-#   sb_partitions           = var.sb_partitions
-#   sb_subnet_id            = module.vnet.sb_subnet_id
-#   sb_private_dns_zone_id  = module.vnet.sb_private_dns_zone_id
-#   sb_sku                  = var.sb_sku
-#   sb_capacity             = var.sb_capacity
-#   sb_max_capacity         = var.sb_max_capacity
-#   sb_queues               = var.sb_queues
-#   sb_topics               = var.sb_topics
-#   sb_subscriptions        = var.sb_subscriptions
+module "service_bus" {
+  source                  = "./modules/azure_service_bus"
+  dns_prefix              = var.dns_prefix
+  resource_group_name     = module.resource_group.name
+  location                = var.location
+  sb_partitions           = var.sb_partitions
+  sb_subnet_id            = module.vnet.sb_pe_subnet_id
+  sb_private_dns_zone_id  = module.vnet.sb_private_dns_zone_id
+  sb_sku                  = var.sb_sku
+  sb_capacity             = var.sb_capacity
+  sb_max_capacity         = var.sb_max_capacity
+  sb_queues               = var.sb_queues
+  sb_topics               = var.sb_topics
+  sb_subscriptions        = var.sb_subscriptions
+  akv_id                  = module.akv.akv_id
 
-#   depends_on = [ module.resource_group, module.vnet ]
-# }
+  depends_on = [ module.resource_group, module.vnet ]
+}
 
 # module "apim" {
 #   source                           = "./modules/apim"

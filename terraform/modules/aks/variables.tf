@@ -136,3 +136,8 @@ variable "appgw_id" {
   description = "ID do Application Gateway"
   type        = string
 }
+
+variable "akv_id" {
+  description = "ID do Azure Key Vault"
+  type        = string
+}

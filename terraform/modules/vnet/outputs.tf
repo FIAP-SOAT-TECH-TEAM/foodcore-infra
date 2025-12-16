@@ -9,6 +9,17 @@
     value       = azurerm_virtual_network.vnet.id
   }
 
+# Azure Key Vault
+  output "akv_private_endpoint_subnet_id" {
+    description = "ID da subnet de Private Endpoint do Azure Key Vault"
+    value       = azurerm_subnet.akv_pe_subnet.id
+  }
+
+  output "akv_private_dns_zone_id" {
+    description = "ID da zona DNS privada do Azure Key Vault"
+    value       = azurerm_private_dns_zone.akv_private_dns.id
+  }
+
 # AKS
   output "aks_ingress_private_ip" {
     description = "Endereço IP privado para uso do Frontend Configuration do Application Gateway do AKS. Precisa ser da mesma subnet do Application Gateway."
@@ -47,7 +58,7 @@
   }
 
   output "azfunc_private_endpoint_subnet_id" {
-    description = "ID da subnet de Private Endpoint"
+    description = "ID da subnet de Private Endpoint do Azure Functions"
     value       = azurerm_subnet.azfunc_pe_subnet.id
   }
 
@@ -63,9 +74,9 @@
   }
 
 # Azure Service Bus
-  output "sb_subnet_id" {
-    description = "ID da subnet do Service Bus"
-    value       = azurerm_subnet.sb_subnet.id
+  output "sb_pe_subnet_id" {
+    description = "ID da subnet de Private Endpoint do Service Bus"
+    value       = azurerm_subnet.sb_pe_subnet.id
   }
 
   output "sb_private_dns_zone_id" {
