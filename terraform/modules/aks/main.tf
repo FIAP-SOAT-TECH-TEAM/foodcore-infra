@@ -16,6 +16,11 @@ resource "azurerm_kubernetes_cluster" "aks" {
     zones                       = var.aks_availability_zones
     node_public_ip_enabled      = false
     temporary_name_for_rotation = var.node_pool_temp_name
+
+    # https://github.com/hashicorp/terraform-provider-azurerm/issues/24020
+    upgrade_settings { 
+      max_surge = "10%" 
+    }
   }
 
   identity {
