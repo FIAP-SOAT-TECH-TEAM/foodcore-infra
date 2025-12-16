@@ -7,7 +7,6 @@ resource "azurerm_kubernetes_cluster" "aks" {
   
   default_node_pool {
     name                        = var.node_pool_name
-    node_count                  = var.node_count
     vm_size                     = var.vm_size
     vnet_subnet_id              = var.aks_node_subnet_id
     auto_scaling_enabled        = var.aks_auto_scaling_enabled
@@ -17,6 +16,11 @@ resource "azurerm_kubernetes_cluster" "aks" {
     zones                       = var.aks_availability_zones
     node_public_ip_enabled      = false
     temporary_name_for_rotation = var.node_pool_temp_name
+
+    # https://github.com/hashicorp/terraform-provider-azurerm/issues/24020
+    upgrade_settings { 
+      max_surge = "10%" 
+    }
   }
 
   identity {

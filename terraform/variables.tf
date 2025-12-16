@@ -146,11 +146,6 @@
     description = "Tipo de saída de rede para o AKS" 
     default     = "loadBalancer"
   }
-  variable "node_count" {
-    type        = number
-    default     = 2
-    description = "Número de nós no cluster AKS"
-  }
   variable "aks_auto_scaling_enabled" {
     type        = bool
     description = "Habilita ou desabilita o auto scaling no pool de nós do AKS"

@@ -22,16 +22,6 @@
     type = string
   }
 
-
-variable "node_count" {
-  type    = number
-  description = "Número de nós no cluster AKS"
-
-  validation {
-    condition     = var.node_count >= 1 && var.node_count <= 5
-    error_message = "O 'node_count' deve ser um número entre 1 e 5."
-  }
-}
 variable "aks_auto_scaling_enabled" {
   type        = bool
   description = "Habilita ou desabilita o auto scaling no pool de nós do AKS"

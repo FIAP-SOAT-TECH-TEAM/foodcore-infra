@@ -158,7 +158,6 @@ module "aks" {
   node_pool_temp_name         = var.node_pool_temp_name
   location                    = var.location
   aks_node_subnet_id          = module.vnet.aks_node_subnet.id
-  node_count                  = var.node_count
   vm_size                     = var.vm_size
   identity_type               = var.identity_type
   kubernetes_version          = var.kubernetes_version
