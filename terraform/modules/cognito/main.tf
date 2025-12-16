@@ -100,3 +100,15 @@ resource "aws_cognito_user" "guest_customer" {
   force_alias_creation = false
   message_action       = "SUPPRESS"
 }
+
+resource "azurerm_key_vault_secret" "aws_cognito_user_pool_id" {
+  name         = "aws_cognito_user_pool_id"
+  value        = aws_cognito_user_pool.cognito_user_pool.id
+  key_vault_id = var.akv_id
+
+  tags = {
+    microservice = "any"
+    resource  = "cognito"
+  }
+
+}

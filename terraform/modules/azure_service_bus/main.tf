@@ -132,3 +132,16 @@ resource "azurerm_private_endpoint" "sb_private_endpoint" {
     private_dns_zone_ids = [var.sb_private_dns_zone_id]
   }
 }
+
+
+resource "azurerm_key_vault_secret" "az_svc_bus_connection_string" {
+  name         = "az_svc_bus_connection_string"
+  value        = azurerm_servicebus_namespace.sb_ns.default_primary_connection_string
+  key_vault_id = var.akv_id
+
+  tags = {
+    microservice = "any"
+    resource  = "Azure Service Bus"
+  }
+
+}

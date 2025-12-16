@@ -14,6 +14,9 @@
   output "dns_prefix" {
     value = var.dns_prefix
   }
+  output "tenant_id" {
+    value      = data.azurerm_client_config.current.tenant_id
+  }
 
 # Public IP
   output "aks_ingress_public_ip_fqdn" {
@@ -52,6 +55,16 @@
     value       = var.vnet_aks_node_subnet_prefix
   }
 
+# AKV
+  output "akv_id" {
+    description = "ID do Azure Key Vault"
+    value       = module.akv.akv_id
+  }
+  output "akv_name" {
+    description = "Nome do Azure Key Vault"
+    value       = module.akv.akv_name
+  }
+
 # AKS
   output "aks_name" {
     value = module.aks.aks_name
@@ -62,18 +75,10 @@
     value       = module.aks.aks_resource_group
   }
 
-# # Blob
-
-#   output "storage_container_name" {
-#     description = "Nome do container"
-#     value       = module.blob.storage_container_name
-#   }
-
-#   output "storage_account_connection_string" {
-#     description = "Connection string primária da conta de armazenamento"
-#     value       = module.blob.storage_account_connection_string
-#     sensitive   = true
-#   }
+  output "aks_secret_identity_client_id" {
+    description = "Client ID da identidade atribuída ao Pod Azure Key Vault Provider do Add-On instalado (Workload Identity)."
+    value       = module.aks.aks_secret_identity_client_id 
+  }
 
 # ACR
 
@@ -87,87 +92,64 @@
     value       = module.acr.acr_resource_group
   }
 
-# # APIM
+# APIM
 
-#   output "apim_gateway_url" {
-#     description = "URL do gateway do API Management"
-#     value       = module.apim.apim_gateway_url
-#   }
+  output "apim_gateway_url" {
+    description = "URL do gateway do API Management"
+    value       = module.apim.apim_gateway_url
+  }
 
-#   output "apim_resource_group" {
-#     description = "Resource Group do API Management"
-#     value       = module.apim.apim_resource_group
-#   }
+  output "apim_resource_group" {
+    description = "Resource Group do API Management"
+    value       = module.apim.apim_resource_group
+  }
 
-#   output "apim_name" {
-#     description = "Nome do API Management"
-#     value       = module.apim.apim_name
-#   }
+  output "apim_name" {
+    description = "Nome do API Management"
+    value       = module.apim.apim_name
+  }
 
-#   output "apim_foodcore_start_productid" {
-#     description = "ID do produto do API Management"
-#     value       = module.apim.apim_foodcore_start_productid
-#   }
+  output "apim_foodcore_start_productid" {
+    description = "ID do produto do API Management"
+    value       = module.apim.apim_foodcore_start_productid
+  }
 
-#   output "apim_foodcore_start_subscriptionid" {
-#     description = "ID da assinatura do API Management"
-#     value       = module.apim.apim_foodcore_start_subscriptionid
-#     sensitive   = true
-#   }
+  output "apim_foodcore_start_subscriptionid" {
+    description = "ID da assinatura do API Management"
+    value       = module.apim.apim_foodcore_start_subscriptionid
+    sensitive   = true
+  }
 
-#   output "apim_foodcore_start_subscription_key" {
-#     description = "Chave de subscrição do API Management"
-#     value       = module.apim.apim_foodcore_start_subscription_key
-#     sensitive   = true
-#   }
+  output "apim_foodcore_start_subscription_key" {
+    description = "Chave de subscrição do API Management"
+    value       = module.apim.apim_foodcore_start_subscription_key
+    sensitive   = true
+  }
 
-# # Cognito
+# Cognito
 
-#   output "cognito_user_pool_id" {
-#     description = "ID do Cognito User Pool"
-#     value       = module.cognito.cognito_user_pool_id
-#   }
+  output "cognito_code_login_url" {
+    description = "URL de login do Cognito User Pool (usando o fluxo de authorization code)"
+    value       = module.cognito.cognito_code_login_url
+  }
 
-#   output "cognito_user_pool_client_id" {
-#     description = "ID do Cognito User Pool Client"
-#     value       = module.cognito.cognito_user_pool_client_id
-#   }
+  output "cognito_code_get_token_url" {
+    description = "URL para obtenção do token do Cognito User Pool (usando o fluxo de authorization code)"
+    value       = module.cognito.cognito_code_get_token_url
+  }
 
-#   output "default_customer_password" {
-#     description = "Senha padrão do usuário cliente"
-#     value       = var.default_customer_password
-#     sensitive   = true
-#   }
+  output "cognito_implicit_login_url" {
+    description = "URL de login do Cognito User Pool (usando o fluxo implícito)"
+    value       = module.cognito.cognito_implicit_login_url
+  }
 
-#   output "cognito_code_login_url" {
-#     description = "URL de login do Cognito User Pool (usando o fluxo de authorization code)"
-#     value       = module.cognito.cognito_code_login_url
-#   }
+# Azure Function
+  output "azfunc_name" {
+    description = "O nome da Azure Function App"
+    value       = module.azfunc.azfunc_name
+  }
 
-#   output "cognito_code_get_token_url" {
-#     description = "URL para obtenção do token do Cognito User Pool (usando o fluxo de authorization code)"
-#     value       = module.cognito.cognito_code_get_token_url
-#   }
-
-#   output "cognito_implicit_login_url" {
-#     description = "URL de login do Cognito User Pool (usando o fluxo implícito)"
-#     value       = module.cognito.cognito_implicit_login_url
-#   }
-
-# # Azure Function
-#   output "azfunc_name" {
-#     description = "O nome da Azure Function App"
-#     value       = module.azfunc.azfunc_name
-#   }
-
-#   output "azfunc_private_dns_fqdn" {
-#     description = "FQDN do registro A do Azure Functions na zona DNS privada"
-#     value       = module.vnet.azfunc_private_dns_fqdn
-#   }
-
-# # Service Bus
-#   output "sb_connection_string" {
-#     description = "Connection string primária do Service Bus Namespace"
-#     value       = module.service_bus.sb_connection_string
-#     sensitive   = true
-#   }
+  output "azfunc_private_dns_fqdn" {
+    description = "FQDN do registro A do Azure Functions na zona DNS privada"
+    value       = module.vnet.azfunc_private_dns_fqdn
+  }

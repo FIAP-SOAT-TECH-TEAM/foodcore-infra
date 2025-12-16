@@ -36,6 +36,10 @@ resource "azurerm_kubernetes_cluster" "aks" {
   }
 
   role_based_access_control_enabled = true
+
+  key_vault_secrets_provider {
+    secret_rotation_enabled = true
+  }
 }
 
 resource "azurerm_role_assignment" "aks_acr_pull" {
@@ -58,21 +62,27 @@ resource "azurerm_role_assignment" "aks_subnet_contributor" {
  resource "azurerm_role_assignment" "agic_reader_rg" {
    scope                = var.resource_group_id
    role_definition_name = "Reader"
-   principal_id         = azurerm_kubernetes_cluster.aks.ingress_application_gateway[0].ingress_application_gateway_identity[0].object_id
+   principal_id         = local.agic_identity_object_id
 
    depends_on = [azurerm_kubernetes_cluster.aks]
  }
  resource "azurerm_role_assignment" "agic_network_contributor_vnet" {
    scope                = var.vnet_id
    role_definition_name = "Network Contributor"
-   principal_id         = azurerm_kubernetes_cluster.aks.ingress_application_gateway[0].ingress_application_gateway_identity[0].object_id
+   principal_id         = local.agic_identity_object_id
 
    depends_on = [azurerm_kubernetes_cluster.aks]
  }
  resource "azurerm_role_assignment" "agic_contributor_appgw" {
    scope                = var.appgw_id
    role_definition_name = "Contributor"
-   principal_id         = azurerm_kubernetes_cluster.aks.ingress_application_gateway[0].ingress_application_gateway_identity[0].object_id
+   principal_id         = local.agic_identity_object_id
 
    depends_on = [azurerm_kubernetes_cluster.aks]
  }
+
+ resource "azurerm_role_assignment" "secrets_store_csi_user_kv" {
+  scope                = var.akv_id
+  role_definition_name = "Key Vault Secrets User"
+  principal_id         = local.secrets_store_csi_identity_object_id
+}
