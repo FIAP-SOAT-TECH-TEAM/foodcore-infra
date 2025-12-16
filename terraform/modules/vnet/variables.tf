@@ -53,11 +53,6 @@
     type        = list(string)
   }
 
-  variable "vnet_akv_subnet_prefix" {
-    description = "Prefixo de endereço da subrede do Azure Key Vault"
-    type        = list(string)
-  }
-
   variable "aks_ingress_public_ip" {
     description = "Endereço IP público para uso do Frontend Configuration do Application Gateway do AKS"
     type = string

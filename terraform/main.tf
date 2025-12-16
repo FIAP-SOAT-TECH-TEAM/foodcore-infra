@@ -26,7 +26,6 @@ module "vnet" {
   vnet_azfunc_pe_subnet_prefix    = var.vnet_azfunc_pe_subnet_prefix
   vnet_sb_subnet_prefix           = var.vnet_sb_subnet_prefix
   vnet_appgw_subnet_prefix        = var.vnet_appgw_subnet_prefix
-  vnet_akv_subnet_prefix          = var.vnet_akv_subnet_prefix
   aks_ingress_public_ip           = module.public_ip.aks_ingress_public_ip.ip_address
 
   depends_on = [ module.resource_group, module.public_ip ]

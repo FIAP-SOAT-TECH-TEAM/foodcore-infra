@@ -42,13 +42,6 @@
     address_prefixes     = var.vnet_appgw_subnet_prefix
   }
 
-  resource "azurerm_subnet" "akv_pe_subnet" {
-    name                 = "${var.dns_prefix}-akv-subnet"
-    resource_group_name  = var.resource_group_name
-    virtual_network_name = azurerm_virtual_network.vnet.name
-    address_prefixes     = var.vnet_akv_subnet_prefix
-  }
-
 # Private DNS Zones
 
   resource "azurerm_private_dns_zone" "private_dns" {
@@ -63,11 +56,6 @@
 
   resource "azurerm_private_dns_zone" "sb_private_dns" {
     name                = "privatelink.servicebus.windows.net"
-    resource_group_name = var.resource_group_name
-  }
-
-  resource "azurerm_private_dns_zone" "akv_private_dns" {
-    name                = "privatelink.vaultcore.azure.net"
     resource_group_name = var.resource_group_name
   }
 
@@ -96,14 +84,6 @@
     virtual_network_id    = azurerm_virtual_network.vnet.id
     registration_enabled  = false
     
-  }
-
-  resource "azurerm_private_dns_zone_virtual_network_link" "akv_private_dns" {
-    name                  = "${var.dns_prefix}-akv-dns-link"
-    resource_group_name   = var.resource_group_name
-    private_dns_zone_name = azurerm_private_dns_zone.akv_private_dns.name
-    virtual_network_id    = azurerm_virtual_network.vnet.id
-    registration_enabled  = false
   }
 
 # Private DNS A Records
@@ -263,24 +243,6 @@
     
   }
 
-  resource "azurerm_network_security_group" "akv_nsg" {
-    name                = "${var.dns_prefix}-akv-nsg"
-    location            = var.location
-    resource_group_name = var.resource_group_name
-
-    security_rule {
-      name                       = "AllowAksInbound"
-      priority                   = 100
-      direction                  = "Inbound"
-      access                     = "Allow"
-      protocol                   = "Tcp"
-      source_port_range          = "*"
-      destination_port_range     = "443"
-      source_address_prefix      = azurerm_subnet.aks_node_subnet.address_prefixes[0]
-      destination_address_prefix = "*"
-    }
-  }
-
 # NSG Associations
   resource "azurerm_subnet_network_security_group_association" "apim_assoc" {
     subnet_id                 = azurerm_subnet.apim_subnet.id
@@ -300,9 +262,4 @@
   resource "azurerm_subnet_network_security_group_association" "appgw_assoc" {
     subnet_id                 = azurerm_subnet.appgw_subnet.id
     network_security_group_id = azurerm_network_security_group.appgw_nsg.id
-  }
-
-  resource "azurerm_subnet_network_security_group_association" "akv_assoc" {
-    subnet_id                 = azurerm_subnet.akv_pe_subnet.id
-    network_security_group_id = azurerm_network_security_group.akv_nsg.id
   }

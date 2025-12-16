@@ -6,7 +6,9 @@ resource "azurerm_key_vault" "akv" {
   enabled_for_disk_encryption   = true
   tenant_id                     = var.tenant_id
   soft_delete_retention_days    = var.akv_soft_delete_retention_days
-  public_network_access_enabled = false
+  # Apenas para fins de atividade
+  # Evitar o erro: Public network access is disabled and request is not from a trusted service nor via an approved private link, na hora de criar secrets via terraform
+  # public_network_access_enabled = false
 
   # Apenas para fins de atividade
   purge_protection_enabled    = false
