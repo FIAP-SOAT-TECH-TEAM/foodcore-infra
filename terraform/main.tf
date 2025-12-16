@@ -57,8 +57,6 @@ module "akv" {
   akv_sku_name                    = var.akv_sku_name
   tenant_id                       = data.azurerm_client_config.current.tenant_id
   aws_credentials                 = var.aws_credentials
-  akv_private_dns_zone_id         = module.vnet.akv_private_dns_zone_id
-  akv_subnet_id                   = module.vnet.akv_private_endpoint_subnet_id
 
   server_mail_username            = var.server_mail_username
   server_mail_password            = var.server_mail_password
