@@ -102,7 +102,7 @@ resource "aws_cognito_user" "guest_customer" {
 }
 
 resource "azurerm_key_vault_secret" "aws_cognito_user_pool_id" {
-  name         = "aws_cognito_user_pool_id"
+  name         = "aws-cognito-user-pool-id"
   value        = aws_cognito_user_pool.cognito_user_pool.id
   key_vault_id = var.akv_id
 

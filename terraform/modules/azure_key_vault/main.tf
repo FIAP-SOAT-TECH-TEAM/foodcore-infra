@@ -34,7 +34,7 @@ resource "azurerm_private_endpoint" "akv_private_endpoint" {
 }
 
 resource "azurerm_key_vault_secret" "server_mail_username" {
-  name         = "server_mail_username"
+  name         = "server-mail-username"
   value        = var.server_mail_username
   key_vault_id = azurerm_key_vault.akv.id
 
@@ -46,7 +46,7 @@ resource "azurerm_key_vault_secret" "server_mail_username" {
 }
 
 resource "azurerm_key_vault_secret" "aws_credentials" {
-  name         = "aws_credentials"
+  name         = "aws-credentials"
   value        = var.aws_credentials
   key_vault_id = azurerm_key_vault.akv.id
 
@@ -58,7 +58,7 @@ resource "azurerm_key_vault_secret" "aws_credentials" {
 }
 
 resource "azurerm_key_vault_secret" "server_mail_password" {
-  name         = "server_mail_password"
+  name         = "server-mail-password"
   value        = var.server_mail_password
   key_vault_id = azurerm_key_vault.akv.id
 
@@ -70,7 +70,7 @@ resource "azurerm_key_vault_secret" "server_mail_password" {
 }
 
 resource "azurerm_key_vault_secret" "server_mail_host" {
-  name         = "server_mail_host"
+  name         = "server-mail-host"
   value        = var.server_mail_host
   key_vault_id = azurerm_key_vault.akv.id
 
@@ -82,7 +82,7 @@ resource "azurerm_key_vault_secret" "server_mail_host" {
 }
 
 resource "azurerm_key_vault_secret" "server_mail_port" {
-  name         = "server_mail_port"
+  name         = "server-mail-port"
   value        = var.server_mail_port
   key_vault_id = azurerm_key_vault.akv.id
 
