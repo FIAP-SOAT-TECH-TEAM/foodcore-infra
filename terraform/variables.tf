@@ -95,12 +95,6 @@
     default     = ["10.0.6.0/24"]
   }
 
-  variable "vnet_akv_subnet_prefix" {
-    description = "Prefixo de endereço da subrede do Azure Key Vault"
-    type        = list(string)
-    default     = ["10.0.7.0/24"]
-  }
-
 # AKV
 
   variable "akv_sku_name" {

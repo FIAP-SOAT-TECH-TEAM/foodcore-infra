@@ -26,7 +26,6 @@ module "vnet" {
   vnet_azfunc_pe_subnet_prefix    = var.vnet_azfunc_pe_subnet_prefix
   vnet_sb_subnet_prefix           = var.vnet_sb_subnet_prefix
   vnet_appgw_subnet_prefix        = var.vnet_appgw_subnet_prefix
-  vnet_akv_subnet_prefix          = var.vnet_akv_subnet_prefix
   aks_ingress_public_ip           = module.public_ip.aks_ingress_public_ip.ip_address
 
   depends_on = [ module.resource_group, module.public_ip ]
@@ -58,8 +57,6 @@ module "akv" {
   akv_sku_name                    = var.akv_sku_name
   tenant_id                       = data.azurerm_client_config.current.tenant_id
   aws_credentials                 = var.aws_credentials
-  akv_private_dns_zone_id         = module.vnet.akv_private_dns_zone_id
-  akv_subnet_id                   = module.vnet.akv_private_endpoint_subnet_id
 
   server_mail_username            = var.server_mail_username
   server_mail_password            = var.server_mail_password

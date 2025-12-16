@@ -45,16 +45,6 @@
     description = "SKU do Azure Key Vault"
   }
 
-  variable "akv_subnet_id" {
-    type        = string
-    description = "ID da subnet onde o Azure Key Vault Private Endpoint será criado"
-  }
-
-  variable "akv_private_dns_zone_id" {
-    type        = string
-    description = "ID da zona DNS privada associada ao Azure Key Vault Private Endpoint"
-  }
-
 # Secrets
 
   variable "aws_credentials" {

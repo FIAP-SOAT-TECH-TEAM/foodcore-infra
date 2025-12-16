@@ -9,17 +9,6 @@
     value       = azurerm_virtual_network.vnet.id
   }
 
-# Azure Key Vault
-  output "akv_private_endpoint_subnet_id" {
-    description = "ID da subnet de Private Endpoint do Azure Key Vault"
-    value       = azurerm_subnet.akv_pe_subnet.id
-  }
-
-  output "akv_private_dns_zone_id" {
-    description = "ID da zona DNS privada do Azure Key Vault"
-    value       = azurerm_private_dns_zone.akv_private_dns.id
-  }
-
 # AKS
   output "aks_ingress_private_ip" {
     description = "Endereço IP privado para uso do Frontend Configuration do Application Gateway do AKS. Precisa ser da mesma subnet do Application Gateway."
