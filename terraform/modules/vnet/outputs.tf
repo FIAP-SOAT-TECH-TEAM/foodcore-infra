@@ -58,7 +58,7 @@
   }
 
   output "azfunc_private_endpoint_subnet_id" {
-    description = "ID da subnet de Private Endpoint"
+    description = "ID da subnet de Private Endpoint do Azure Functions"
     value       = azurerm_subnet.azfunc_pe_subnet.id
   }
 
@@ -74,9 +74,9 @@
   }
 
 # Azure Service Bus
-  output "sb_subnet_id" {
-    description = "ID da subnet do Service Bus"
-    value       = azurerm_subnet.sb_subnet.id
+  output "sb_pe_subnet_id" {
+    description = "ID da subnet de Private Endpoint do Service Bus"
+    value       = azurerm_subnet.sb_pe_subnet.id
   }
 
   output "sb_private_dns_zone_id" {

@@ -180,7 +180,7 @@ module "service_bus" {
   resource_group_name     = module.resource_group.name
   location                = var.location
   sb_partitions           = var.sb_partitions
-  sb_subnet_id            = module.vnet.sb_subnet_id
+  sb_subnet_id            = module.vnet.sb_pe_subnet_id
   sb_private_dns_zone_id  = module.vnet.sb_private_dns_zone_id
   sb_sku                  = var.sb_sku
   sb_capacity             = var.sb_capacity

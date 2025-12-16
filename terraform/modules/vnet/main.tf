@@ -28,7 +28,7 @@
     address_prefixes     = var.vnet_azfunc_pe_subnet_prefix
   }
 
-  resource "azurerm_subnet" "sb_subnet" {
+  resource "azurerm_subnet" "sb_pe_subnet" {
     name                 = "${var.dns_prefix}-sb-subnet"
     resource_group_name  = var.resource_group_name
     virtual_network_name = azurerm_virtual_network.vnet.name
@@ -42,7 +42,7 @@
     address_prefixes     = var.vnet_appgw_subnet_prefix
   }
 
-  resource "azurerm_subnet" "akv_subnet" {
+  resource "azurerm_subnet" "akv_pe_subnet" {
     name                 = "${var.dns_prefix}-akv-subnet"
     resource_group_name  = var.resource_group_name
     virtual_network_name = azurerm_virtual_network.vnet.name
@@ -293,7 +293,7 @@
   }
 
   resource "azurerm_subnet_network_security_group_association" "sb_assoc" {
-    subnet_id                 = azurerm_subnet.sb_subnet.id
+    subnet_id                 = azurerm_subnet.sb_pe_subnet.id
     network_security_group_id = azurerm_network_security_group.sb_nsg.id
   }
 
@@ -303,6 +303,6 @@
   }
 
   resource "azurerm_subnet_network_security_group_association" "akv_assoc" {
-    subnet_id                 = azurerm_subnet.akv_subnet.id
+    subnet_id                 = azurerm_subnet.akv_pe_subnet.id
     network_security_group_id = azurerm_network_security_group.akv_nsg.id
   }

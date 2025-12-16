@@ -11,7 +11,7 @@ resource "azurerm_key_vault" "akv" {
   # Apenas para fins de atividade
   purge_protection_enabled    = false
 
-  rbac_authorization_enabled  = true
+  enable_rbac_authorization   = true
 }
 
 resource "azurerm_private_endpoint" "akv_private_endpoint" {
