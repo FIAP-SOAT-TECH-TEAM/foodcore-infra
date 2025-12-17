@@ -30,7 +30,7 @@ resource "azurerm_key_vault_secret" "server_mail_username" {
 
 resource "azurerm_key_vault_secret" "aws_credentials" {
   name         = "aws-credentials"
-  value        = var.aws_credentials
+  value        = local.formatted_aws_credentials
   key_vault_id = azurerm_key_vault.akv.id
 
   tags = {

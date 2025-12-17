@@ -26,6 +26,10 @@
     type        = string
     description = "ID do locatário do Azure AD associado ao Key Vault"
   }
+  variable "aws_location" {
+    type        = string
+    description = "AWS Region"
+  }
 
 
 # Azure Key Vault

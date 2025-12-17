@@ -57,6 +57,7 @@ module "akv" {
   akv_sku_name                    = var.akv_sku_name
   tenant_id                       = data.azurerm_client_config.current.tenant_id
   aws_credentials                 = var.aws_credentials
+  aws_location                    = var.aws_location
 
   server_mail_username            = var.server_mail_username
   server_mail_password            = var.server_mail_password
