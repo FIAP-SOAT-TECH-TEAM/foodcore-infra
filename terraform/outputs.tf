@@ -76,7 +76,7 @@
   }
 
   output "aks_secret_identity_client_id" {
-    description = "Client ID da identidade atribuída ao Pod Azure Key Vault Provider do Add-On instalado (Workload Identity)."
+    description = "Client ID da identidade gerenciada do tipo UserAssigned criada para o Azure Key Vault Secrets Provider."
     value       = module.aks.aks_secret_identity_client_id 
   }
 

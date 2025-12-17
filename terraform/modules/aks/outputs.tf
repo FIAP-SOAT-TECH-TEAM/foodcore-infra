@@ -8,6 +8,6 @@ output "aks_resource_group" {
 }
 
 output "aks_secret_identity_client_id" {
-  description = "Client ID da identidade atribuída ao Pod Azure Key Vault Provider do Add-On instalado (Workload Identity)."
+  description = "Client ID da identidade gerenciada do tipo UserAssigned criada para o Azure Key Vault Secrets Provider."
   value       = local.secrets_store_csi_identity_client_id
 }
