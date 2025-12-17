@@ -75,16 +75,16 @@ module "app_insights" {
   depends_on = [ module.resource_group ]
 }
 
-# module "cognito" {
-#   source                    = "./modules/cognito"
+module "cognito" {
+  source                    = "./modules/cognito"
   
-#   aws_location              = var.aws_location
-#   dns_prefix                = var.dns_prefix
-#   default_customer_password = var.default_customer_password
-#   callback_urls             = var.callback_urls
-#   akv_id                    = module.akv.akv_id
+  aws_location              = var.aws_location
+  dns_prefix                = var.dns_prefix
+  default_customer_password = var.default_customer_password
+  callback_urls             = var.callback_urls
+  akv_id                    = module.akv.akv_id
   
-# }
+}
 
 # module "azfunc" {
 #   source                              = "./modules/azure_function"
