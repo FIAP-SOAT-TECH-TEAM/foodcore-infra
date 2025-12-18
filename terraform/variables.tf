@@ -220,7 +220,7 @@
   variable "aks_appgw_max_capacity" {
     type        = number
     description = "A capacidade máxima para o dimensionamento automático do Application Gateway para AKS."
-    default = 5
+    default = 4
   }
 
 # Blob Storage
