@@ -5,7 +5,7 @@ resource "azurerm_servicebus_namespace" "sb_ns" {
   sku                           = "Basic"
   # sku                           = var.sb_sku
   public_network_access_enabled = false
-  capacity                      = 1
+  capacity                      = 0
   # capacity                      = var.sb_capacity
   # premium_messaging_partitions  = var.sb_partitions
 
