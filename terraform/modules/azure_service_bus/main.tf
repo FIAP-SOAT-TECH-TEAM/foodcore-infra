@@ -2,9 +2,9 @@ resource "azurerm_servicebus_namespace" "sb_ns" {
   name                          = "${var.dns_prefix}-sb-namespace"
   location                      = var.location
   resource_group_name           = var.resource_group_name
-  sku                           = "Basic"
+  sku                           = "Standard"
   # sku                           = var.sb_sku
-  public_network_access_enabled = false
+  # public_network_access_enabled = false
   capacity                      = 0
   # capacity                      = var.sb_capacity
   # premium_messaging_partitions  = var.sb_partitions
@@ -116,24 +116,24 @@ resource "azurerm_servicebus_subscription" "sb_subscriptions" {
   requires_session                      = each.value.properties.RequiresSession
 }
 
-resource "azurerm_private_endpoint" "sb_private_endpoint" {
-  name                = "${var.dns_prefix}-sb-pe"
-  location            = var.location
-  resource_group_name = var.resource_group_name
-  subnet_id           = var.sb_subnet_id
+# resource "azurerm_private_endpoint" "sb_private_endpoint" {
+#   name                = "${var.dns_prefix}-sb-pe"
+#   location            = var.location
+#   resource_group_name = var.resource_group_name
+#   subnet_id           = var.sb_subnet_id
 
-  private_service_connection {
-    name                           = "${var.dns_prefix}-sb-pe"
-    is_manual_connection           = false
-    private_connection_resource_id = azurerm_servicebus_namespace.sb_ns.id
-    subresource_names              = ["namespace"]
-  }
+#   private_service_connection {
+#     name                           = "${var.dns_prefix}-sb-pe"
+#     is_manual_connection           = false
+#     private_connection_resource_id = azurerm_servicebus_namespace.sb_ns.id
+#     subresource_names              = ["namespace"]
+#   }
 
-  private_dns_zone_group {
-    name                 = "sb-dns-zone-group"
-    private_dns_zone_ids = [var.sb_private_dns_zone_id]
-  }
-}
+#   private_dns_zone_group {
+#     name                 = "sb-dns-zone-group"
+#     private_dns_zone_ids = [var.sb_private_dns_zone_id]
+#   }
+# }
 
 
 resource "azurerm_key_vault_secret" "az_svc_bus_connection_string" {
