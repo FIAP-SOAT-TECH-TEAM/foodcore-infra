@@ -131,3 +131,8 @@ variable "akv_id" {
   description = "ID do Azure Key Vault"
   type        = string
 }
+
+variable "aks_namespaces" {
+  description = "Lista de namespaces Kubernetes a serem criados no AKS"
+  type        = list(string)
+}
