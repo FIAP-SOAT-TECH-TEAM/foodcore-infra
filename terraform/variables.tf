@@ -204,6 +204,16 @@
     }
   }
 
+  variable "aks_namespaces" {
+    description = "Lista de namespaces Kubernetes a serem criados no AKS"
+    type        = list(string)
+    default = [
+      "order",
+      "payment",
+      "catalog"
+    ]
+  }
+
 # Application Gateway
   variable "aks_app_gateway_tier" {
     description = "Tier do Application Gateway para o AKS"

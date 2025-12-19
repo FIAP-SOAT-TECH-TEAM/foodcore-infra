@@ -80,6 +80,21 @@
     value       = module.aks.aks_secret_identity_client_id 
   }
 
+  output "aks_order_namespace_name" {
+    description = "Nome do namespace Kubernetes para o microsserviço de order"
+    value       = var.aks_namespaces[0]
+  }
+
+  output "aks_payment_namespace_name" {
+    description = "Nome do namespace Kubernetes para o microsserviço de payment"
+    value       = var.aks_namespaces[1]
+  }
+
+  output "aks_catalog_namespace_name" {
+    description = "Nome do namespace Kubernetes para o microsserviço de catalog"
+    value       = var.aks_namespaces[2]
+  }
+
 # ACR
 
   output "acr_name" {
