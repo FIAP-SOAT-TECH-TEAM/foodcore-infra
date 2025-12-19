@@ -155,6 +155,7 @@ module "aks" {
   aks_auto_scaling_enabled    = var.aks_auto_scaling_enabled
   aks_max_count               = var.aks_max_count
   aks_min_count               = var.aks_min_count
+  aks_namespaces              = var.aks_namespaces
   node_pool_name              = var.node_pool_name
   node_pool_temp_name         = var.node_pool_temp_name
   location                    = var.location
