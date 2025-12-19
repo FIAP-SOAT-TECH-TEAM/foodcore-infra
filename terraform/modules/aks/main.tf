@@ -91,7 +91,7 @@ resource "azurerm_role_assignment" "aks_subnet_contributor" {
   principal_id         = local.secrets_store_csi_identity_object_id
 }
 
-resource "kubernetes_namespace" "aks_namespaces" {
+resource "kubernetes_namespace_v1" "aks_namespaces" {
   count = length(var.aks_namespaces)
 
   metadata {
