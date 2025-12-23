@@ -22,6 +22,12 @@
     type = string
   }
 
+# AKV
+  variable "akv_id" {
+    type        = string
+    description = "ID do Azure Key Vault"
+  }
+
 # Blob Storage
   variable "container_name" {
     description = "Nome do container"
