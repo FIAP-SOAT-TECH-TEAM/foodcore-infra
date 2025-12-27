@@ -9,6 +9,8 @@
     description = "Nome do resource group"
   }
 
+  # Assinatura Azure For Students não consegue criar determinados tipos de recursos em algumas regiões (Ex: PgSQl Flex Server não pode ser criado em East Us)
+  # Existe uma Policy (listOfAllowedLocations) que define as regiões permitidas para criação de recursos na assinatura Azure For Students
   variable "location" {
     type        = string
     description = "Localização do recurso"
