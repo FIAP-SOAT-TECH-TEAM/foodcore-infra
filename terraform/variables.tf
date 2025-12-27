@@ -165,7 +165,7 @@
   variable "aks_availability_zones" {
     type        = list(string)
     description = "Zonas de disponibilidade para o pool de nós do AKS"
-    default = [ "3" ]
+    default = [ "2", "3" ]
   }
   variable "vm_size" {
     type    = string
