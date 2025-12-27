@@ -2,16 +2,17 @@ resource "azurerm_application_gateway" "aks_appgw" {
    name                = "${var.dns_prefix}-aks-appgw"
    resource_group_name = var.resource_group_name
    location            = var.location
-   zones               = var.aks_app_gateway_zones
+  #  zones               = var.aks_app_gateway_zones
 
-   autoscale_configuration {
-     min_capacity = var.aks_appgw_min_capacity
-     max_capacity = var.aks_appgw_max_capacity
-   }
+  #  autoscale_configuration {
+  #    min_capacity = var.aks_appgw_min_capacity
+  #    max_capacity = var.aks_appgw_max_capacity
+  #  }
 
    sku {
      name     = var.aks_app_gateway_tier
      tier     = var.aks_app_gateway_tier
+     capacity = 1
    }
 
    gateway_ip_configuration {
