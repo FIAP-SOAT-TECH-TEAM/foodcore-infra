@@ -8,8 +8,7 @@
     default = "tc4"
     description = "Nome do resource group"
   }
-  # Assinatura Azure For Students não tem permissão para criar recursos em determinadas regiões
-  # Ex: East US (https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits)
+
   variable "location" {
     type        = string
     description = "Localização do recurso"
@@ -152,7 +151,7 @@
     default     = true
     
   }
-  # Com uma assinatura do Azure For Students, a Quota máxima de VCPU para família Ev3 é 4 na região brazilsouth
+  # Existe Quota máxima de VCPU ao utilizar uma assinatura do Azure For Students
   variable "aks_max_count" {
     type        = number
     description = "Número máximo de nós para auto scaling no pool de nós do AKS"
