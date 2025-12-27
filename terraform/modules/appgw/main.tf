@@ -12,6 +12,7 @@ resource "azurerm_application_gateway" "aks_appgw" {
    sku {
      name     = var.aks_app_gateway_tier
      tier     = var.aks_app_gateway_tier
+     capacity = 1
    }
 
    gateway_ip_configuration {
