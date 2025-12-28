@@ -56,15 +56,15 @@
     value       = var.vnet_aks_node_subnet_prefix
   }
 
-# # AKV
-#   output "akv_id" {
-#     description = "ID do Azure Key Vault"
-#     value       = module.akv.akv_id
-#   }
-#   output "akv_name" {
-#     description = "Nome do Azure Key Vault"
-#     value       = module.akv.akv_name
-#   }
+# AKV
+  output "akv_id" {
+    description = "ID do Azure Key Vault"
+    value       = module.akv.akv_id
+  }
+  output "akv_name" {
+    description = "Nome do Azure Key Vault"
+    value       = module.akv.akv_name
+  }
 
 # # AKS
 #   output "aks_name" {

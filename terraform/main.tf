@@ -48,24 +48,24 @@ module "vnet" {
 #   depends_on = [ module.resource_group, module.vnet, module.public_ip ]
 # }
 
-# module "akv" {
-#   source = "./modules/azure_key_vault"
-#   dns_prefix                      = var.dns_prefix
-#   resource_group_name             = module.resource_group.name
-#   location                        = var.location
-#   akv_soft_delete_retention_days  = var.akv_soft_delete_retention_days
-#   akv_sku_name                    = var.akv_sku_name
-#   tenant_id                       = data.azurerm_client_config.current.tenant_id
-#   aws_credentials                 = var.aws_credentials
-#   aws_location                    = var.aws_location
+module "akv" {
+  source = "./modules/azure_key_vault"
+  dns_prefix                      = var.dns_prefix
+  resource_group_name             = module.resource_group.name
+  location                        = var.location
+  akv_soft_delete_retention_days  = var.akv_soft_delete_retention_days
+  akv_sku_name                    = var.akv_sku_name
+  tenant_id                       = data.azurerm_client_config.current.tenant_id
+  aws_credentials                 = var.aws_credentials
+  aws_location                    = var.aws_location
 
-#   server_mail_username            = var.server_mail_username
-#   server_mail_password            = var.server_mail_password
-#   server_mail_host                = var.server_mail_host
-#   server_mail_port                = var.server_mail_port
+  server_mail_username            = var.server_mail_username
+  server_mail_password            = var.server_mail_password
+  server_mail_host                = var.server_mail_host
+  server_mail_port                = var.server_mail_port
 
-#   depends_on = [ module.resource_group ]
-# }
+  depends_on = [ module.resource_group ]
+}
 
 module "app_insights" {
   source              = "./modules/app-insights"
