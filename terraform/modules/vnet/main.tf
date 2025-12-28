@@ -49,8 +49,8 @@
     resource_group_name = var.resource_group_name
   }
 
-  resource "azurerm_private_dns_zone" "azfunc_private_dns" {
-    name                = "privatelink.azurewebsites.net"
+  resource "azurerm_private_dns_zone" "az_websites_private_dns" {
+    name                = "azurewebsites.net"
     resource_group_name = var.resource_group_name
   }
 
@@ -69,10 +69,10 @@
     registration_enabled  = true
   }
 
-  resource "azurerm_private_dns_zone_virtual_network_link" "azfunc_vnet_link" {
+  resource "azurerm_private_dns_zone_virtual_network_link" "az_websites_vnet_link" {
     name                  = "${var.dns_prefix}-azfunc-dns-link"
     resource_group_name   = var.resource_group_name
-    private_dns_zone_name = azurerm_private_dns_zone.azfunc_private_dns.name
+    private_dns_zone_name = azurerm_private_dns_zone.az_websites_private_dns.name
     virtual_network_id    = azurerm_virtual_network.vnet.id
     registration_enabled  = false
   }
@@ -114,7 +114,7 @@
 
   resource "azurerm_private_dns_a_record" "azfunc_dns_a" {
     name                = "${var.dns_prefix}-azfunc"
-    zone_name           = azurerm_private_dns_zone.azfunc_private_dns.name
+    zone_name           = azurerm_private_dns_zone.az_websites_private_dns.name
     resource_group_name = var.resource_group_name
     ttl                 = 300
     records             = [local.azfunc_private_ip]

@@ -53,7 +53,7 @@
 
   output "azfunc_private_dns_zone_id" {
     description = "ID da zona DNS privada do Azure Functions"
-    value       = azurerm_private_dns_zone.azfunc_private_dns.id
+    value       = azurerm_private_dns_zone.az_websites_private_dns.id
   }
 
 # APIM
