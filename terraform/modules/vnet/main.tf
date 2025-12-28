@@ -113,7 +113,7 @@
   }
 
   resource "azurerm_private_dns_a_record" "azfunc_dns_a" {
-    name                = "@"
+    name                = "${var.dns_prefix}-azfunc"
     zone_name           = azurerm_private_dns_zone.azfunc_private_dns.name
     resource_group_name = var.resource_group_name
     ttl                 = 300
