@@ -18,11 +18,11 @@
     value      = data.azurerm_client_config.current.tenant_id
   }
 
-# Public IP
+# # Public IP
   
-  output "aks_ingress_public_ip_fqdn" {
-    value = module.public_ip.aks_ingress_public_ip_fqdn
-  }
+#   output "aks_ingress_public_ip_fqdn" {
+#     value = module.public_ip.aks_ingress_public_ip_fqdn
+#   }
 
 # VNET
 
@@ -56,57 +56,57 @@
     value       = var.vnet_aks_node_subnet_prefix
   }
 
-# AKV
-  output "akv_id" {
-    description = "ID do Azure Key Vault"
-    value       = module.akv.akv_id
-  }
-  output "akv_name" {
-    description = "Nome do Azure Key Vault"
-    value       = module.akv.akv_name
-  }
+# # AKV
+#   output "akv_id" {
+#     description = "ID do Azure Key Vault"
+#     value       = module.akv.akv_id
+#   }
+#   output "akv_name" {
+#     description = "Nome do Azure Key Vault"
+#     value       = module.akv.akv_name
+#   }
 
-# AKS
-  output "aks_name" {
-    value = module.aks.aks_name
-  }
+# # AKS
+#   output "aks_name" {
+#     value = module.aks.aks_name
+#   }
 
-  output "aks_resource_group" {
-    description = "Resource Group onde o cluster AKS reside"
-    value       = module.aks.aks_resource_group
-  }
+#   output "aks_resource_group" {
+#     description = "Resource Group onde o cluster AKS reside"
+#     value       = module.aks.aks_resource_group
+#   }
 
-  output "aks_secret_identity_client_id" {
-    description = "Client ID da identidade gerenciada do tipo UserAssigned criada para o Azure Key Vault Secrets Provider."
-    value       = module.aks.aks_secret_identity_client_id 
-  }
+#   output "aks_secret_identity_client_id" {
+#     description = "Client ID da identidade gerenciada do tipo UserAssigned criada para o Azure Key Vault Secrets Provider."
+#     value       = module.aks.aks_secret_identity_client_id 
+#   }
 
-  output "aks_order_namespace_name" {
-    description = "Nome do namespace Kubernetes para o microsserviço de order"
-    value       = var.aks_namespaces[0]
-  }
+#   output "aks_order_namespace_name" {
+#     description = "Nome do namespace Kubernetes para o microsserviço de order"
+#     value       = var.aks_namespaces[0]
+#   }
 
-  output "aks_payment_namespace_name" {
-    description = "Nome do namespace Kubernetes para o microsserviço de payment"
-    value       = var.aks_namespaces[1]
-  }
+#   output "aks_payment_namespace_name" {
+#     description = "Nome do namespace Kubernetes para o microsserviço de payment"
+#     value       = var.aks_namespaces[1]
+#   }
 
-  output "aks_catalog_namespace_name" {
-    description = "Nome do namespace Kubernetes para o microsserviço de catalog"
-    value       = var.aks_namespaces[2]
-  }
+#   output "aks_catalog_namespace_name" {
+#     description = "Nome do namespace Kubernetes para o microsserviço de catalog"
+#     value       = var.aks_namespaces[2]
+#   }
 
-# ACR
+# # ACR
 
-  output "acr_name" {
-    description = "Nome do Azure Container Registry"
-    value       = module.acr.acr_name
-  }
+#   output "acr_name" {
+#     description = "Nome do Azure Container Registry"
+#     value       = module.acr.acr_name
+#   }
 
-  output "acr_resource_group" {
-    description = "Resource Group do ACR"
-    value       = module.acr.acr_resource_group
-  }
+#   output "acr_resource_group" {
+#     description = "Resource Group do ACR"
+#     value       = module.acr.acr_resource_group
+#   }
 
 # APIM
 
