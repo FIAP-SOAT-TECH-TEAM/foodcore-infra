@@ -4,6 +4,8 @@ resource "azurerm_servicebus_namespace" "sb_ns" {
   resource_group_name           = var.resource_group_name
   sku                           = "Standard"
   # sku                           = var.sb_sku
+  # Funcionalidade de Endpoint Privado suportada apenas em namespaces Premium
+  # https://github.com/Azure/azure-service-bus/issues/474
   # public_network_access_enabled = false
   capacity                      = 0
   # capacity                      = var.sb_capacity
