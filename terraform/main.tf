@@ -4,16 +4,16 @@ module "resource_group" {
   location            = var.location
 }
 
-# module "public_ip" {
-#   source                        = "./modules/public_ip"
-#   dns_prefix                    = var.dns_prefix
-#   resource_group_name           = module.resource_group.name
-#   location                      = var.location
-#   aks_ingress_allocation_method = var.aks_ingress_allocation_method
-#   aks_ingress_sku               = var.aks_ingress_sku
-#   aks_ingress_public_ip_zones   = var.aks_ingress_public_ip_zones
-#   depends_on          = [ module.resource_group ]
-# }
+module "public_ip" {
+  source                        = "./modules/public_ip"
+  dns_prefix                    = var.dns_prefix
+  resource_group_name           = module.resource_group.name
+  location                      = var.location
+  aks_ingress_allocation_method = var.aks_ingress_allocation_method
+  aks_ingress_sku               = var.aks_ingress_sku
+  aks_ingress_public_ip_zones   = var.aks_ingress_public_ip_zones
+  depends_on          = [ module.resource_group ]
+}
 
 module "vnet" {
   source                          = "./modules/vnet"
