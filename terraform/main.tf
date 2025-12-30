@@ -63,6 +63,7 @@ module "akv" {
   server_mail_password            = var.server_mail_password
   server_mail_host                = var.server_mail_host
   server_mail_port                = var.server_mail_port
+  server_mail_from                = var.server_mail_from
 
   depends_on = [ module.resource_group ]
 }
