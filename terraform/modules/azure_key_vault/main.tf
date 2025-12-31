@@ -75,3 +75,15 @@ resource "azurerm_key_vault_secret" "server_mail_port" {
   }
 
 }
+
+resource "azurerm_key_vault_secret" "server_mail_from" {
+  name         = "server-mail-from"
+  value        = var.server_mail_from
+  key_vault_id = azurerm_key_vault.akv.id
+
+  tags = {
+    microservice = "any"
+    resource  = "smtp_server"
+  }
+
+}

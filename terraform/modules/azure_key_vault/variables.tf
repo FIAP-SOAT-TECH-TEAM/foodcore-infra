@@ -62,6 +62,11 @@
     description = "Username do servidor de e-mail SMTP"
   }
 
+  variable "server_mail_from" {
+    type        = string
+    description = "Endereço de e-mail do remetente para o servidor SMTP"
+  }
+
   variable "server_mail_password" {
     type        = string
     description = "Password do servidor de e-mail SMTP"
