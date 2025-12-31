@@ -216,7 +216,8 @@
     default = [
       "order",
       "payment",
-      "catalog"
+      "catalog",
+      "monitor"
     ]
   }
 
