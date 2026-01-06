@@ -1,103 +1,157 @@
-# 🏗️ Food Core Infra
+# 🏗️ FoodCore Infra
 
-Infraestrutura do projeto para gerenciar pedidos de restaurantes fast-food, desenvolvida como parte do curso de Arquitetura de Software
-da FIAP (Tech Challenge).
+<div align="center">
+
+Infraestrutura base do projeto FoodCore, provisionando recursos fundamentais na Azure e AWS. Desenvolvida como parte do curso de Arquitetura de Software da FIAP (Tech Challenge).
+
+</div>
 
 <div align="center">
   <a href="#visao-geral">Visão Geral</a> •
+  <a href="#recursos-provisionados">Recursos Provisionados</a> •
   <a href="#tecnologias">Tecnologias</a> •
-  <a href="#recursos-provisionados">Recursos provisionados</a> •
-  <a href="#trafego-e-segurança">Tráfego e Segurança</a> •
-  <a href="#localizacao">Localização</a> •
-  <a href="#Performance">Performance</a> •
-  <a href="#setup-do-tenant-e-service-principal">Setup do Tenant e Service Principal</a> •
-  <a href="#fluxo-de-deploy">Governança e Fluxo de Deploy</a>
+  <a href="#arquitetura">Arquitetura</a> •
+  <a href="#debitos-tecnicos">Débitos Técnicos</a> •
+  <a href="#setup">Setup do Tenant</a> •
+  <a href="#deploy">Fluxo de Deploy</a> •
+  <a href="#contribuicao">Contribuição</a>
 </div><br>
 
-> 📽️ Vídeo de demonstração da arquitetura: [https://www.youtube.com/watch?v=soaATSbSRPc](https://www.youtube.com/watch?v=XgUpOKJjqak)<br>
+> 📽️ Vídeo de demonstração da arquitetura: [https://www.youtube.com/watch?v=XgUpOKJjqak](https://www.youtube.com/watch?v=XgUpOKJjqak)<br>
 
-# ☁️ Infraestrutura (Azure)
+---
 
-## 📖 Visão Geral
+<h2 id="visao-geral">📋 Visão Geral</h2>
 
-Este repositório contém os **scripts de IaC (Terraform)** responsáveis por provisionar toda a infraestrutura do projeto.
+Este repositório contém os **scripts de IaC (Terraform)** responsáveis por provisionar toda a infraestrutura base do projeto FoodCore.
 
-## 🚀 Tecnologias
+### Responsabilidades
 
-- **Terraform**
-- **Azure Cloud**
-- **AWS Cloud**
-- **GitHub Actions** para CI/CD
+- **Networking**: VNET, Subnets, DNS privado
+- **Compute**: AKS (cluster Kubernetes)
+- **Gateway**: APIM, Application Gateway
+- **Storage**: Azure Blob, ACR
+- **Security**: Key Vault, Cognito
+- **Observability**: Application Insights
 
-### Recursos provisionados
+> ⚠️ Este repositório **não** provisiona recursos Kubernetes (Deployments, Services, Ingress). Apenas o cluster AKS em si.
 
-- **Resource Group**
-- **Virtual Network (VNET)** com subnets delegadas e zona de DNS privada
-- **AKS (Azure Kubernetes Service)** Somente o Cluster
-- **APIM (Azure API Management)**
-- **Azure Function**
-- **Azure Blob**
-- **AWS Cognito**
-- **ACR (Azure Container Registry)**
-- **Application Insights**
+---
 
-> ⚠️ Nenhum recurso Kubernetes (deployments, services, ingress etc.) é criado por este repositório, apenas o **cluster AKS** em si.
+<h2 id="recursos-provisionados">📦 Recursos Provisionados</h2>
 
-> ⚠️ Este repositório não faz o deploy da **Azure function** de autenticação. Ele somente cria alguns recursos que serão utilizados por ela.
+| Recurso | Descrição |
+|---------|-----------|
+| **Resource Group** | Agrupamento lógico de recursos |
+| **Virtual Network (VNET)** | Rede virtual com subnets delegadas e DNS privado |
+| **Public IP** | IP público para Ingress do AKS |
+| **Application Gateway** | Load balancer L7 e WAF (usado como Ingress Controller) |
+| **AKS** | Azure Kubernetes Service (cluster) |
+| **APIM** | Azure API Management (API Gateway) |
+| **Azure Function** | Recursos base para função de autenticação |
+| **Azure Service Bus** | Message broker para comunicação assíncrona entre microsserviços |
+| **Azure Blob Storage** | Armazenamento de imagens de produtos |
+| **ACR** | Azure Container Registry para imagens Docker |
+| **Application Insights** | Monitoramento e telemetria de aplicações |
+| **Key Vault** | Gerenciamento seguro de secrets e credenciais |
+| **AWS Cognito** | Gerenciamento de identidade e autenticação |
+
+---
+
+<h2 id="tecnologias">🔧 Tecnologias</h2>
+
+| Categoria | Tecnologia |
+|-----------|------------|
+| **IaC** | Terraform |
+| **Cloud** | Azure, AWS |
+| **CI/CD** | GitHub Actions |
+| **Container Registry** | ACR |
+
+---
+
+<h2 id="arquitetura">🧱 Arquitetura</h2>
+
+<details>
+<summary>Expandir para mais detalhes</summary>
 
 ### Tráfego e Segurança
 
 - Todo tráfego entre serviços é **privado**:
-  - AKS → APIM
-  - Azure Function → APIM
-  - Azure PostgreSQL Flexible Server → AKS
-- Nenhum desses recursos recebe tráfego inbound público.
-- Todo acesso ao **AKS** e à **Azure Function** é intermediado via **APIM**.
+  - AKS → APIM (privado)
+  - Azure Function → APIM (privado)
+  - PostgreSQL → AKS (privado)
+- Acesso ao AKS e Azure Function intermediado via **APIM**
 
 ### Localização
 
-- Todos os recursos foram criados na região **Brazil South** para reduzir latência.
-- **Exceção:** o **Cognito**, que por limitações da AWS Academy foi criado no **East US**.
-  - Isso aumentou a latência das chamadas à Azure Function, já que ela é invocada como **sub-request em toda requisição ao backend**.
-  - Para mitigar, foi configurado **caching no Produto da API no APIM**.
+- Recursos criados na região **Brazil South** (baixa latência)
+- **Exceção**: Cognito em **East US** (limitação AWS Academy)
+  - Mitigação: Caching no APIM
 
 ### Performance
 
-- A **Azure Function** foi configurada com **Always On**, reduzindo o problema de **cold start**.
-- Todas as requisições estão sob **caching no Produto da API no APIM**.
+- **Azure Function**: Always On (reduz cold start)
+- **APIM**: Caching habilitado para reduzir latência
 
-## 🔧 Setup do Tenant e Service Principal
+### Repositórios do Ecossistema
 
-Antes de executar as pipelines de infraestrutura, é necessário configurar o tenant do Azure e criar o **Service Principal** com permissão para o Terraform aplicar as mudanças.
+| Repositório | Responsabilidade |
+|-------------|------------------|
+| **[foodcore-infra](https://github.com/FIAP-SOAT-TECH-TEAM/foodcore-infra)** | Infraestrutura base (este repositório) |
+| **[foodcore-db](https://github.com/FIAP-SOAT-TECH-TEAM/foodcore-db)** | Bancos de dados |
+| **[foodcore-auth](https://github.com/FIAP-SOAT-TECH-TEAM/foodcore-auth)** | Azure Function de auth |
+| **[foodcore-observability](https://github.com/FIAP-SOAT-TECH-TEAM/foodcore-observability)** | Stack de observabilidade |
+| **[foodcore-order](https://github.com/FIAP-SOAT-TECH-TEAM/foodcore-order)** | Microsserviço de pedidos |
+| **[foodcore-payment](https://github.com/FIAP-SOAT-TECH-TEAM/foodcore-payment)** | Microsserviço de pagamentos |
+| **[foodcore-catalog](https://github.com/FIAP-SOAT-TECH-TEAM/foodcore-catalog)** | Microsserviço de catálogo |
+
+</details>
+
+---
+
+<h2 id="debitos-tecnicos">⚠️ Débitos Técnicos</h2>
+
+<details>
+<summary>Expandir para mais detalhes</summary>
+
+| Débito | Descrição | Impacto |
+|--------|-----------|---------|
+| **WAF Layer** | Implementar camada WAF antes do API Gateway para proteção OWASP TOP 10 | Segurança crítica |
+| **Workload Identity** | Usar Workload Identity para que Pods acessem recursos Azure (atual: Azure Key Vault Provider) | Segurança e gestão de credenciais |
+| **Azure Service Bus SKU** | Migrar para SKU Premium para habilitar Private Endpoint | Segurança de rede |
+| **Redundância Regional** | Habilitar redundância regional completa | Alta disponibilidade |
+
+### 💡 Observações sobre Custos
+
+> Alguns recursos foram implementados com downgrade ou comentados devido ao alto custo ou limitações da assinatura Azure For Students/AWS Academy:
+>
+> - **Azure Service Bus**: Private Endpoint apenas disponível com SKU Premium (custo elevado)
+> - **AKS**: Node pools reduzidos para economia de créditos
+> - **HA/ZRS**: Desabilitado por limitações de assinatura
+>
+> A infraestrutura ideal foi implementada, com alguns trechos comentados para viabilizar o desenvolvimento sem esgotar créditos.
+
+</details>
+
+---
+
+<h2 id="setup">⚙️ Setup do Tenant e Service Principal</h2>
+
+<details>
+<summary>Expandir para mais detalhes</summary>
 
 ### 1️⃣ Criar Service Principal
 
-Execute o comando abaixo no Azure CLI substituindo `subscription_id` pelo ID da sua assinatura:
-
 ```bash
-az ad sp create-for-rbac --name "sp-soat-team8-tc3" --role contributor --scopes /subscriptions/<subscription_id>
+az ad sp create-for-rbac \
+  --name "sp-soat-team8-tc3" \
+  --role contributor \
+  --scopes /subscriptions/<subscription_id>
 ```
 
-Exemplo de saída:
+### 2️⃣ Criar Federação OIDC
 
-```json
-{
-  "clientId": "seu-client-id",
-  "clientSecret": "sua-secret-hash",
-  "subscriptionId": "sua-subscription",
-  "tenantId": "11dbbfe2-89b8-4549-be10-cec364e59551",
-  "activeDirectoryEndpointUrl": "https://login.microsoftonline.com",
-  "resourceManagerEndpointUrl": "https://management.azure.com/",
-  "activeDirectoryGraphResourceId": "https://graph.windows.net/",
-  "sqlManagementEndpointUrl": "https://management.core.windows.net:8443/",
-  "galleryEndpointUrl": "https://gallery.azure.com/",
-  "managementEndpointUrl": "https://management.core.windows.net/"
-}
-```
-
-### 2️⃣ Criar Federação (OIDC)
-
-Para que o Azure confie nos tokens OIDC emitidos pelo GitHub Actions, crie um arquivo cred.json com o seguinte conteúdo:
+Crie arquivo `cred.json`:
 
 ```json
 {
@@ -108,17 +162,15 @@ Para que o Azure confie nos tokens OIDC emitidos pelo GitHub Actions, crie um ar
 }
 ```
 
-Depois, execute o comando abaixo substituindo **<service_principal_clientId>**:
+Execute:
 
 ```bash
-az ad app federated-credential create --id <service_principal_clientId> --parameters cred.json
+az ad app federated-credential create \
+  --id <service_principal_clientId> \
+  --parameters cred.json
 ```
 
-Isso permitirá que o pipeline do GitHub se autentique no Azure sem precisar armazenar client secret diretamente.
-
-### 3️⃣ Conceder Permissões Adicionais
-
-Conceda ao Service Principal permissão para atribuir roles (necessário para vínculo AKS ↔ ACR e AKS ↔ Subnet):
+### 3️⃣ Conceder Permissões
 
 ```bash
 az role assignment create \
@@ -127,49 +179,65 @@ az role assignment create \
   --scope /subscriptions/<subscription_id>
 ```
 
-## ⚙️ Fluxo de Deploy
-
-A gestão da infraestrutura segue um processo **automatizado, auditável e controlado** via **Pull Requests** no repositório de provisionamento.
-Esse fluxo garante segurança, rastreabilidade e aprovação formal antes de qualquer mudança aplicada em produção.
-
-1. **Criação de Pull Request**
-   - Todas as alterações de infraestrutura (novos recursos, updates, ou ajustes de configuração) devem ser propostas via **Pull Request (PR)**.
-   - O PR contém os arquivos `.tf` modificados e uma descrição detalhando o impacto da mudança.
-
-2. **Execução Automática do Terraform Plan**
-   - Ao abrir o PR, o pipeline de CI executa automaticamente o comando:
-
-     ```
-     terraform plan
-     ```
-
-   - Esse passo gera uma **prévia das alterações** que seriam aplicadas (criações, destruições, atualizações).
-   - O resultado do `plan` é exibido diretamente nos logs do pipeline, permitindo revisão técnica pelos aprovadores.
-
-3. **Revisão e Aprovação**
-   - O repositório é **protegido**, exigindo no mínimo **1 aprovação** de um codeowner antes do merge.
-   - Nenhum usuário pode aplicar alterações diretamente na branch principal (`main` ou `master`).
-   - Revisores devem garantir:
-     - Que o `plan` não tenha destruições indevidas (`destroy`)
-     - Que as variáveis e roles estejam corretas
-     - Que os módulos sigam o padrão organizacional
-   - Todos os checks(ex: jobs do github actions, sonarQube, etc..) estipulados nas regras de proteção devem estar passando.
-
-4. **Aplicação no Merge**
-   - Após aprovação e merge do PR, o pipeline executa automaticamente:
-
-     ```
-     terraform apply -auto-approve
-     ```
-
-   - O **Terraform Apply** aplica as alterações descritas no `plan` aprovado, provisionando ou atualizando os recursos no Azure.
-
-Ao finalizar o deploy, será provisionado uma estrutura semelhante a essa
-
-![Diagrama infraestrutura](docs/diagrams/infra.png)
+</details>
 
 ---
 
-### Fluxo CI/CD
+<h2 id="deploy">⚙️ Fluxo de Deploy</h2>
 
-![Diagrama de CI](docs/diagrams/ci-diagram.png)
+<details>
+<summary>Expandir para mais detalhes</summary>
+
+### Pipeline
+
+1. **Pull Request**
+   - `terraform fmt` e `validate`
+   - `terraform plan` - prévia das alterações
+
+2. **Revisão e Aprovação**
+   - Mínimo 1 aprovação de CODEOWNER
+   - Verificação do plan (destruições indevidas, variáveis)
+
+3. **Merge para Main**
+   - `terraform apply -auto-approve`
+   - Provisionamento dos recursos
+
+### Proteções
+
+- Branch `main` protegida
+- Nenhum push direto permitido
+- Todos os checks devem passar
+
+</details>
+
+---
+
+<h2 id="contribuicao">🤝 Contribuição</h2>
+
+### Desenvolvimento Local
+
+```bash
+# Clonar repositório
+git clone https://github.com/FIAP-SOAT-TECH-TEAM/foodcore-infra.git
+cd foodcore-infra/terraform
+
+# Inicializar Terraform
+terraform init
+
+# Validar configuração
+terraform validate
+
+# Gerar plan
+terraform plan -out=tfplan
+```
+
+### Licença
+
+Este projeto está licenciado sob a [MIT License](LICENSE).
+
+---
+
+<div align="center">
+  <strong>FIAP - Pós-graduação em Arquitetura de Software</strong><br>
+  Tech Challenge
+</div>
