@@ -91,18 +91,18 @@ resource "azurerm_role_assignment" "aks_subnet_contributor" {
   principal_id         = local.secrets_store_csi_identity_object_id
 }
 
-# resource "kubernetes_namespace_v1" "aks_namespaces" {
-#   count = length(var.aks_namespaces)
+resource "kubernetes_namespace_v1" "aks_namespaces" {
+  count = length(var.aks_namespaces)
 
-#   metadata {
-#     name = var.aks_namespaces[count.index]
+  metadata {
+    name = var.aks_namespaces[count.index]
 
-#     labels = {
-#       managed-by  = "terraform"
-#     }
-#   }
+    labels = {
+      managed-by  = "terraform"
+    }
+  }
 
-#   depends_on = [
-#     azurerm_kubernetes_cluster.aks
-#   ]
-# }
+  depends_on = [
+    azurerm_kubernetes_cluster.aks
+  ]
+}
