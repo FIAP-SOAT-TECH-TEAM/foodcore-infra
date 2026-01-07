@@ -40,32 +40,32 @@ Este repositório contém os **scripts de IaC (Terraform)** responsáveis por pr
 
 <h2 id="recursos-provisionados">📦 Recursos Provisionados</h2>
 
-| Recurso | Descrição |
-|---------|-----------|
-| **Resource Group** | Agrupamento lógico de recursos |
-| **Virtual Network (VNET)** | Rede virtual com subnets delegadas e DNS privado |
-| **Public IP** | IP público para Ingress do AKS |
-| **Application Gateway** | Load balancer L7 e WAF (usado como Ingress Controller) |
-| **AKS** | Azure Kubernetes Service (cluster) |
-| **APIM** | Azure API Management (API Gateway) |
-| **Azure Function** | Recursos base para função de autenticação |
-| **Azure Service Bus** | Message broker para comunicação assíncrona entre microsserviços |
-| **Azure Blob Storage** | Armazenamento de imagens de produtos |
-| **ACR** | Azure Container Registry para imagens Docker |
-| **Application Insights** | Monitoramento e telemetria de aplicações |
-| **Key Vault** | Gerenciamento seguro de secrets e credenciais |
-| **AWS Cognito** | Gerenciamento de identidade e autenticação |
+| Recurso                    | Descrição                                                       |
+| -------------------------- | --------------------------------------------------------------- |
+| **Resource Group**         | Agrupamento lógico de recursos                                  |
+| **Virtual Network (VNET)** | Rede virtual com subnets delegadas e DNS privado                |
+| **Public IP**              | IP público para Ingress do AKS                                  |
+| **Application Gateway**    | Load balancer L7 e WAF (usado como Ingress Controller)          |
+| **AKS**                    | Azure Kubernetes Service (cluster)                              |
+| **APIM**                   | Azure API Management (API Gateway)                              |
+| **Azure Function**         | Recursos base para função de autenticação                       |
+| **Azure Service Bus**      | Message broker para comunicação assíncrona entre microsserviços |
+| **Azure Blob Storage**     | Armazenamento de imagens de produtos                            |
+| **ACR**                    | Azure Container Registry para imagens Docker                    |
+| **Application Insights**   | Monitoramento e telemetria de aplicações                        |
+| **Key Vault**              | Gerenciamento seguro de secrets e credenciais                   |
+| **AWS Cognito**            | Gerenciamento de identidade e autenticação                      |
 
 ---
 
 <h2 id="tecnologias">🔧 Tecnologias</h2>
 
-| Categoria | Tecnologia |
-|-----------|------------|
-| **IaC** | Terraform |
-| **Cloud** | Azure, AWS |
-| **CI/CD** | GitHub Actions |
-| **Container Registry** | ACR |
+| Categoria              | Tecnologia     |
+| ---------------------- | -------------- |
+| **IaC**                | Terraform      |
+| **Cloud**              | Azure, AWS     |
+| **CI/CD**              | GitHub Actions |
+| **Container Registry** | ACR            |
 
 ---
 
@@ -131,9 +131,13 @@ Este repositório contém os **scripts de IaC (Terraform)** responsáveis por pr
 >
 > A infraestrutura ideal foi implementada, com alguns trechos comentados para viabilizar o desenvolvimento sem esgotar créditos.
 
-</details>
+## Regiões Permitidas
+> A assinatura **Azure For Students** impõe restrições de Policy que limitam a criação de recursos às seguintes regiões:
+>
+> <img src=".github/images/permitted.jpeg" alt="permitted regions" />
+>
 
----
+</details>
 
 <h2 id="setup">⚙️ Setup do Tenant e Service Principal</h2>
 
@@ -178,8 +182,8 @@ az role assignment create \
   --role "User Access Administrator" \
   --scope /subscriptions/<subscription_id>
 
-az role assignment create \ 
-  --assignee <service_principal_clientId> \ 
+az role assignment create \
+  --assignee <service_principal_clientId> \
   --role "Contributor" \
   --scope /subscriptions/<subscription_id>
 
