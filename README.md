@@ -177,6 +177,16 @@ az role assignment create \
   --assignee <service_principal_clientId> \
   --role "User Access Administrator" \
   --scope /subscriptions/<subscription_id>
+
+az role assignment create \ 
+  --assignee <service_principal_clientId> \ 
+  --role "Contributor" \
+  --scope /subscriptions/<subscription_id>
+
+az role assignment create
+--assignee <service_principal_clientId> \
+--role "Key Vault Secrets Officer" \
+--scope /subscriptions/<subscription_id>
 ```
 
 </details>
