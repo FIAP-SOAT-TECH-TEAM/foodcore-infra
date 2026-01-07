@@ -162,7 +162,7 @@
   variable "aks_max_count" {
     type        = number
     description = "Número máximo de nós para auto scaling no pool de nós do AKS"
-    default     = 2
+    default     = 3
   }
   variable "aks_min_count" {
     type        = number
