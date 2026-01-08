@@ -3,7 +3,7 @@
 <div align="center">
  
 Infraestrutura base do projeto FoodCore, provisionando recursos fundamentais na Azure e AWS. Desenvolvida como parte do curso de Arquitetura de Software da FIAP (Tech Challenge).
-
+ 
 </div>
 
 <div align="center">
