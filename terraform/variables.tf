@@ -162,7 +162,7 @@
   variable "aks_max_count" {
     type        = number
     description = "Número máximo de nós para auto scaling no pool de nós do AKS"
-    default     = 3
+    default     = 2
   }
   variable "aks_min_count" {
     type        = number
@@ -176,7 +176,7 @@
   }
   variable "vm_size" {
     type    = string
-    default = "Standard_D2s_v3"
+    default = "Standard_B8as_v2"
     description = "Tamanho da VM para os nós do AKS"
   }
   variable "identity_type" {
