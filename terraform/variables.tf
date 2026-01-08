@@ -176,7 +176,7 @@
   }
   variable "vm_size" {
     type    = string
-    default = "Standard_B4ls_v2"
+    default = "Standard_E2_v3"
     description = "Tamanho da VM para os nós do AKS"
   }
   variable "identity_type" {
