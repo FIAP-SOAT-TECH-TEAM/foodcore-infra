@@ -1,7 +1,7 @@
 # 🏗️ FoodCore Infra
 
 <div align="center">
- 
+
 Infraestrutura base do projeto FoodCore, provisionando recursos fundamentais na Azure e AWS. Desenvolvida como parte do curso de Arquitetura de Software da FIAP (Tech Challenge).
 
 </div>
@@ -132,10 +132,25 @@ Este repositório contém os **scripts de IaC (Terraform)** responsáveis por pr
 > A infraestrutura ideal foi implementada, com alguns trechos comentados para viabilizar o desenvolvimento sem esgotar créditos.
 
 ## Regiões Permitidas
+>
 > A assinatura **Azure For Students** impõe restrições de Policy que limitam a criação de recursos às seguintes regiões:
 >
 > <img src=".github/images/permitted.jpeg" alt="permitted regions" />
+
+## Limitações de Quota (Azure for Students)
 >
+> - **Quota de VMs**: Apenas **2 instâncias** do SKU utilizado para o node pool do AKS, tendo um impacto direto na escalabilidade do cluster. Quando o limite é atingido, novos nós não podem ser criados e dão erro no provisionamento de workloads.
+>
+> ### Erro no CD dos Microsserviços
+>
+> Durante o deploy dos microsserviços, Pods podem ficar com status **Pending** e o seguinte erro pode aparecer:
+>
+> <img src=".github/images/error.jpeg" alt="Error" />
+> <img src=".github/images/erroDeploy.jpeg" alt="Error" />
+>
+> **Causa**: O cluster atingiu o limite máximo de VMs permitido pela quota e não há recursos computacionais (CPU/memória) disponíveis nos nós existentes.
+>
+> **Solução**: Aguardar a liberação de recursos de outros pods e reexecutar CI + CD.
 
 </details>
 
