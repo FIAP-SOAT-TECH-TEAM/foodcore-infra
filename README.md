@@ -205,16 +205,12 @@ az role assignment create
 ### Pipeline
 
 1. **Pull Request**
-   - `terraform fmt` e `validate`
-   - `terraform plan` - prévia das alterações
+   - Preencher template de pull request adequadamente
 
 2. **Revisão e Aprovação**
    - Mínimo 1 aprovação de CODEOWNER
-   - Verificação do plan (destruições indevidas, variáveis)
 
 3. **Merge para Main**
-   - `terraform apply -auto-approve`
-   - Provisionamento dos recursos
 
 ### Proteções
 
@@ -222,11 +218,25 @@ az role assignment create
 - Nenhum push direto permitido
 - Todos os checks devem passar
 
+### Ordem de Provisionamento
+
+```
+1. foodcore-infra        (AKS, VNET)
+2. foodcore-db           (Bancos de dados)
+3. foodcore-auth           (Azure Function Authorizer)
+4. foodcore-observability (Serviços de Observabilidade)
+5. foodcore-order            (Microsserviço de pedido)
+6. foodcore-payment            (Microsserviço de pagamento)
+7. foodcore-catalog            (Microsserviço de catálogo)
+```
+
+> ⚠️ Opcionalmente, as pipelines do repositório `foodcore-shared` podem ser executadas para publicação de um novo package. Atualizar os microsserviços para utilazarem a nova versão do pacote.
+
 </details>
 
 ---
 
-<h2 id="contribuicao">🤝 Contribuição</h2>
+<h2 id="instalacao">🚀 Instalação e Uso</h2>
 
 ### Desenvolvimento Local
 
@@ -235,15 +245,26 @@ az role assignment create
 git clone https://github.com/FIAP-SOAT-TECH-TEAM/foodcore-infra.git
 cd foodcore-infra/terraform
 
-# Inicializar Terraform
-terraform init
+# Configurar variáveis de ambiente (Docker)
+cp docker/env-example docker/.env
 
-# Validar configuração
-terraform validate
-
-# Gerar plan
-terraform plan -out=tfplan
+# Subir dependências
+./food start:infra
 ```
+
+> ⚠️ Use o utilitário de linha de comandos `dos2unix` para corrigir problemas de CLRF e LF.
+> Ajuste os arquivos .env conforme necessário.
+
+---
+
+<h2 id="contribuicao">🤝 Contribuição</h2>
+
+### Fluxo de Contribuição
+
+1. Crie uma branch a partir de `main`
+2. Implemente suas alterações
+3. Abra um Pull Request
+4. Aguarde aprovação de um CODEOWNER
 
 ### Licença
 
@@ -253,5 +274,5 @@ Este projeto está licenciado sob a [MIT License](LICENSE).
 
 <div align="center">
   <strong>FIAP - Pós-graduação em Arquitetura de Software</strong><br>
-  Tech Challenge
+  Tech Challenge 4
 </div>
