@@ -8,6 +8,7 @@ Infraestrutura base do projeto FoodCore, provisionando recursos fundamentais na 
 
 <div align="center">
   <a href="#visao-geral">Visão Geral</a> •
+  <a href="#sytem-design">System Design</a> •
   <a href="#recursos-provisionados">Recursos Provisionados</a> •
   <a href="#tecnologias">Tecnologias</a> •
   <a href="#arquitetura">Arquitetura</a> •
@@ -36,6 +37,12 @@ Este repositório contém os **scripts de IaC (Terraform)** responsáveis por pr
 - **Observability**: Application Insights
 
 > ⚠️ Este repositório **não** provisiona recursos Kubernetes (Deployments, Services, Ingress). Apenas o cluster AKS em si.
+
+---
+
+<h2 id="sytem-design">🧠 System Design</h2>
+
+![System Design](docs/diagrams/system-design.svg)
 
 ---
 
