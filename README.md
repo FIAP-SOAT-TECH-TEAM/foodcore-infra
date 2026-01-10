@@ -11,7 +11,7 @@ Infraestrutura base do projeto FoodCore, provisionando recursos fundamentais na 
   <a href="#sytem-design">System Design</a> •
   <a href="#recursos-provisionados">Recursos Provisionados</a> •
   <a href="#tecnologias">Tecnologias</a> •
-  <a href="#arquitetura">Arquitetura</a> •
+  <a href="#infra">Infraestrutura</a> •
   <a href="#setup">Setup do Tenant</a> •
   <a href="#deploy">Fluxo de Deploy</a> •
   <a href="#instalacao-e-uso">Instalação e Uso</a> •
@@ -77,29 +77,25 @@ Este repositório contém os **scripts de IaC (Terraform)** responsáveis por pr
 
 ---
 
-<h2 id="arquitetura">🧱 Arquitetura</h2>
+<h2 id="infra">🌐 Infraestrutura</h2>
 
 <details>
 <summary>Expandir para mais detalhes</summary>
 
-### Tráfego e Segurança
-
-- Todo tráfego entre serviços é **privado**:
-  - AKS → APIM (privado)
-  - Azure Function → APIM (privado)
-  - PostgreSQL → AKS (privado)
-- Acesso ao AKS e Azure Function intermediado via **APIM**
-
 ### Localização
 
-- Recursos criados na região **Brazil South** (baixa latência)
-- **Exceção**: Cognito em **East US** (limitação AWS Academy)
-  - Mitigação: Caching no APIM
-
+- **Azure**: Recursos criados na região **South Central US** (Limitação Azure for Students)
+- **AWS**: Cognito em **East US** (limitação AWS Academy)
+  
 ### Performance
 
+- Todos os recursos foram provisionados buscando alta disponibilidade, recuperação de desastres e auto-scaling horizontal (vide limitações de assinatura)
 - **Azure Function**: Always On (reduz cold start)
-- **APIM**: Caching habilitado para reduzir latência
+- **APIM**: Para reduzir a latência, foi implementado caching 
+
+### Segurança
+- Apenas os recursos necesários foram expostos para a internet, neste caso: **APIM** e **Frontend IP Configuration público** do **Aplication Gateway** (vide limitações de assinatura)
+- **APIM**: Para segurança adicional, foi configurado rate limit
 
 ### Repositórios do Ecossistema
 
