@@ -1,23 +1,25 @@
 # 🏗️ FoodCore Infra
 
 <div align="center">
- 
+
 Infraestrutura base do projeto FoodCore, provisionando recursos fundamentais na Azure e AWS. Desenvolvida como parte do curso de Arquitetura de Software da FIAP (Tech Challenge).
  
 </div>
 
 <div align="center">
   <a href="#visao-geral">Visão Geral</a> •
+  <a href="#sytem-design">System Design</a> •
   <a href="#recursos-provisionados">Recursos Provisionados</a> •
   <a href="#tecnologias">Tecnologias</a> •
   <a href="#arquitetura">Arquitetura</a> •
-  <a href="#debitos-tecnicos">Débitos Técnicos</a> •
   <a href="#setup">Setup do Tenant</a> •
   <a href="#deploy">Fluxo de Deploy</a> •
+  <a href="#instalacao-e-uso">Instalação e Uso</a> •
+  <a href="#debitos-tecnicos">Débitos Técnicos</a> •
   <a href="#contribuicao">Contribuição</a>
 </div><br>
 
-> 📽️ Vídeo de demonstração da arquitetura: [https://www.youtube.com/watch?v=XgUpOKJjqak](https://www.youtube.com/watch?v=XgUpOKJjqak)<br>
+> 📽️ Vídeo de demonstração da arquitetura: [https://youtu.be/k3XbPRxmjCw](https://youtu.be/k3XbPRxmjCw)<br>
 
 ---
 
@@ -35,6 +37,12 @@ Este repositório contém os **scripts de IaC (Terraform)** responsáveis por pr
 - **Observability**: Application Insights
 
 > ⚠️ Este repositório **não** provisiona recursos Kubernetes (Deployments, Services, Ingress). Apenas o cluster AKS em si.
+
+---
+
+<h2 id="sytem-design">🧠 System Design</h2>
+
+![System Design](docs/diagrams/system-design.svg)
 
 ---
 
@@ -109,36 +117,6 @@ Este repositório contém os **scripts de IaC (Terraform)** responsáveis por pr
 
 ---
 
-<h2 id="debitos-tecnicos">⚠️ Débitos Técnicos</h2>
-
-<details>
-<summary>Expandir para mais detalhes</summary>
-
-| Débito | Descrição | Impacto |
-|--------|-----------|---------|
-| **WAF Layer** | Implementar camada WAF antes do API Gateway para proteção OWASP TOP 10 | Segurança crítica |
-| **Workload Identity** | Usar Workload Identity para que Pods acessem recursos Azure (atual: Azure Key Vault Provider) | Segurança e gestão de credenciais |
-| **Azure Service Bus SKU** | Migrar para SKU Premium para habilitar Private Endpoint | Segurança de rede |
-| **Redundância Regional** | Habilitar redundância regional completa | Alta disponibilidade |
-
-### 💡 Observações sobre Custos
-
-> Alguns recursos foram implementados com downgrade ou comentados devido ao alto custo ou limitações da assinatura Azure For Students/AWS Academy:
->
-> - **Azure Service Bus**: Private Endpoint apenas disponível com SKU Premium (custo elevado)
-> - **AKS**: Node pools reduzidos para economia de créditos
-> - **HA/ZRS**: Desabilitado por limitações de assinatura
->
-> A infraestrutura ideal foi implementada, com alguns trechos comentados para viabilizar o desenvolvimento sem esgotar créditos.
-
-## Regiões Permitidas
-> A assinatura **Azure For Students** impõe restrições de Policy que limitam a criação de recursos às seguintes regiões:
->
-> <img src=".github/images/permitted.jpeg" alt="permitted regions" />
->
-
-</details>
-
 <h2 id="setup">⚙️ Setup do Tenant e Service Principal</h2>
 
 <details>
@@ -205,16 +183,12 @@ az role assignment create
 ### Pipeline
 
 1. **Pull Request**
-   - `terraform fmt` e `validate`
-   - `terraform plan` - prévia das alterações
+   - Preencher template de pull request adequadamente
 
 2. **Revisão e Aprovação**
    - Mínimo 1 aprovação de CODEOWNER
-   - Verificação do plan (destruições indevidas, variáveis)
 
 3. **Merge para Main**
-   - `terraform apply -auto-approve`
-   - Provisionamento dos recursos
 
 ### Proteções
 
@@ -222,11 +196,25 @@ az role assignment create
 - Nenhum push direto permitido
 - Todos os checks devem passar
 
+### Ordem de Provisionamento
+
+```
+1. foodcore-infra        (AKS, VNET)
+2. foodcore-db           (Bancos de dados)
+3. foodcore-auth           (Azure Function Authorizer)
+4. foodcore-observability (Serviços de Observabilidade)
+5. foodcore-order            (Microsserviço de pedido)
+6. foodcore-payment            (Microsserviço de pagamento)
+7. foodcore-catalog            (Microsserviço de catálogo)
+```
+
+> ⚠️ Opcionalmente, as pipelines do repositório `foodcore-shared` podem ser executadas para publicação de um novo package. Atualizar os microsserviços para utilazarem a nova versão do pacote.
+
 </details>
 
 ---
 
-<h2 id="contribuicao">🤝 Contribuição</h2>
+<h2 id="instalacao-e-uso">🚀 Instalação e Uso</h2>
 
 ### Desenvolvimento Local
 
@@ -235,15 +223,58 @@ az role assignment create
 git clone https://github.com/FIAP-SOAT-TECH-TEAM/foodcore-infra.git
 cd foodcore-infra/terraform
 
-# Inicializar Terraform
-terraform init
+# Configurar variáveis de ambiente (Docker)
+cp docker/env-example docker/.env
 
-# Validar configuração
-terraform validate
-
-# Gerar plan
-terraform plan -out=tfplan
+# Subir dependências
+./food start:infra
 ```
+
+> ⚠️ Use o utilitário de linha de comandos `dos2unix` para corrigir problemas de CLRF e LF.
+> Ajuste os arquivos .env conforme necessário.
+
+---
+
+<h2 id="debitos-tecnicos">⚠️ Débitos Técnicos</h2>
+
+<details>
+<summary>Expandir para mais detalhes</summary>
+
+| Débito | Descrição | Impacto |
+|--------|-----------|---------|
+| **WAF Layer** | Implementar camada WAF antes do API Gateway para proteção OWASP TOP 10 | Segurança crítica |
+| **Workload Identity** | Usar Workload Identity para que Pods acessem recursos Azure (atual: Azure Key Vault Provider) | Segurança e gestão de credenciais |
+| **Azure Service Bus SKU** | Migrar para SKU Premium para habilitar Private Endpoint | Segurança de rede |
+| **Redundância Regional** | Habilitar redundância regional completa | Alta disponibilidade |
+
+### 💡 Observações sobre Custos
+
+> Alguns recursos foram implementados com downgrade ou comentados devido ao alto custo ou limitações da assinatura Azure For Students/AWS Academy:
+>
+> - **Azure Service Bus**: Private Endpoint apenas disponível com SKU Premium (custo elevado)
+> - **AKS**: Node pools reduzidos para economia de créditos
+> - **HA/ZRS**: Desabilitado por limitações de assinatura
+>
+> A infraestrutura ideal foi implementada, com alguns trechos comentados para viabilizar o desenvolvimento sem esgotar créditos.
+
+## Regiões Permitidas
+>
+> A assinatura **Azure For Students** impõe restrições de Policy que limitam a criação de recursos às seguintes regiões:
+>
+> <img src=".github/images/permitted.jpeg" alt="permitted regions" />
+
+</details>
+
+---
+
+<h2 id="contribuicao">🤝 Contribuição</h2>
+
+### Fluxo de Contribuição
+
+1. Crie uma branch a partir de `main`
+2. Implemente suas alterações
+3. Abra um Pull Request
+4. Aguarde aprovação de um CODEOWNER
 
 ### Licença
 
@@ -253,5 +284,5 @@ Este projeto está licenciado sob a [MIT License](LICENSE).
 
 <div align="center">
   <strong>FIAP - Pós-graduação em Arquitetura de Software</strong><br>
-  Tech Challenge
+  Tech Challenge 4
 </div>
