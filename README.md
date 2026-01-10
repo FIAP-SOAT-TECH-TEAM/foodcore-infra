@@ -11,9 +11,10 @@ Infraestrutura base do projeto FoodCore, provisionando recursos fundamentais na 
   <a href="#recursos-provisionados">Recursos Provisionados</a> •
   <a href="#tecnologias">Tecnologias</a> •
   <a href="#arquitetura">Arquitetura</a> •
-  <a href="#debitos-tecnicos">Débitos Técnicos</a> •
   <a href="#setup">Setup do Tenant</a> •
   <a href="#deploy">Fluxo de Deploy</a> •
+  <a href="#instalacao-e-uso">Instalação e Uso</a> •
+  <a href="#debitos-tecnicos">Débitos Técnicos</a> •
   <a href="#contribuicao">Contribuição</a>
 </div><br>
 
@@ -108,36 +109,6 @@ Este repositório contém os **scripts de IaC (Terraform)** responsáveis por pr
 </details>
 
 ---
-
-<h2 id="debitos-tecnicos">⚠️ Débitos Técnicos</h2>
-
-<details>
-<summary>Expandir para mais detalhes</summary>
-
-| Débito | Descrição | Impacto |
-|--------|-----------|---------|
-| **WAF Layer** | Implementar camada WAF antes do API Gateway para proteção OWASP TOP 10 | Segurança crítica |
-| **Workload Identity** | Usar Workload Identity para que Pods acessem recursos Azure (atual: Azure Key Vault Provider) | Segurança e gestão de credenciais |
-| **Azure Service Bus SKU** | Migrar para SKU Premium para habilitar Private Endpoint | Segurança de rede |
-| **Redundância Regional** | Habilitar redundância regional completa | Alta disponibilidade |
-
-### 💡 Observações sobre Custos
-
-> Alguns recursos foram implementados com downgrade ou comentados devido ao alto custo ou limitações da assinatura Azure For Students/AWS Academy:
->
-> - **Azure Service Bus**: Private Endpoint apenas disponível com SKU Premium (custo elevado)
-> - **AKS**: Node pools reduzidos para economia de créditos
-> - **HA/ZRS**: Desabilitado por limitações de assinatura
->
-> A infraestrutura ideal foi implementada, com alguns trechos comentados para viabilizar o desenvolvimento sem esgotar créditos.
-
-## Regiões Permitidas
->
-> A assinatura **Azure For Students** impõe restrições de Policy que limitam a criação de recursos às seguintes regiões:
->
-> <img src=".github/images/permitted.jpeg" alt="permitted regions" />
-
-</details>
 
 <h2 id="setup">⚙️ Setup do Tenant e Service Principal</h2>
 
@@ -236,7 +207,7 @@ az role assignment create
 
 ---
 
-<h2 id="instalacao">🚀 Instalação e Uso</h2>
+<h2 id="instalacao-e-uso">🚀 Instalação e Uso</h2>
 
 ### Desenvolvimento Local
 
@@ -254,6 +225,38 @@ cp docker/env-example docker/.env
 
 > ⚠️ Use o utilitário de linha de comandos `dos2unix` para corrigir problemas de CLRF e LF.
 > Ajuste os arquivos .env conforme necessário.
+
+---
+
+<h2 id="debitos-tecnicos">⚠️ Débitos Técnicos</h2>
+
+<details>
+<summary>Expandir para mais detalhes</summary>
+
+| Débito | Descrição | Impacto |
+|--------|-----------|---------|
+| **WAF Layer** | Implementar camada WAF antes do API Gateway para proteção OWASP TOP 10 | Segurança crítica |
+| **Workload Identity** | Usar Workload Identity para que Pods acessem recursos Azure (atual: Azure Key Vault Provider) | Segurança e gestão de credenciais |
+| **Azure Service Bus SKU** | Migrar para SKU Premium para habilitar Private Endpoint | Segurança de rede |
+| **Redundância Regional** | Habilitar redundância regional completa | Alta disponibilidade |
+
+### 💡 Observações sobre Custos
+
+> Alguns recursos foram implementados com downgrade ou comentados devido ao alto custo ou limitações da assinatura Azure For Students/AWS Academy:
+>
+> - **Azure Service Bus**: Private Endpoint apenas disponível com SKU Premium (custo elevado)
+> - **AKS**: Node pools reduzidos para economia de créditos
+> - **HA/ZRS**: Desabilitado por limitações de assinatura
+>
+> A infraestrutura ideal foi implementada, com alguns trechos comentados para viabilizar o desenvolvimento sem esgotar créditos.
+
+## Regiões Permitidas
+>
+> A assinatura **Azure For Students** impõe restrições de Policy que limitam a criação de recursos às seguintes regiões:
+>
+> <img src=".github/images/permitted.jpeg" alt="permitted regions" />
+
+</details>
 
 ---
 
