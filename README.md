@@ -186,6 +186,8 @@ az role assignment create
 
 3. **Merge para Main**
 
+> ⚠️ Atualize a GitHub Secret `AWS_CREDENTIALS` com o valor fornecido pela `AWS Academy`. Os outros repositórios/aplicações estão preparados para consumir este valor via output terraform ou `Azure Key Vault`.
+
 ### Proteções
 
 - Branch `main` protegida
@@ -204,7 +206,7 @@ az role assignment create
 7. foodcore-catalog            (Microsserviço de catálogo)
 ```
 
-> ⚠️ Opcionalmente, as pipelines do repositório `foodcore-shared` podem ser executadas para publicação de um novo package. Atualizar os microsserviços para utilazarem a nova versão do pacote.
+> ⚠️ Opcionalmente, as pipelines do repositório `foodcore-shared` podem ser executadas para publicação de um novo package. Atualizar os microsserviços para utilizarem a nova versão do pacote.
 
 </details>
 
