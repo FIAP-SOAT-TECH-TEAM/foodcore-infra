@@ -36,7 +36,7 @@ Este repositório contém os **scripts de IaC (Terraform)** responsáveis por pr
 - **Security**: Key Vault, Cognito
 - **Observability**: Application Insights
 
-> ⚠️ Este repositório **não** provisiona recursos Kubernetes (Deployments, Services, Ingress). Apenas o cluster AKS em si.
+> ⚠️ Este repositório **não** provisiona recursos Kubernetes (Deployments, Services, Ingress...), apenas o cluster AKS em si, com os namespaces utilizados pelos microsserviços e o repositório de observabilidade.
 
 ---
 
